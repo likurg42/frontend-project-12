@@ -3,6 +3,10 @@
     "browser": true,
     "es2021": true
   },
+  "plugins": [
+    "react",
+    "functional"
+  ],
   "extends": [
     "airbnb",
     "plugin:react/recommended",
