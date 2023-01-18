@@ -1,11 +1,9 @@
 import React, {
   useContext, useState, useMemo, useCallback, useEffect,
 } from 'react';
-import axios from 'axios';
-import routes from '../routes';
 
 const getTokenFromLocalStorage = () => localStorage.getItem('userToken');
-const setTokeInLocalStorage = (token) => localStorage.setItem('userToken', token);
+const setTokenInLocalStorage = (token) => localStorage.setItem('userToken', token);
 
 export const AuthContext = React.createContext({});
 const useAuthContext = () => useContext(AuthContext);
@@ -17,18 +15,12 @@ export const AuthProvider = ({ children }) => {
     setToken(getTokenFromLocalStorage);
   }, []);
 
-  const login = useCallback(async (values) => {
-    try {
-      const res = await axios.post(routes.api.login, values);
-      const { token: loginToken } = res.data;
-      setToken(loginToken);
-      setTokeInLocalStorage(loginToken);
-    } catch (e) {
-      console.error(e);
-    }
+  const saveToken = useCallback((loginToken) => {
+    setToken(loginToken);
+    setTokenInLocalStorage(loginToken);
   }, []);
 
-  const providerValue = useMemo(() => ({ token, login }), [token, login]);
+  const providerValue = useMemo(() => ({ token, saveToken }), [token, saveToken]);
   return <AuthContext.Provider value={providerValue}>{children}</AuthContext.Provider>;
 };
 
