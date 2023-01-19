@@ -6,7 +6,7 @@ import {
 } from 'react-bootstrap';
 import { useAuthContext } from '../contexts';
 import { fetchChatData, getChannels, getCurrentChannel } from '../slices/channelsSlice';
-import { Channels, Messages } from '../components';
+import { Channels, Messages } from '../components/index';
 
 const HomePage = () => {
   const { user, getHeaders } = useAuthContext();
