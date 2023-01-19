@@ -1,5 +1,5 @@
 import NotFoundPage from './NotFoundPage';
 import LoginPage from './LoginPage';
-import HomePage from './HomePage';
+import ChatPage from './ChatPage';
 
-export { NotFoundPage, LoginPage, HomePage };
+export { NotFoundPage, LoginPage, ChatPage };
