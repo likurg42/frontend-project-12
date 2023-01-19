@@ -23,16 +23,20 @@ const HomePage = () => {
     }
   }, [navigate, token, getHeaders, dispatch]);
 
-  return (
-    <Row className="h-100 bg-white flex-md-row">
-      <Col md={2} className="px-0 pt-5 bg-light">
-        {channels.length > 0 && <Channels channels={channels} currentChannel={currentChannel} />}
-      </Col>
-      <Col className="p-0 h-100">
-        {channels.length > 0 && <Messages currentChannel={currentChannel} />}
-      </Col>
-    </Row>
-  );
+  if (token) {
+    return (
+      <Row className="h-100 bg-white flex-md-row">
+        <Col md={2} className="px-0 pt-5 bg-light">
+          {channels.length > 0 && <Channels channels={channels} currentChannel={currentChannel} />}
+        </Col>
+        <Col className="p-0 h-100">
+          {channels.length > 0 && <Messages currentChannel={currentChannel} />}
+        </Col>
+      </Row>
+    );
+  }
+
+  return <div />;
 };
 
 export default HomePage;

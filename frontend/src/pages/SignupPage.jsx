@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../contexts/index.js';
-import { LoginForm } from '../components/index.js';
+import { SignupForm } from '../components/index.js';
 
-const LoginPage = () => {
-  const { user } = useAuthContext();
-  const { token } = user;
+const SignupPage = () => {
+  const { token } = useAuthContext();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,11 +15,11 @@ const LoginPage = () => {
 
   if (!token) {
     return (
-      <LoginForm />
+      <SignupForm />
     );
   }
 
   return <div />;
 };
 
-export default LoginPage;
+export default SignupPage;

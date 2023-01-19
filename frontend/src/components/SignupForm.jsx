@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {
   Form,
@@ -10,26 +10,27 @@ import {
 } from 'react-bootstrap';
 import routes from '../routes/routes.js';
 import { useAuthContext } from '../contexts/index.js';
-import loginSchema from '../schemas/loginSchema.js';
+import signupSchema from '../schemas/signupSchema.js';
 
-const LoginForm = () => {
-  const [isSuccessAuth, setSuccessAuth] = useState(true);
+const SignupForm = () => {
+  const [isSuccessSignup, setSuccessSignup] = useState(true);
   const { user, saveUser } = useAuthContext();
   const { token } = user;
   const navigate = useNavigate();
 
-  const login = async (values) => {
+  const signup = async (values) => {
+    const { username, password } = values;
     try {
-      const res = await axios.post(routes.api.login, values);
+      const res = await axios.post(routes.api.signup, { username, password });
       const { token: loginToken, username: loginUsername } = res.data;
       saveUser(loginToken, loginUsername);
     } catch (e) {
-      setSuccessAuth(false);
+      setSuccessSignup(false);
     }
   };
 
   const onSubmit = (values) => {
-    login(values);
+    signup(values);
   };
 
   const {
@@ -43,8 +44,9 @@ const LoginForm = () => {
     initialValues: {
       username: '',
       password: '',
+      passwordConfirmation: '',
     },
-    validationSchema: loginSchema,
+    validationSchema: signupSchema,
     onSubmit,
   });
 
@@ -52,13 +54,13 @@ const LoginForm = () => {
     if (token) {
       navigate('/');
     }
-  }, [navigate, token, isSuccessAuth]);
+  }, [navigate, token, isSuccessSignup]);
 
   return (
     <Row className="justify-content-center mt-3">
       <Col className="col-4">
         <Form className="justify-content-center" onSubmit={handleSubmit}>
-          <h2>Войти в чат</h2>
+          <h2>Регистрация</h2>
           <Form.Group className="mb-3" controlId="username">
             <Form.Label>Имя</Form.Label>
             <Form.Control
@@ -68,14 +70,14 @@ const LoginForm = () => {
               onChange={handleChange}
               onBlur={handleBlur}
               required
-              isInvalid={touched.username && (errors.username || !isSuccessAuth)}
+              isInvalid={touched.username && (errors.username || !isSuccessSignup)}
             />
             <Form.Control.Feedback type="invalid">
               {errors.username}
             </Form.Control.Feedback>
-            {!isSuccessAuth && (
+            {!isSuccessSignup && (
               <Form.Control.Feedback type="invalid">
-                Такого пользователя не существует
+                Такой пользователь уже существует
               </Form.Control.Feedback>
             )}
           </Form.Group>
@@ -90,16 +92,32 @@ const LoginForm = () => {
               required
               isInvalid={touched.password && !!errors.password}
             />
-            <Form.Control.Feedback type="invalid">Неправильные данные входа</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              {errors.password}
+            </Form.Control.Feedback>
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="passwordConfirmation">
+            <Form.Label>Пароль</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Повторите пароль пароль"
+              value={values.passwordConfirmation}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              required
+              isInvalid={touched.passwordConfirmation && !!errors.passwordConfirmation}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.passwordConfirmation}
+            </Form.Control.Feedback>
           </Form.Group>
           <Form.Group>
             <Button variant="primary" type="submit">Войти</Button>
           </Form.Group>
-          <Link to="/signup">Зарегестрироваться</Link>
         </Form>
       </Col>
     </Row>
   );
 };
 
-export default LoginForm;
+export default SignupForm;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {
   Form,
@@ -95,6 +95,7 @@ const LoginForm = () => {
           <Form.Group>
             <Button variant="primary" type="submit">Войти</Button>
           </Form.Group>
+          <Link to="/signup">Зарегестрироваться</Link>
         </Form>
       </Col>
     </Row>

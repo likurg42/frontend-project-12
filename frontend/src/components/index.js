@@ -5,7 +5,15 @@ import Messages from './Messages.jsx';
 import AddChannelModal from './AddChannelModal.jsx';
 import DeleteChannelModal from './DeleteChannelModal.jsx';
 import RenameChannelModal from './RenameChannelModal.jsx';
+import SignupForm from './SignupForm.jsx';
 
 export {
-  LoginForm, Header, Channels, Messages, AddChannelModal, DeleteChannelModal, RenameChannelModal as renameChannelModal,
+  LoginForm,
+  Header,
+  Channels,
+  Messages,
+  AddChannelModal,
+  DeleteChannelModal,
+  RenameChannelModal,
+  SignupForm,
 };
