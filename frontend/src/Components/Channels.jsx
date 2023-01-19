@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Nav, Button } from 'react-bootstrap';
+import {
+  Nav, Button, Dropdown, ButtonGroup,
+} from 'react-bootstrap';
 import { PlusSquare } from 'react-bootstrap-icons';
 import { changeChannel } from '../slices/channelsSlice.js';
 import AddChannelModal from './AddChannelModal.jsx';
@@ -26,13 +28,37 @@ const Channels = ({ channels, currentChannel }) => {
           <span className="visually-hidden">+</span>
         </Button>
       </div>
-      <Nav className="flex-column px-2 " variant="pills" activeKey={`/${currentChannel.id}`} as="ul">
-        {channels.map((channel) => (
-          <Nav.Item key={channel.id} as="li">
-            <Nav.Link href={`/${channel.id}`} onClick={handleChangeChannel(channel.id)}>
-              {'# '}
-              {channel.name}
-            </Nav.Link>
+      <Nav className="flex-column px-2 " variant="pills" as="ul">
+        {channels.map(({ id, name, removable }) => (
+          <Nav.Item key={id} as="li">
+            {removable ? (
+              <Dropdown as={ButtonGroup} className="w-100 rounded-0">
+                <Button
+                  variant={currentChannel.id === id ? 'secondary' : 'light'}
+                  id="dropdown-split-basic"
+                  className="w-100 rounded-0 text-start"
+                  onClick={handleChangeChannel(id)}
+                >
+                  {'# '}
+                  {name}
+                </Button>
+                <Dropdown.Toggle split variant={currentChannel.id === id ? 'secondary' : 'light'} id="dropdown-split-basic" />
+                <Dropdown.Menu>
+                  <Dropdown.Item>Удалить</Dropdown.Item>
+                  <Dropdown.Item>Переименовать</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            ) : (
+              <Button
+                variant={currentChannel.id === id ? 'secondary' : 'light'}
+                className="w-100 rounded-0 text-start"
+                onClick={handleChangeChannel(id)}
+              >
+                {'# '}
+                {name}
+              </Button>
+            )}
+
           </Nav.Item>
         ))}
       </Nav>
