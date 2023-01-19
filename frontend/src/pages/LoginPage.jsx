@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuthContext from '../contexts';
-import LoginForm from '../components';
+import { LoginForm } from '../components';
 
 const LoginPage = () => {
   const { token } = useAuthContext();
@@ -15,10 +15,7 @@ const LoginPage = () => {
 
   if (!token) {
     return (
-      <>
-        <h1>Hi</h1>
-        <LoginForm />
-      </>
+      <LoginForm />
     );
   }
 

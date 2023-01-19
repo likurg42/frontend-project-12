@@ -57,7 +57,7 @@ const LoginForm = () => {
     <Row className="justify-content-center mt-3">
       <Col className="col-4">
         <Form className="justify-content-center" onSubmit={handleSubmit}>
-          <h2>Login Form</h2>
+          <h2>Войти в чат</h2>
           <Form.Group className="mb-3" controlId="username">
             <Form.Label>Имя</Form.Label>
             <Form.Control
