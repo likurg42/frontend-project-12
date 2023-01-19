@@ -1,10 +1,10 @@
 import * as yup from 'yup';
 
 const signupSchema = yup.object({
-  username: yup.string().min(3).max(20).required(),
-  password: yup.string().min(6).required('Password is required'),
-  passwordConfirmation: yup.string().required()
-    .oneOf([yup.ref('password')], 'Passwords must match'),
+  username: yup.string().min(3, 'usernameMin6').max(20, 'usernameMax20').required('usernameRequired'),
+  password: yup.string().min(6).required('passwordRequired'),
+  passwordConfirmation: yup.string().required('passwordConfirmationRequired')
+    .oneOf([yup.ref('password')], 'passwordsMustMatch'),
 });
 
 export default signupSchema;

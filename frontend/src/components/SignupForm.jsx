@@ -8,11 +8,13 @@ import {
   Button,
   Col,
 } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import routes from '../routes/routes.js';
 import { useAuthContext } from '../contexts/index.js';
 import signupSchema from '../schemas/signupSchema.js';
 
 const SignupForm = () => {
+  const { t } = useTranslation();
   const [isSuccessSignup, setSuccessSignup] = useState(true);
   const { user, saveUser } = useAuthContext();
   const { token } = user;
@@ -60,56 +62,59 @@ const SignupForm = () => {
     <Row className="justify-content-center mt-3">
       <Col className="col-4">
         <Form className="justify-content-center" onSubmit={handleSubmit}>
-          <h2>Регистрация</h2>
+          <h2>{t('label.register')}</h2>
           <Form.Group className="mb-3" controlId="username">
-            <Form.Label>Имя</Form.Label>
+            <Form.Label>{t('form.username')}</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Введите логин"
+              placeholder={t('form.usernamePlaceholder')}
               value={values.username}
               onChange={handleChange}
               onBlur={handleBlur}
-              required
               isInvalid={touched.username && (errors.username || !isSuccessSignup)}
             />
-            <Form.Control.Feedback type="invalid">
-              {errors.username}
-            </Form.Control.Feedback>
+            {errors.username && (
+              <Form.Control.Feedback type="invalid">
+                {t(`form.${errors.username}`)}
+              </Form.Control.Feedback>
+            )}
             {!isSuccessSignup && (
               <Form.Control.Feedback type="invalid">
-                Такой пользователь уже существует
+                {t('form.usernameAlreadyExist')}
               </Form.Control.Feedback>
             )}
           </Form.Group>
           <Form.Group className="mb-3" controlId="password">
-            <Form.Label>Пароль</Form.Label>
+            <Form.Label>{t('form.password')}</Form.Label>
             <Form.Control
               type="password"
-              placeholder="Введите пароль"
+              placeholder={t('form.passwordPlaceholder')}
               value={values.password}
               onChange={handleChange}
               onBlur={handleBlur}
-              required
               isInvalid={touched.password && !!errors.password}
             />
-            <Form.Control.Feedback type="invalid">
-              {errors.password}
-            </Form.Control.Feedback>
+            {errors.password && (
+              <Form.Control.Feedback type="invalid">
+                {t(`form.${errors.password}`)}
+              </Form.Control.Feedback>
+            )}
           </Form.Group>
           <Form.Group className="mb-3" controlId="passwordConfirmation">
-            <Form.Label>Пароль</Form.Label>
+            <Form.Label>{t('form.passwordConfirmation')}</Form.Label>
             <Form.Control
               type="password"
-              placeholder="Повторите пароль пароль"
+              placeholder={t('form.passwordConfirmationPlaceholder')}
               value={values.passwordConfirmation}
               onChange={handleChange}
               onBlur={handleBlur}
-              required
               isInvalid={touched.passwordConfirmation && !!errors.passwordConfirmation}
             />
-            <Form.Control.Feedback type="invalid">
-              {errors.passwordConfirmation}
-            </Form.Control.Feedback>
+            {errors.passwordConfirmation && (
+              <Form.Control.Feedback type="invalid">
+                {t(`form.${errors.passwordConfirmation}`)}
+              </Form.Control.Feedback>
+            )}
           </Form.Group>
           <Form.Group>
             <Button variant="primary" type="submit">Войти</Button>

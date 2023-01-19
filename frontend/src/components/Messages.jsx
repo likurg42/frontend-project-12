@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { v4 as generateId } from 'uuid';
+import { useTranslation } from 'react-i18next';
 import { getChannelMessages } from '../slices/messagesSlice.js';
 import { useAuthContext, useChatContext } from '../contexts/index.js';
 
 const Messages = ({ currentChannel }) => {
+  const { t } = useTranslation();
   const { user } = useAuthContext();
   const [isBlocked, setBlocked] = useState(false);
   const [message, setMessage] = useState('');
@@ -24,6 +26,7 @@ const Messages = ({ currentChannel }) => {
 
   useEffect(() => {
   }, [messages]);
+
   return (
     <div className="d-flex flex-column h-100">
       <div className="bg-light mb-4 p-3 shadow-sm small">
@@ -33,7 +36,9 @@ const Messages = ({ currentChannel }) => {
             {name}
           </b>
         </p>
-        <span className="text-muted">2 Сообщения</span>
+        <span className="text-muted">
+          {t('messages.messages', { count: messages.length })}
+        </span>
       </div>
       <div className="message-box overflow-auto mx-5">
         {messages.length > 0 && messages.map(({ body, username }) => (
@@ -47,7 +52,7 @@ const Messages = ({ currentChannel }) => {
         <Form noValidate onSubmit={handleSubmit}>
           <Form.Group className="d-flex gap-2">
             <Form.Control type="text" value={message} onChange={(e) => setMessage(e.target.value)} />
-            <Button type="submit" disabled={isBlocked}>Отправить</Button>
+            <Button type="submit" disabled={isBlocked}>{t('messages.send')}</Button>
           </Form.Group>
         </Form>
       </div>

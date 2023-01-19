@@ -8,11 +8,13 @@ import {
   Button,
   Col,
 } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import routes from '../routes/routes.js';
 import { useAuthContext } from '../contexts/index.js';
 import loginSchema from '../schemas/loginSchema.js';
 
 const LoginForm = () => {
+  const { t } = useTranslation();
   const [isSuccessAuth, setSuccessAuth] = useState(true);
   const { user, saveUser } = useAuthContext();
   const { token } = user;
@@ -60,22 +62,23 @@ const LoginForm = () => {
         <Form className="justify-content-center" onSubmit={handleSubmit}>
           <h2>Войти в чат</h2>
           <Form.Group className="mb-3" controlId="username">
-            <Form.Label>Имя</Form.Label>
+            <Form.Label>{t('form.username')}</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Введите логин"
+              placeholder={t('form.usernamePlaceholder')}
               value={values.username}
               onChange={handleChange}
               onBlur={handleBlur}
-              required
               isInvalid={touched.username && (errors.username || !isSuccessAuth)}
             />
-            <Form.Control.Feedback type="invalid">
-              {errors.username}
-            </Form.Control.Feedback>
+            {errors.username && (
+              <Form.Control.Feedback type="invalid">
+                {t(`form.${errors.username}`)}
+              </Form.Control.Feedback>
+            )}
             {!isSuccessAuth && (
               <Form.Control.Feedback type="invalid">
-                Такого пользователя не существует
+                {t('form.usernameNotExist')}
               </Form.Control.Feedback>
             )}
           </Form.Group>
@@ -90,12 +93,16 @@ const LoginForm = () => {
               required
               isInvalid={touched.password && !!errors.password}
             />
-            <Form.Control.Feedback type="invalid">Неправильные данные входа</Form.Control.Feedback>
+            {errors.password && (
+              <Form.Control.Feedback type="invalid">
+                {t(`form.${errors.password}`)}
+              </Form.Control.Feedback>
+            )}
           </Form.Group>
-          <Form.Group>
+          <Form.Group className="d-flex justify-content-between align-items-center">
             <Button variant="primary" type="submit">Войти</Button>
+            <Link className="link-dark" to="/signup">{t('label.register')}</Link>
           </Form.Group>
-          <Link to="/signup">Зарегестрироваться</Link>
         </Form>
       </Col>
     </Row>
