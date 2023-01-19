@@ -1,5 +1,5 @@
-import NotFoundPage from './NotFoundPage';
-import LoginPage from './LoginPage';
-import ChatPage from './ChatPage';
+import NotFoundPage from './NotFoundPage.jsx';
+import LoginPage from './LoginPage.jsx';
+import ChatPage from './ChatPage.jsx';
 
 export { NotFoundPage, LoginPage, ChatPage };

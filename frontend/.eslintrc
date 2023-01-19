@@ -24,7 +24,13 @@
     "sourceType": "module"
   },
   "rules": {
-    "import/extensions": 0,
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "always"
+      }
+    ],
     "import/no-unresolved": 0,
     "react/prop-types": 0,
     "no-console": [

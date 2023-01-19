@@ -4,9 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import {
   Col, Row,
 } from 'react-bootstrap';
-import { useAuthContext } from '../contexts';
-import { fetchChatData, getChannels, getCurrentChannel } from '../slices/channelsSlice';
-import { Channels, Messages } from '../components';
+import { useAuthContext } from '../contexts.js';
+import { fetchChatData, getChannels, getCurrentChannel } from '../slices/channelsSlice.js';
+import { Channels, Messages } from '../Components.js';
 
 const HomePage = () => {
   const { user, getHeaders } = useAuthContext();
