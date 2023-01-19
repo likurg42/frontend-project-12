@@ -13,13 +13,18 @@ export const fetchChatData = createAsyncThunk(
 
 const channelsAdapter = createEntityAdapter();
 
-const channelSlice = createSlice({
+const channelsSlice = createSlice({
   name: 'channels',
   initialState: channelsAdapter.getInitialState({
     currentChannelId: 1,
     loadingStatus: 'idle',
     loadingError: null,
   }),
+  reducers: {
+    changeChannel: (state, { payload }) => {
+      state.currentChannelId = payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchChatData.pending, (state) => {
       state.loadingStatus = 'loading';
@@ -41,4 +46,6 @@ export const getChannels = (state) => selectors.selectAll(state);
 export const getCurrentChannel = (state) => getChannels(state)
   .find(({ id }) => id === state.channels.currentChannelId);
 
-export default channelSlice.reducer;
+export const { changeChannel } = channelsSlice.actions;
+
+export default channelsSlice.reducer;
