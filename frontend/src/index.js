@@ -5,13 +5,13 @@ import { AuthProvider } from './contexts/authContext.js';
 import { ChatProvider } from './contexts/chatContext.js';
 import store from './slices/index.js';
 import App from './App.jsx';
-import socket from './socket/socket.js';
+import initSocket from './socket/socket.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <AuthProvider>
-      <ChatProvider socket={socket}>
+      <ChatProvider socket={initSocket()}>
         <ReduxProvider store={store}>
           <App />
         </ReduxProvider>
