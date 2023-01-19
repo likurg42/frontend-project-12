@@ -1,4 +1,4 @@
-import useAuthContext from './authContext';
-import useChatContext from './chatContext';
+import useAuthContext from './authContext.js';
+import useChatContext from './chatContext.js';
 
 export { useAuthContext, useChatContext };

@@ -1,5 +1,5 @@
 import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
-import { fetchChatData } from './channelsSlice';
+import { fetchChatData } from './channelsSlice.js';
 
 const messagesAdapter = createEntityAdapter();
 

@@ -1,6 +1,6 @@
 import { io } from 'socket.io-client';
-import store from '../slices';
-import { addMessage } from '../slices/messagesSlice';
+import store from '../slices/index.js';
+import { addMessage } from '../slices/messagesSlice.js';
 
 const socket = io();
 

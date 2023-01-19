@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { v4 as generateId } from 'uuid';
-import { getChannelMessages } from '../slices/messagesSlice';
-import { useAuthContext, useChatContext } from '../contexts';
+import { getChannelMessages } from '../slices/messagesSlice.js';
+import { useAuthContext, useChatContext } from '../contexts/index.js';
 
 const Messages = ({ currentChannel }) => {
   const { user } = useAuthContext();

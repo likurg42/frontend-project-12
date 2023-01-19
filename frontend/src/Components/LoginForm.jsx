@@ -8,9 +8,9 @@ import {
   Button,
   Col,
 } from 'react-bootstrap';
-import routes from '../routes/routes';
-import { useAuthContext } from '../contexts';
-import loginSchema from '../schemas/loginSchema';
+import routes from '../routes/routes.js';
+import { useAuthContext } from '../contexts/index.js';
+import loginSchema from '../schemas/loginSchema.js';
 
 const LoginForm = () => {
   const [isSuccessAuth, setSuccessAuth] = useState(true);

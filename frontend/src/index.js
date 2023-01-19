@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { Provider as ReduxProvider } from 'react-redux';
 import { AuthProvider } from './contexts/authContext.js';
 import { ChatProvider } from './contexts/chatContext.js';
-import store from './slices.js';
+import store from './slices/index.js';
 import App from './App.jsx';
 import socket from './socket/socket.js';
 

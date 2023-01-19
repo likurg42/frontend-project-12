@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuthContext } from '../contexts.js';
-import { LoginForm } from '../components/index.jsx';
+import { useAuthContext } from '../contexts/index.js';
+import { LoginForm } from '../components/index.js';
 
 const LoginPage = () => {
   const { token } = useAuthContext();
