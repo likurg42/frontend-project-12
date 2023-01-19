@@ -3,22 +3,25 @@ import { Form, Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { v4 as generateId } from 'uuid';
 import { useTranslation } from 'react-i18next';
+import filter from 'leo-profanity';
 import { getChannelMessages } from '../slices/messagesSlice.js';
 import { useAuthContext, useChatContext } from '../contexts/index.js';
 
 const Messages = ({ currentChannel }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { user } = useAuthContext();
   const [isBlocked, setBlocked] = useState(false);
   const [message, setMessage] = useState('');
   const { sendMessage } = useChatContext();
   const { name, id } = currentChannel;
   const messages = useSelector(getChannelMessages(id));
+  filter.loadDictionary(i18n.language);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setBlocked(true);
-    sendMessage(message, id, user.username, () => {
+    const filteredMessage = filter.clean(message);
+    sendMessage(filteredMessage, id, user.username, () => {
       setMessage('');
       setBlocked(false);
     });
