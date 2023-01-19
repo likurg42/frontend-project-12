@@ -6,12 +6,12 @@ import {
 import { Container } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { NotFoundPage, LoginPage, ChatPage } from './pages/index.js';
-import Header from './components/Header.jsx';
+// import Header from './components/Header.jsx';
 
 const App = () => (
   <BrowserRouter>
     <div className="h-100 bg-light d-flex flex-column">
-      <Header />
+      {/* <Header /> */}
       <Container fluid="xl" className="h-100 my-4 overflow-hidden rounded shadow">
         <Routes>
           <Route path="/" element={<ChatPage />} />
