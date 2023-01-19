@@ -6,7 +6,7 @@ import {
 import { Container } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { NotFoundPage, LoginPage, ChatPage } from './pages/index.js';
-import { Header } from './Components/index.jsx';
+import { Header } from './components/index.jsx';
 
 const App = () => (
   <BrowserRouter>
