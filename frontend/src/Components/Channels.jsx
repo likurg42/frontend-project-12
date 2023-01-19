@@ -6,11 +6,26 @@ import {
 import { PlusSquare } from 'react-bootstrap-icons';
 import { changeChannel } from '../slices/channelsSlice.js';
 import AddChannelModal from './AddChannelModal.jsx';
+import DeleteChannelModal from './DeleteChannelModal.jsx';
+import RenameChannelModal from './RenameChannelModal.jsx';
 
 const Channels = ({ channels, currentChannel }) => {
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleOpen = () => setShow(true);
+  const [modals, setModals] = useState({
+    delete: false,
+    add: false,
+    rename: false,
+    channelId: 1,
+  });
+  const handleOpenModal = (name, channelId = 1) => () => setModals(({
+    ...modals,
+    [name]: true,
+    channelId,
+  }));
+
+  const handleCloseModal = (name) => () => setModals(({
+    ...modals,
+    [name]: false,
+  }));
 
   const dispatch = useDispatch();
 
@@ -23,7 +38,7 @@ const Channels = ({ channels, currentChannel }) => {
     <div className="bg-light overflow-auto">
       <div className="d-flex justify-content-between mb-2 ps-4 pe-2 ">
         <span>Каналы</span>
-        <Button active="false" variant="link" className="p-0 text-primary btn-group-vertical" onClick={handleOpen}>
+        <Button active="false" variant="link" className="p-0 text-primary btn-group-vertical" onClick={handleOpenModal('add')}>
           <PlusSquare size={20} />
           <span className="visually-hidden">+</span>
         </Button>
@@ -44,10 +59,11 @@ const Channels = ({ channels, currentChannel }) => {
                 </Button>
                 <Dropdown.Toggle split variant={currentChannel.id === id ? 'secondary' : 'light'} id="dropdown-split-basic" />
                 <Dropdown.Menu>
-                  <Dropdown.Item>Удалить</Dropdown.Item>
-                  <Dropdown.Item>Переименовать</Dropdown.Item>
+                  <Dropdown.Item onClick={handleOpenModal('delete', id)}>Удалить</Dropdown.Item>
+                  <Dropdown.Item onClick={handleOpenModal('rename', id)}>Переименовать</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
+
             ) : (
               <Button
                 variant={currentChannel.id === id ? 'secondary' : 'light'}
@@ -62,7 +78,9 @@ const Channels = ({ channels, currentChannel }) => {
           </Nav.Item>
         ))}
       </Nav>
-      <AddChannelModal show={show} handleClose={handleClose} />
+      <AddChannelModal show={modals.add} handleClose={handleCloseModal('add')} />
+      <DeleteChannelModal show={modals.delete} handleClose={handleCloseModal('delete')} channelId={modals.channelId} />
+      <RenameChannelModal show={modals.rename} handleClose={handleCloseModal('rename')} channelId={modals.channelId} />
     </div>
   );
 };

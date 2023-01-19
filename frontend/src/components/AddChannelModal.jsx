@@ -3,7 +3,7 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
 import useChatContext from '../contexts/chatContext.js';
-import addChannelSchema from '../schemas/addChannelSchema.js';
+import addChannelSchema from '../schemas/channelNameSchema.js';
 import { getChannelsNames } from '../slices/channelsSlice.js';
 
 const AddChannelModal = ({ show, handleClose }) => {

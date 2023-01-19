@@ -15,9 +15,19 @@ export const ChatProvider = ({ socket, children }) => {
     socket.emit('newChannel', { name }, cb);
   }, [socket]);
 
+  const removeChannel = useCallback((id, cb) => {
+    socket.emit('removeChannel', { id }, cb);
+  }, [socket]);
+
+  const renameChannel = useCallback((name, id, cb) => {
+    socket.emit('renameChannel', { name, id }, cb);
+  }, [socket]);
+
   const providerValue = useMemo(
-    () => ({ sendMessage, createChannel }),
-    [sendMessage, createChannel],
+    () => ({
+      sendMessage, createChannel, removeChannel, renameChannel,
+    }),
+    [sendMessage, createChannel, removeChannel, renameChannel],
   );
 
   return <ChatContext.Provider value={providerValue}>{children}</ChatContext.Provider>;
