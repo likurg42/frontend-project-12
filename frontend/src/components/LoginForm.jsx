@@ -14,7 +14,7 @@ import loginSchema from '../schemas/loginSchema.js';
 
 const LoginForm = () => {
   const [isSuccessAuth, setSuccessAuth] = useState(true);
-  const { saveUser, user } = useAuthContext();
+  const { user, saveUser } = useAuthContext();
   const { token } = user;
   const navigate = useNavigate();
 

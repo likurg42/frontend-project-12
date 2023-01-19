@@ -24,6 +24,7 @@ const channelsSlice = createSlice({
     changeChannel: (state, { payload }) => {
       state.currentChannelId = payload;
     },
+    addChannel: channelsAdapter.addOne,
   },
   extraReducers: (builder) => {
     builder.addCase(fetchChatData.pending, (state) => {
@@ -43,9 +44,10 @@ const channelsSlice = createSlice({
 
 export const selectors = channelsAdapter.getSelectors((state) => state.channels);
 export const getChannels = (state) => selectors.selectAll(state);
+export const getChannelsNames = (state) => getChannels(state).map(({ name }) => name);
 export const getCurrentChannel = (state) => getChannels(state)
   .find(({ id }) => id === state.channels.currentChannelId);
 
-export const { changeChannel } = channelsSlice.actions;
+export const { changeChannel, addChannel } = channelsSlice.actions;
 
 export default channelsSlice.reducer;

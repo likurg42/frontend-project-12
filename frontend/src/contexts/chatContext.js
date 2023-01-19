@@ -11,9 +11,13 @@ export const ChatProvider = ({ socket, children }) => {
     socket.emit('newMessage', { body, channelId, username }, cb);
   }, [socket]);
 
+  const createChannel = useCallback((name, cb) => {
+    socket.emit('newChannel', { name }, cb);
+  }, [socket]);
+
   const providerValue = useMemo(
-    () => ({ sendMessage }),
-    [sendMessage],
+    () => ({ sendMessage, createChannel }),
+    [sendMessage, createChannel],
   );
 
   return <ChatContext.Provider value={providerValue}>{children}</ChatContext.Provider>;
