@@ -9,19 +9,20 @@ import {
   Col,
 } from 'react-bootstrap';
 import routes from '../routes/routes';
-import useAuthContext from '../contexts';
+import { useAuthContext } from '../contexts';
 import loginSchema from '../schemas/loginSchema';
 
 const LoginForm = () => {
   const [isSuccessAuth, setSuccessAuth] = useState(true);
-  const { saveToken, token } = useAuthContext();
+  const { saveUser, user } = useAuthContext();
+  const { token } = user;
   const navigate = useNavigate();
 
   const login = async (values) => {
     try {
       const res = await axios.post(routes.api.login, values);
-      const { token: loginToken } = res.data;
-      saveToken(loginToken);
+      const { token: loginToken, username: loginUsername } = res.data;
+      saveUser(loginToken, loginUsername);
     } catch (e) {
       setSuccessAuth(false);
     }

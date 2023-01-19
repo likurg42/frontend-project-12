@@ -4,12 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import {
   Col, Row,
 } from 'react-bootstrap';
-import useAuthContext from '../contexts';
+import { useAuthContext } from '../contexts';
 import { fetchChatData, getChannels, getCurrentChannel } from '../slices/channelsSlice';
 import { Channels, Messages } from '../components';
 
 const HomePage = () => {
-  const { token, getHeaders } = useAuthContext();
+  const { user, getHeaders } = useAuthContext();
+  const { token } = user;
   const channels = useSelector(getChannels);
   const currentChannel = useSelector(getCurrentChannel);
   const navigate = useNavigate();

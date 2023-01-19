@@ -1,3 +1,4 @@
 import useAuthContext from './authContext';
+import useChatContext from './chatContext';
 
-export default useAuthContext;
+export { useAuthContext, useChatContext };
