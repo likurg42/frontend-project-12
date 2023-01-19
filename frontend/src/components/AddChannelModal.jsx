@@ -7,7 +7,7 @@ import useChatContext from '../contexts/chatContext.js';
 import addChannelSchema from '../schemas/channelNameSchema.js';
 import { getChannelsNames } from '../slices/channelsSlice.js';
 
-const AddChannelModal = ({ show, handleClose }) => {
+const AddChannelModal = ({ show, handleClose, notify }) => {
   const { t } = useTranslation();
   const [isAlreadyExist, setAlreadyExist] = useState(false);
   const { createChannel } = useChatContext();
@@ -27,6 +27,7 @@ const AddChannelModal = ({ show, handleClose }) => {
     if (!checkIsInputAlreadyExist(values.name)) {
       createChannel(values.name, () => {
         handleClose();
+        notify();
       });
     }
   };

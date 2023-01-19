@@ -7,7 +7,9 @@ import useChatContext from '../contexts/chatContext.js';
 import addChannelSchema from '../schemas/channelNameSchema.js';
 import { getChannelsNames } from '../slices/channelsSlice.js';
 
-const RenameChannelModal = ({ show, handleClose, channelId }) => {
+const RenameChannelModal = ({
+  show, handleClose, channelId, notify,
+}) => {
   const { t } = useTranslation();
   const [isAlreadyExist, setAlreadyExist] = useState(false);
   const { renameChannel } = useChatContext();
@@ -27,6 +29,7 @@ const RenameChannelModal = ({ show, handleClose, channelId }) => {
     if (!checkIsInputAlreadyExist(values.name)) {
       renameChannel(values.name, channelId, () => {
         handleClose();
+        notify();
       });
     }
   };

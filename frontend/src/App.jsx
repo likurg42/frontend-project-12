@@ -5,6 +5,7 @@ import {
 } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { ToastContainer } from 'react-toastify';
 import {
   NotFoundPage, LoginPage, ChatPage, SignupPage,
 } from './pages/index.js';
@@ -23,7 +24,7 @@ const App = () => (
         </Routes>
       </Container>
     </div>
-
+    <ToastContainer />
   </BrowserRouter>
 );
 

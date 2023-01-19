@@ -21,7 +21,6 @@ const ruLocales = {
       messages_few: '{{count}} сообщения',
       messages_many: '{{count}} сообщений',
       newMessage: 'Новое сообщение',
-
     },
     label: {
       exit: 'Выйти',
@@ -49,6 +48,11 @@ const ruLocales = {
       channelNameMax20: 'Имя канала должно быть не больше 20 символов',
       channelNameRequired: 'Необходимо имя',
       channelNameAlreadyExist: 'Имя  уже существует',
+    },
+    toastMessage: {
+      channelAdded: 'Канал добавлен',
+      channelRenamed: 'Канал переименован',
+      channelDeleted: 'Канал удален',
     },
   },
 };

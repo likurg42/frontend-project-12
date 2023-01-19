@@ -5,6 +5,7 @@ import {
 } from 'react-bootstrap';
 import { PlusSquare } from 'react-bootstrap-icons';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { changeChannel } from '../slices/channelsSlice.js';
 import AddChannelModal from './AddChannelModal.jsx';
 import DeleteChannelModal from './DeleteChannelModal.jsx';
@@ -12,6 +13,17 @@ import RenameChannelModal from './RenameChannelModal.jsx';
 
 const Channels = ({ channels, currentChannel }) => {
   const { t } = useTranslation();
+  const notify = (text) => () => toast.success(text, {
+    position: 'top-right',
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: 'light',
+  });
+
   const [modals, setModals] = useState({
     delete: false,
     add: false,
@@ -88,16 +100,22 @@ const Channels = ({ channels, currentChannel }) => {
           </Nav.Item>
         ))}
       </Nav>
-      <AddChannelModal show={modals.add} handleClose={handleCloseModal('add')} />
+      <AddChannelModal
+        show={modals.add}
+        handleClose={handleCloseModal('add')}
+        notify={notify(t('toastMessage.channelAdded'))}
+      />
       <DeleteChannelModal
         show={modals.delete}
         handleClose={handleCloseModal('delete')}
         channelId={modals.channelId}
+        notify={notify(t('toastMessage.channelDeleted'))}
       />
       <RenameChannelModal
         show={modals.rename}
         handleClose={handleCloseModal('rename')}
         channelId={modals.channelId}
+        notify={notify(t('toastMessage.channelRenamed'))}
       />
     </div>
   );
