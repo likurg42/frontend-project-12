@@ -16,11 +16,6 @@ const init = () => {
     environment: 'testenv',
   };
 
-  function TestError() {
-    const a = null;
-    return a.hello();
-  }
-
   const i18n = initI18n();
   const socket = initSocket();
   const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -29,7 +24,6 @@ const init = () => {
     <React.StrictMode>
       <RollbarProvider config={rollBarConfig}>
         <ErrorBoundary>
-          <TestError />
           <AuthProvider>
             <ChatProvider socket={socket}>
               <ReduxProvider store={store}>
