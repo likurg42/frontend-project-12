@@ -17,7 +17,7 @@ const Header = () => {
         <Navbar.Brand>
           <Link to="/" className="text-decoration-none text-black">Hexlet Chat</Link>
         </Navbar.Brand>
-        {token && <Button onClick={logout}>{t('label.exit')}</Button>}
+        {token && <Button onClick={logout}>{t('label.logout')}</Button>}
       </Container>
     </Navbar>
   );

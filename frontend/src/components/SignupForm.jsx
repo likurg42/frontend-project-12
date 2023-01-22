@@ -110,7 +110,7 @@ const SignupForm = () => {
             )}
           </Form.Group>
           <Form.Group>
-            <Button variant="primary" type="submit">Войти</Button>
+            <Button variant="primary" type="submit">{t('label.register')}</Button>
           </Form.Group>
         </Form>
       </Col>

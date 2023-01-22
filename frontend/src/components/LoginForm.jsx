@@ -94,7 +94,7 @@ const LoginForm = () => {
             )}
           </Form.Group>
           <Form.Group className="d-flex justify-content-between align-items-center">
-            <Button variant="primary" type="submit">Войти</Button>
+            <Button variant="primary" type="submit">{t('label.login')}</Button>
             <Link className="link-dark" to="/signup">{t('label.register')}</Link>
           </Form.Group>
         </Form>

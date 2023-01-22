@@ -4,17 +4,35 @@ import { useNavigate } from 'react-router-dom';
 import {
   Col, Row,
 } from 'react-bootstrap';
+import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 import { useAuthContext } from '../contexts/index.js';
-import { fetchChatData, getChannels, getCurrentChannel } from '../slices/channelsSlice.js';
+import {
+  fetchChatData, getChannels, getCurrentChannel, getLoadingStatus,
+
+} from '../slices/channelsSlice.js';
 import { Channels, Messages } from '../components/index.js';
 
 const HomePage = () => {
+  const { t } = useTranslation();
   const { user, getHeaders } = useAuthContext();
   const { token } = user;
   const channels = useSelector(getChannels);
   const currentChannel = useSelector(getCurrentChannel);
+  const loadingStatus = useSelector(getLoadingStatus);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const notify = (text) => toast.error(text, {
+    position: 'top-right',
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: 'light',
+  });
 
   useEffect(() => {
     if (!token) navigate('/login');
@@ -22,6 +40,10 @@ const HomePage = () => {
       dispatch(fetchChatData(getHeaders()));
     }
   }, [navigate, token, getHeaders, dispatch]);
+
+  if (loadingStatus === 'failed') {
+    notify(t('error.connection'));
+  }
 
   if (token) {
     return (

@@ -13,6 +13,7 @@ import RenameChannelModal from './RenameChannelModal.jsx';
 
 const Channels = ({ channels, currentChannel }) => {
   const { t } = useTranslation();
+
   const notify = (text) => () => toast.success(text, {
     position: 'top-right',
     autoClose: 5000,
@@ -30,6 +31,7 @@ const Channels = ({ channels, currentChannel }) => {
     rename: false,
     channelId: 1,
   });
+
   const handleOpenModal = (name, channelId) => () => setModals(({
     ...modals,
     [name]: true,
