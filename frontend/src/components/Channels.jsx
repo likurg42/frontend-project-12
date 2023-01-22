@@ -6,7 +6,7 @@ import {
 import { PlusSquare } from 'react-bootstrap-icons';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { changeChannel } from '../slices/channelsSlice.js';
+import { changeCurrentChannel } from '../slices/channelsSlice.js';
 import AddChannelModal from './AddChannelModal.jsx';
 import DeleteChannelModal from './DeleteChannelModal.jsx';
 import RenameChannelModal from './RenameChannelModal.jsx';
@@ -45,7 +45,7 @@ const Channels = ({ channels, currentChannel }) => {
 
   const handleChangeChannel = (id) => (e) => {
     e.preventDefault();
-    dispatch(changeChannel(id));
+    dispatch(changeCurrentChannel(id));
   };
 
   return (

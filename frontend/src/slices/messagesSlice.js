@@ -1,5 +1,5 @@
 import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
-import { fetchChatData, deleteChannel } from './channelsSlice.js';
+import { fetchChatData, removeChannel } from './channelsSlice.js';
 
 const messagesAdapter = createEntityAdapter();
 
@@ -15,7 +15,7 @@ const messagesSlice = createSlice({
         const { messages } = payload;
         messagesAdapter.setAll(state, messages);
       })
-      .addCase(deleteChannel, (state, { payload }) => {
+      .addCase(removeChannel, (state, { payload }) => {
         const filteredMessages = Object.values(state.entities)
           .filter(({ channelId }) => channelId === payload)
           .map((message) => message.id);

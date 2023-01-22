@@ -10,6 +10,7 @@ import {
   NotFoundPage, LoginPage, ChatPage, SignupPage,
 } from './pages/index.js';
 import { Header } from './components/index.js';
+import routes from './routes/routes.js';
 
 const App = () => (
   <BrowserRouter>
@@ -17,9 +18,9 @@ const App = () => (
       <Header />
       <Container fluid="xl" className="h-100 my-4 overflow-hidden rounded shadow">
         <Routes>
-          <Route path="/" element={<ChatPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
+          <Route path={routes.pages.chat} element={<ChatPage />} />
+          <Route path={routes.pages.login} element={<LoginPage />} />
+          <Route path={routes.pages.signup} element={<SignupPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Container>
