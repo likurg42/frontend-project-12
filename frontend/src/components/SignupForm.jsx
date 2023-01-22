@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import {
   Form,
   Row,
@@ -9,30 +8,24 @@ import {
   Col,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import routes from '../routes/routes.js';
 import { useAuthContext } from '../contexts/index.js';
 import signupSchema from '../schemas/signupSchema.js';
 
 const SignupForm = () => {
   const { t } = useTranslation();
   const [isSuccessSignup, setSuccessSignup] = useState(true);
-  const { user, saveUser } = useAuthContext();
+  const { user, signup } = useAuthContext();
   const { token } = user;
   const navigate = useNavigate();
 
-  const signup = async (values) => {
-    const { username, password } = values;
+  const onSubmit = async (values) => {
     try {
-      const res = await axios.post(routes.api.signup, { username, password });
-      const { token: loginToken, username: loginUsername } = res.data;
-      saveUser(loginToken, loginUsername);
+      await signup(values);
     } catch (e) {
-      setSuccessSignup(false);
+      if (e.response.status === 409) {
+        setSuccessSignup(false);
+      }
     }
-  };
-
-  const onSubmit = (values) => {
-    signup(values);
   };
 
   const {

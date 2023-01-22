@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import {
   Form,
   Row,
@@ -9,29 +8,24 @@ import {
   Col,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import routes from '../routes/routes.js';
 import { useAuthContext } from '../contexts/index.js';
 import loginSchema from '../schemas/loginSchema.js';
 
 const LoginForm = () => {
   const { t } = useTranslation();
   const [isSuccessAuth, setSuccessAuth] = useState(true);
-  const { user, saveUser } = useAuthContext();
+  const { user, login } = useAuthContext();
   const { token } = user;
   const navigate = useNavigate();
 
-  const login = async (values) => {
+  const onSubmit = async (values) => {
     try {
-      const res = await axios.post(routes.api.login, values);
-      const { token: loginToken, username: loginUsername } = res.data;
-      saveUser(loginToken, loginUsername);
+      await login(values);
     } catch (e) {
-      setSuccessAuth(false);
+      if (e.response.status === 401) {
+        setSuccessAuth(false);
+      }
     }
-  };
-
-  const onSubmit = (values) => {
-    login(values);
   };
 
   const {
