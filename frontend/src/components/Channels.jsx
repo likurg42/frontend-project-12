@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { changeCurrentChannel } from '../slices/channelsSlice.js';
 import AddChannelModal from './AddChannelModal.jsx';
-import DeleteChannelModal from './DeleteChannelModal.jsx';
+import RemoveChannelModal from './RemoveChannelModal.jsx';
 import RenameChannelModal from './RenameChannelModal.jsx';
 
 const Channels = ({ channels, currentChannel }) => {
@@ -26,10 +26,10 @@ const Channels = ({ channels, currentChannel }) => {
   });
 
   const [modals, setModals] = useState({
-    delete: false,
+    remove: false,
     add: false,
     rename: false,
-    channelId: 1,
+    channelId: null,
   });
 
   const handleOpenModal = (name, channelId) => () => setModals(({
@@ -41,6 +41,7 @@ const Channels = ({ channels, currentChannel }) => {
   const handleCloseModal = (name) => () => setModals(({
     ...modals,
     [name]: false,
+    channelId: null,
   }));
 
   const dispatch = useDispatch();
@@ -77,10 +78,12 @@ const Channels = ({ channels, currentChannel }) => {
                   split
                   variant={currentChannel.id === id ? 'secondary' : 'light'}
                   id="dropdown-split-basic"
-                />
+                >
+                  <span className="visually-hidden">{t('channels.channelManagment')}</span>
+                </Dropdown.Toggle>
                 <Dropdown.Menu>
-                  <Dropdown.Item onClick={handleOpenModal('delete', id)}>
-                    {t('channels.delete')}
+                  <Dropdown.Item onClick={handleOpenModal('remove', id)}>
+                    {t('channels.remove')}
                   </Dropdown.Item>
                   <Dropdown.Item onClick={handleOpenModal('rename', id)}>
                     {t('channels.rename')}
@@ -107,11 +110,11 @@ const Channels = ({ channels, currentChannel }) => {
         handleClose={handleCloseModal('add')}
         notify={notify(t('toastMessage.channelAdded'))}
       />
-      <DeleteChannelModal
-        show={modals.delete}
-        handleClose={handleCloseModal('delete')}
+      <RemoveChannelModal
+        show={modals.remove}
+        handleClose={handleCloseModal('remove')}
         channelId={modals.channelId}
-        notify={notify(t('toastMessage.channelDeleted'))}
+        notify={notify(t('toastMessage.channelRemoved'))}
       />
       <RenameChannelModal
         show={modals.rename}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { v4 as generateId } from 'uuid';
@@ -8,14 +8,16 @@ import { getChannelMessages } from '../slices/messagesSlice.js';
 import { useAuthContext, useChatContext } from '../contexts/index.js';
 
 const Messages = ({ currentChannel }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { user } = useAuthContext();
   const [isBlocked, setBlocked] = useState(false);
   const [message, setMessage] = useState('');
   const { sendMessage } = useChatContext();
   const { name, id } = currentChannel;
   const messages = useSelector(getChannelMessages(id));
-  filter.loadDictionary(i18n.language);
+  filter.clearList();
+  filter.add(filter.getDictionary('en'));
+  filter.add(filter.getDictionary('ru'));
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -26,9 +28,6 @@ const Messages = ({ currentChannel }) => {
       setBlocked(false);
     });
   };
-
-  useEffect(() => {
-  }, [messages]);
 
   return (
     <div className="d-flex flex-column h-100">
@@ -54,7 +53,7 @@ const Messages = ({ currentChannel }) => {
       <div className="mt-auto px-5 py-3">
         <Form noValidate onSubmit={handleSubmit}>
           <Form.Group className="d-flex gap-2">
-            <Form.Control type="text" value={message} onChange={(e) => setMessage(e.target.value)} />
+            <Form.Control type="text" value={message} onChange={(e) => setMessage(e.target.value)} aria-label={t('messages.messageInput')} />
             <Button type="submit" disabled={isBlocked}>{t('messages.send')}</Button>
           </Form.Group>
         </Form>

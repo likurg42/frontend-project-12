@@ -3,7 +3,7 @@ import Header from './Header.jsx';
 import Channels from './Channels.jsx';
 import Messages from './Messages.jsx';
 import AddChannelModal from './AddChannelModal.jsx';
-import DeleteChannelModal from './DeleteChannelModal.jsx';
+import RemoveChannelModal from './RemoveChannelModal.jsx';
 import RenameChannelModal from './RenameChannelModal.jsx';
 import SignupForm from './SignupForm.jsx';
 
@@ -13,7 +13,7 @@ export {
   Channels,
   Messages,
   AddChannelModal,
-  DeleteChannelModal,
+  RemoveChannelModal,
   RenameChannelModal,
   SignupForm,
 };

@@ -56,10 +56,9 @@ const LoginForm = () => {
         <Form className="justify-content-center" onSubmit={handleSubmit}>
           <h2>Войти в чат</h2>
           <Form.Group className="mb-3" controlId="username">
-            <Form.Label>{t('form.username')}</Form.Label>
+            <Form.Label>{t('form.login')}</Form.Label>
             <Form.Control
               type="text"
-              placeholder={t('form.usernamePlaceholder')}
               value={values.username}
               onChange={handleChange}
               onBlur={handleBlur}
@@ -80,7 +79,6 @@ const LoginForm = () => {
             <Form.Label>Пароль</Form.Label>
             <Form.Control
               type="password"
-              placeholder="Введите пароль"
               value={values.password}
               onChange={handleChange}
               onBlur={handleBlur}

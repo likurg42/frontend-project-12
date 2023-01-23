@@ -3,7 +3,7 @@ import { Modal, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import useChatContext from '../contexts/chatContext.js';
 
-const DeleteChannelModal = ({
+const RemoveChannelModal = ({
   show, handleClose, channelId, notify,
 }) => {
   const { t } = useTranslation();
@@ -26,7 +26,7 @@ const DeleteChannelModal = ({
         <Button variant="secondary" onClick={handleClose}>
           {t('modal.cancel')}
         </Button>
-        <Button variant="primary" onClick={handleDelete}>
+        <Button variant="danger" onClick={handleDelete}>
           {t('modal.delete')}
         </Button>
       </Modal.Footer>
@@ -34,4 +34,4 @@ const DeleteChannelModal = ({
   );
 };
 
-export default DeleteChannelModal;
+export default RemoveChannelModal;

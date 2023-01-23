@@ -60,7 +60,6 @@ const SignupForm = () => {
             <Form.Label>{t('form.username')}</Form.Label>
             <Form.Control
               type="text"
-              placeholder={t('form.usernamePlaceholder')}
               value={values.username}
               onChange={handleChange}
               onBlur={handleBlur}
@@ -81,7 +80,6 @@ const SignupForm = () => {
             <Form.Label>{t('form.password')}</Form.Label>
             <Form.Control
               type="password"
-              placeholder={t('form.passwordPlaceholder')}
               value={values.password}
               onChange={handleChange}
               onBlur={handleBlur}
@@ -97,7 +95,6 @@ const SignupForm = () => {
             <Form.Label>{t('form.passwordConfirmation')}</Form.Label>
             <Form.Control
               type="password"
-              placeholder={t('form.passwordConfirmationPlaceholder')}
               value={values.passwordConfirmation}
               onChange={handleChange}
               onBlur={handleBlur}
