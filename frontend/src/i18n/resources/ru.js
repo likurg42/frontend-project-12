@@ -17,11 +17,10 @@ const ruLocales = {
       remove: 'Удалить',
     },
     messages: {
-      send: 'Отправть',
+      send: 'Отправить',
       messages_one: '{{count}} сообщение',
       messages_few: '{{count}} сообщения',
       messages_many: '{{count}} сообщений',
-      newMessage: 'Новое сообщение',
       messageInput: 'Новое сообщение',
     },
     label: {

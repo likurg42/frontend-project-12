@@ -53,8 +53,19 @@ const Messages = ({ currentChannel }) => {
       <div className="mt-auto px-5 py-3">
         <Form noValidate onSubmit={handleSubmit}>
           <Form.Group className="d-flex gap-2">
-            <Form.Control type="text" value={message} onChange={(e) => setMessage(e.target.value)} aria-label={t('messages.messageInput')} />
-            <Button type="submit" disabled={isBlocked}>{t('messages.send')}</Button>
+            <Form.Control
+              type="text"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              aria-label={t('messages.messageInput')}
+            />
+            <Button
+              type="submit"
+              disabled={isBlocked || message.trim() === ''}
+            >
+              {t('messages.send')}
+
+            </Button>
           </Form.Group>
         </Form>
       </div>
