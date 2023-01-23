@@ -55,6 +55,7 @@ const AddChannelModal = ({ show, handleClose, notify }) => {
       <Modal.Body>
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId="name" className="mb-3">
+            <Form.Label className="visually-hidden">{t('form.channelName')}</Form.Label>
             <Form.Control
               type="text"
               value={values.name}

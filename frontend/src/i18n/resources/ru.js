@@ -48,6 +48,7 @@ const ruLocales = {
       passwordConfirmationRequired: 'Необходимо подтвержение пароля',
       passwordsMustMatch: 'Пароли должны совпадать',
       channelName: 'Имя канала',
+      channelNewName: 'Новое имя канала',
       channelNameMin3: 'От 3 до 20 символов',
       channelNameMax20: 'От 3 до 20 символов',
       channelNameRequired: 'Необходимо имя',

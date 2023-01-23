@@ -57,13 +57,13 @@ const RenameChannelModal = ({
       <Modal.Body>
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId="name" className="mb-3">
+            <Form.Label className="visually-hidden">{t('channels.rename')}</Form.Label>
             <Form.Control
               type="text"
               value={values.name}
-              placeholder={t('form.channelName')}
+              placeholder={t('form.channelNewName')}
               onChange={handleChange}
               onBlur={handleBlur}
-              required
               isInvalid={touched.name && (errors.name || isAlreadyExist)}
             />
             {errors.name && (
