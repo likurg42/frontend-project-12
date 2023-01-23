@@ -17,7 +17,7 @@ const RemoveChannelModal = ({
   };
 
   return (
-    <Modal show={show} onHide={handleClose}>
+    <Modal size="lg" centered show={show} onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>{t('modal.deleteChannel')}</Modal.Title>
       </Modal.Header>

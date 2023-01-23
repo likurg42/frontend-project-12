@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
@@ -13,7 +13,14 @@ const RenameChannelModal = ({
   const { t } = useTranslation();
   const [isAlreadyExist, setAlreadyExist] = useState(false);
   const { renameChannel } = useChatContext();
+  const [input, setInput] = useState(null);
   const channelsNames = useSelector(getChannelsNames);
+
+  useEffect(() => {
+    if (input) {
+      input.focus();
+    }
+  });
 
   const checkIsInputAlreadyExist = (value) => {
     if (channelsNames.includes(value)) {
@@ -36,7 +43,6 @@ const RenameChannelModal = ({
 
   const {
     values,
-    handleBlur,
     handleChange,
     handleSubmit,
     errors,
@@ -50,21 +56,21 @@ const RenameChannelModal = ({
   });
 
   return (
-    <Modal show={show} onHide={handleClose}>
+    <Modal size="lg" centered show={show} onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>{t('modal.renameChannel')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId="name" className="mb-3">
-            <Form.Label className="visually-hidden">{t('channels.rename')}</Form.Label>
+            <Form.Label className="visually-hidden">{t('form.channelName')}</Form.Label>
             <Form.Control
               type="text"
               value={values.name}
               placeholder={t('form.channelNewName')}
               onChange={handleChange}
-              onBlur={handleBlur}
               isInvalid={touched.name && (errors.name || isAlreadyExist)}
+              ref={(c) => { setInput(c); }}
             />
             {errors.name && (
               <Form.Control.Feedback type="invalid">

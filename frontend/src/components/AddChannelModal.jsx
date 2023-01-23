@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
@@ -10,6 +10,7 @@ import { getChannelsNames } from '../slices/channelsSlice.js';
 const AddChannelModal = ({ show, handleClose, notify }) => {
   const { t } = useTranslation();
   const [isAlreadyExist, setAlreadyExist] = useState(false);
+  const [input, setInput] = useState(null);
   const { createChannel } = useChatContext();
   const channelsNames = useSelector(getChannelsNames);
 
@@ -34,7 +35,6 @@ const AddChannelModal = ({ show, handleClose, notify }) => {
 
   const {
     values,
-    handleBlur,
     handleChange,
     handleSubmit,
     errors,
@@ -47,8 +47,14 @@ const AddChannelModal = ({ show, handleClose, notify }) => {
     onSubmit,
   });
 
+  useEffect(() => {
+    if (input) {
+      input.focus();
+    }
+  });
+
   return (
-    <Modal show={show} onHide={handleClose}>
+    <Modal size="lg" centered show={show} onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>{t('modal.addChannel')}</Modal.Title>
       </Modal.Header>
@@ -61,8 +67,9 @@ const AddChannelModal = ({ show, handleClose, notify }) => {
               value={values.name}
               placeholder={t('form.channelName')}
               onChange={handleChange}
-              onBlur={handleBlur}
               isInvalid={touched.name && (errors.name || isAlreadyExist)}
+              ref={(c) => { setInput(c); }}
+
             />
             {errors.name && (
               <Form.Control.Feedback type="invalid">
