@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
   Form,
   Row,
@@ -14,9 +14,7 @@ import loginSchema from '../schemas/loginSchema.js';
 const LoginForm = () => {
   const { t } = useTranslation();
   const [isSuccessAuth, setSuccessAuth] = useState(true);
-  const { user, login } = useAuthContext();
-  const { token } = user;
-  const navigate = useNavigate();
+  const { login } = useAuthContext();
 
   const onSubmit = async (values) => {
     try {
@@ -43,12 +41,6 @@ const LoginForm = () => {
     validationSchema: loginSchema,
     onSubmit,
   });
-
-  useEffect(() => {
-    if (token) {
-      navigate('/');
-    }
-  }, [navigate, token, isSuccessAuth]);
 
   return (
     <Row className="justify-content-center mt-3">

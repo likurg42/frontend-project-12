@@ -49,7 +49,7 @@ const SignupForm = () => {
     if (token) {
       navigate('/');
     }
-  }, [navigate, token, isSuccessSignup]);
+  }, [navigate, token]);
 
   return (
     <Row className="justify-content-center mt-3">

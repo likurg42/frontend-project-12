@@ -1,25 +1,7 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuthContext } from '../contexts/index.js';
+import React from 'react';
 import { SignupForm } from '../components/index.js';
+import withLogin from '../hoc/withLogin.jsx';
 
-const SignupPage = () => {
-  const { token } = useAuthContext();
-  const navigate = useNavigate();
+const SignupPage = () => <SignupForm />;
 
-  useEffect(() => {
-    if (token) {
-      navigate('/');
-    }
-  }, [navigate, token]);
-
-  if (!token) {
-    return (
-      <SignupForm />
-    );
-  }
-
-  return <div />;
-};
-
-export default SignupPage;
+export default withLogin(SignupPage);
