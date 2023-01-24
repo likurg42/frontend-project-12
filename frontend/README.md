@@ -2,12 +2,6 @@
 
 ## Commands
 
-### Build
-
-```sh
-make build
-```
-
 ### Install
 
 ```sh

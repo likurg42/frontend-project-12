@@ -13,18 +13,23 @@
 - Managing channels (add, remove, rename);
 - Auto scroll chat view
 
+
+
+## Install app
+```sh
+git clone https://github.com/likurg42/frontend-project-12.git
+cd frontend-project-12
+make install
+```
+
 ## Commands
 
-### Build
-```sh
-make build
-```
-### Install Backend and Frontend
+### Install frontend and backend
 ```sh
 make install
 ```
 
-### Start frontend and backend together
+### Start frontend and backend
 ```sh
 make start
 ```
