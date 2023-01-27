@@ -10,7 +10,7 @@ import {
   fetchChatData, getChannels, getCurrentChannel, getLoadingStatus,
 } from '../slices/channelsSlice.js';
 import { Channels, Messages } from '../components/index.js';
-import withChat from '../hoc/withChat.jsx';
+import withAuth from '../hoc/withAuth.jsx';
 
 const ChatPage = () => {
   const { t } = useTranslation();
@@ -51,4 +51,4 @@ const ChatPage = () => {
   );
 };
 
-export default withChat(ChatPage);
+export default withAuth(ChatPage, '/login');

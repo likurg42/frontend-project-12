@@ -1,7 +1,7 @@
 import React from 'react';
 import { SignupForm } from '../components/index.js';
-import withLogin from '../hoc/withLogin.jsx';
+import withAuth from '../hoc/withAuth.jsx';
 
 const SignupPage = () => <SignupForm />;
 
-export default withLogin(SignupPage);
+export default withAuth(SignupPage, '/');
