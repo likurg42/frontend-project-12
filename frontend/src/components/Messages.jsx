@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { v4 as generateId } from 'uuid';
@@ -15,6 +15,8 @@ const Messages = ({ currentChannel }) => {
   const { sendMessage } = useChatContext();
   const { name, id } = currentChannel;
   const messages = useSelector(getChannelMessages(id));
+  const bottomRef = useRef();
+
   filter.clearList();
   filter.add(filter.getDictionary('en'));
   filter.add(filter.getDictionary('ru'));
@@ -28,6 +30,13 @@ const Messages = ({ currentChannel }) => {
       setBlocked(false);
     });
   };
+
+  useEffect(
+    () => () => {
+      bottomRef.current.scrollIntoView({ behaviour: 'smooth' });
+    },
+    [messages],
+  );
 
   return (
     <div className="d-flex flex-column h-100">
@@ -49,6 +58,7 @@ const Messages = ({ currentChannel }) => {
             {body}
           </div>
         ))}
+        <div ref={bottomRef} />
       </div>
       <div className="mt-auto px-5 py-3">
         <Form noValidate onSubmit={handleSubmit}>
