@@ -11,7 +11,7 @@ const withAuth = (Component, to) => function ReturnedComponent() {
     case '/':
       return token ? <Navigate to={to} /> : <Component />;
     default:
-      return <Component />;
+      return token ? <Component /> : <Navigate to="/login" />;
   }
 };
 
