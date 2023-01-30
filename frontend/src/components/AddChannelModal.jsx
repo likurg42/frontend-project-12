@@ -69,7 +69,6 @@ const AddChannelModal = ({ show, handleClose, notify }) => {
               onChange={handleChange}
               isInvalid={touched.name && (errors.name || isAlreadyExist)}
               ref={(c) => { setInput(c); }}
-
             />
             {errors.name && (
               <Form.Control.Feedback type="invalid">
