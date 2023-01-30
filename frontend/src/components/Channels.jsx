@@ -57,7 +57,7 @@ const Channels = ({ channels, currentChannel }) => {
           <span className="visually-hidden">+</span>
         </Button>
       </div>
-      <Nav className="flex-column px-2 " variant="pills" as="ul">
+      <Nav className="flex-column px-2 nav-fill " variant="pills" as="ul">
         {channels.map((channel) => (
           <React.Fragment key={channel.id}>
             <ChannelItem

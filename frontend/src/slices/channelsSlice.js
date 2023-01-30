@@ -25,7 +25,9 @@ const channelsSlice = createSlice({
     changeCurrentChannel: (state, { payload }) => {
       state.currentChannelId = payload;
     },
-    addChannel: channelsAdapter.addOne,
+    addChannel: (state, { payload }) => {
+      channelsAdapter.addOne(state, payload);
+    },
     removeChannel: channelsAdapter.removeOne,
     renameChannel: channelsAdapter.updateOne,
   },
@@ -50,6 +52,7 @@ export const getChannels = (state) => selectors.selectAll(state);
 export const getChannelsNames = (state) => getChannels(state).map(({ name }) => name);
 export const getCurrentChannel = (state) => getChannels(state)
   .find(({ id }) => id === state.channels.currentChannelId);
+export const getLastChannel = (state) => getChannels(state).at(-1);
 export const getLoadingError = (state) => state.channels.loadingError;
 export const getLoadingStatus = (state) => state.channels.loadingStatus;
 

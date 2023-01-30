@@ -1,17 +1,25 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 import useChat from '../hooks/useChat.js';
+import { getCurrentChannel, changeCurrentChannel } from '../slices/channelsSlice.js';
 
 const RemoveChannelModal = ({
   show, handleClose, channelId, notify,
 }) => {
   const { t } = useTranslation();
   const { removeChannel } = useChat();
+  const dispatch = useDispatch();
+  const currentChannel = useSelector(getCurrentChannel);
 
   const handleDelete = () => {
     removeChannel(channelId, () => {
+      const { id } = currentChannel;
       handleClose();
+      if (id === channelId) {
+        dispatch(changeCurrentChannel(1));
+      }
       notify();
     });
   };

@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import useChat from '../hooks/useChat.js';
 import addChannelSchema from '../schemas/channelNameSchema.js';
-import { getChannelsNames } from '../slices/channelsSlice.js';
+import { getChannelsNames, changeCurrentChannel, addChannel } from '../slices/channelsSlice.js';
 
 const AddChannelModal = ({ show, handleClose, notify }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const [isAlreadyExist, setAlreadyExist] = useState(false);
   const [input, setInput] = useState(null);
   const { createChannel } = useChat();
@@ -26,7 +27,10 @@ const AddChannelModal = ({ show, handleClose, notify }) => {
 
   const onSubmit = (values) => {
     if (!checkIsInputAlreadyExist(values.name)) {
-      createChannel(values.name, () => {
+      createChannel(values.name, (res) => {
+        const { id } = res.data;
+        dispatch(addChannel(res.data));
+        dispatch(changeCurrentChannel(id));
         handleClose();
         notify();
       });
