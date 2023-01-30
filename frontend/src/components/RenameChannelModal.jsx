@@ -54,7 +54,7 @@ const RenameChannelModal = ({
     },
     validationSchema: addChannelSchema,
     onSubmit,
-  });
+  }, []);
 
   return (
     <Modal size="lg" centered show={show} onHide={handleClose}>

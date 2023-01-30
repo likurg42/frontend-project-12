@@ -53,7 +53,7 @@ const LoginForm = () => {
     if (input.current) {
       input.current.focus();
     }
-  });
+  }, []);
 
   return (
     <Row className="justify-content-center mt-3">
