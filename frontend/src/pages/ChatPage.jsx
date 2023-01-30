@@ -39,11 +39,11 @@ const ChatPage = () => {
   }
 
   return (
-    <Row className="h-100 bg-white flex-md-row">
-      <Col md={2} className="px-0 pt-5 bg-light">
+    <Row className="h-100 bg-white flex-nowrap">
+      <Col md={2} className="col-4 border-end pt-5 px-0 bg-light">
         {channels.length > 0 && <Channels channels={channels} currentChannel={currentChannel} />}
       </Col>
-      <Col className="p-0 h-100">
+      <Col md={10} className="col-8 p-0 h-100">
         {channels.length > 0 && <Messages currentChannel={currentChannel} />}
       </Col>
     </Row>

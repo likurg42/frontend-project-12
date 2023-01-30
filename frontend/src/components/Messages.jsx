@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, InputGroup } from 'react-bootstrap';
+import { ArrowRight } from 'react-bootstrap-icons';
 import { useSelector } from 'react-redux';
 import { v4 as generateId } from 'uuid';
 import { useTranslation } from 'react-i18next';
@@ -56,7 +57,7 @@ const Messages = ({ currentChannel }) => {
       </div>
       <div className="message-box overflow-auto mx-5">
         {messages.length > 0 && messages.map(({ body, username }) => (
-          <div key={generateId()}>
+          <div key={generateId()} className="text-break">
             <b>{`${username}: `}</b>
             {body}
           </div>
@@ -66,19 +67,23 @@ const Messages = ({ currentChannel }) => {
       <div className="mt-auto px-5 py-3">
         <Form noValidate onSubmit={handleSubmit}>
           <Form.Group className="d-flex gap-2">
-            <Form.Control
-              type="text"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              aria-label={t('messages.messageInput')}
-            />
-            <Button
-              type="submit"
-              disabled={isBlocked || message.trim() === ''}
-            >
-              {t('messages.send')}
-
-            </Button>
+            <InputGroup>
+              <Form.Control
+                type="text"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                aria-label={t('messages.messageInput')}
+              />
+              <Button
+                type="submit"
+                variant="outline-primary"
+                className="d-flex align-items-center btn-group-vertical"
+                disabled={isBlocked || message.trim() === ''}
+              >
+                <ArrowRight />
+                <span className="visually-hidden">{t('messages.send')}</span>
+              </Button>
+            </InputGroup>
           </Form.Group>
         </Form>
       </div>
