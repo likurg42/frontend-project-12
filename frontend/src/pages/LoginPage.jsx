@@ -1,11 +1,15 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { LoginForm } from '../components/index.js';
 
-const LoginPage = () => (
-  <>
-    <h1 className="text-center mt-5 mb-5">Войти</h1>
-    <LoginForm />
-  </>
-);
+const LoginPage = () => {
+  const { t } = useTranslation();
+  return (
+    <>
+      <h1 className="text-center mt-5 mb-5">{t('label.login')}</h1>
+      <LoginForm />
+    </>
+  );
+};
 
 export default LoginPage;

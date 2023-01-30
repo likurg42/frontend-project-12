@@ -17,7 +17,7 @@ const App = () => (
   <BrowserRouter>
     <div className="h-100 bg-light d-flex flex-column">
       <Header />
-      <Container className="h-100 my-4 overflow-hidden rounded shadow">
+      <Container fluid="xl" className="h-100 my-4 overflow-hidden rounded shadow">
         <Routes>
           <Route
             path={routes.pages.chat()}
