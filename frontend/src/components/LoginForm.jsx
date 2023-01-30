@@ -15,18 +15,21 @@ const LoginForm = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
-  const [isSuccessAuth, setSuccessAuth] = useState(true);
   const { login } = useAuth();
+  const [isBlocked, setBlocked] = useState(false);
+  const [isSuccessAuth, setSuccessAuth] = useState(true);
 
   const onSubmit = async (values) => {
+    setBlocked(true);
     try {
       await login(values);
-      navigate(`${location.state.from.pathname ?? '/'}`);
+      navigate(location.state?.from ? location.state.from.pathname : '/');
     } catch (e) {
       if (e.response.status === 401) {
         setSuccessAuth(false);
       }
     }
+    setBlocked(false);
   };
 
   const {
@@ -86,7 +89,7 @@ const LoginForm = () => {
             )}
           </Form.Group>
           <Form.Group className="d-flex justify-content-between align-items-center">
-            <Button variant="primary" type="submit">{t('label.login')}</Button>
+            <Button variant="primary" type="submit" disabled={isBlocked}>{t('label.login')}</Button>
             <Link className="link-dark" to="/signup">{t('label.register')}</Link>
           </Form.Group>
         </Form>

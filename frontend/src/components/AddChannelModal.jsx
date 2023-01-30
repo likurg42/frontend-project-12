@@ -9,30 +9,37 @@ import { getChannelsNames, changeCurrentChannel, addChannel } from '../slices/ch
 
 const AddChannelModal = ({ show, handleClose, notify }) => {
   const { t } = useTranslation();
+  const { createChannel } = useChat();
   const dispatch = useDispatch();
+  const channelsNames = useSelector(getChannelsNames);
+  const [isBlocked, setBlocked] = useState(false);
   const [isAlreadyExist, setAlreadyExist] = useState(false);
   const [input, setInput] = useState(null);
-  const { createChannel } = useChat();
-  const channelsNames = useSelector(getChannelsNames);
 
   const checkIsInputAlreadyExist = (value) => {
+    setBlocked(true);
     if (channelsNames.includes(value)) {
       setAlreadyExist(true);
+      setBlocked(false);
       return true;
     }
 
     setAlreadyExist(false);
+    setBlocked(false);
     return false;
   };
 
-  const onSubmit = (values) => {
+  const onSubmit = (values, { resetForm }) => {
     if (!checkIsInputAlreadyExist(values.name)) {
+      setBlocked(true);
       createChannel(values.name, (res) => {
         const { id } = res.data;
         dispatch(addChannel(res.data));
         dispatch(changeCurrentChannel(id));
         handleClose();
         notify();
+        resetForm();
+        setBlocked(false);
       });
     }
   };
@@ -89,7 +96,7 @@ const AddChannelModal = ({ show, handleClose, notify }) => {
             <Button variant="secondary" onClick={handleClose}>
               {t('modal.cancel')}
             </Button>
-            <Button type="submit" variant="primary">
+            <Button type="submit" variant="primary" disabled={isBlocked}>
               {t('modal.add')}
             </Button>
           </div>

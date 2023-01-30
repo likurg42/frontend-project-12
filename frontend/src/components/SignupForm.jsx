@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   Form,
   Row,
@@ -13,19 +13,25 @@ import useAuth from '../hooks/useAuth.js';
 
 const SignupForm = () => {
   const { t } = useTranslation();
-  const [isSuccessSignup, setSuccessSignup] = useState(true);
-  const { user, signup } = useAuth();
-  const { token } = user;
+  const location = useLocation();
   const navigate = useNavigate();
+  const { signup } = useAuth();
+  // const { token } = user;
+  const [isBlocked, setBlocked] = useState(false);
+  const [isSuccessSignup, setSuccessSignup] = useState(true);
 
   const onSubmit = async (values) => {
+    setBlocked(true);
     try {
-      await signup(values);
+      const { username, password } = values;
+      await signup({ username, password });
+      navigate(location.state?.from ? location.state.from.pathname : '/');
     } catch (e) {
       if (e.response.status === 409) {
         setSuccessSignup(false);
       }
     }
+    setBlocked(false);
   };
 
   const {
@@ -45,11 +51,11 @@ const SignupForm = () => {
     onSubmit,
   });
 
-  useEffect(() => {
-    if (token) {
-      navigate('/');
-    }
-  }, [navigate, token]);
+  // useEffect(() => {
+  //   if (token) {
+  //     navigate('/');
+  //   }
+  // }, [navigate, token]);
 
   return (
     <Row className="justify-content-center mt-3">
@@ -106,7 +112,13 @@ const SignupForm = () => {
             )}
           </Form.Group>
           <Form.Group>
-            <Button variant="primary" type="submit">{t('label.register')}</Button>
+            <Button
+              variant="primary"
+              type="submit"
+              disabled={isBlocked}
+            >
+              {t('label.register')}
+            </Button>
           </Form.Group>
         </Form>
       </Col>

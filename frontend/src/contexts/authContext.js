@@ -5,7 +5,7 @@ import axios from 'axios';
 import routes from '../routes/routes.js';
 
 const getUserFromLocalStorage = () => {
-  const token = localStorage.getItem('userToken');
+  const token = localStorage.getItem('token');
   const username = localStorage.getItem('username');
   return { token, username };
 };
@@ -32,23 +32,22 @@ export const AuthProvider = ({ children }) => {
     return {};
   }, [user]);
 
-  const saveUser = useCallback((loginToken, loginUsername) => {
-    const newUser = { token: loginToken, username: loginUsername };
+  const saveUser = useCallback((token, username) => {
+    const newUser = { token, username };
     setUser(newUser);
     updateUserInLocalStorage(newUser);
   }, []);
 
   const login = useCallback(async (values) => {
     const res = await axios.post(routes.api.login(), values);
-    const { token: loginToken, username: loginUsername } = res.data;
-    saveUser(loginToken, loginUsername);
+    const { token, username } = res.data;
+    saveUser(token, username);
   }, [saveUser]);
 
   const signup = useCallback(async (values) => {
-    const { username, password } = values;
-    const res = await axios.post(routes.api.signup(), { username, password });
-    const { token: loginToken, username: loginUsername } = res.data;
-    saveUser(loginToken, loginUsername);
+    const res = await axios.post(routes.api.signup(), values);
+    const { token, username } = res.data;
+    saveUser(token, username);
   }, [saveUser]);
 
   const logout = () => {

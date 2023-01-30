@@ -32,11 +32,12 @@ const RenameChannelModal = ({
     return false;
   };
 
-  const onSubmit = (values) => {
+  const onSubmit = (values, { resetForm }) => {
     if (!checkIsInputAlreadyExist(values.name)) {
       renameChannel(values.name, channelId, () => {
         handleClose();
         notify();
+        resetForm();
       });
     }
   };
