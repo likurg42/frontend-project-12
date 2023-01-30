@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { useSelector, useDispatch } from 'react-redux';
@@ -14,7 +14,7 @@ const AddChannelModal = ({ show, handleClose, notify }) => {
   const channelsNames = useSelector(getChannelsNames);
   const [isBlocked, setBlocked] = useState(false);
   const [isAlreadyExist, setAlreadyExist] = useState(false);
-  const [input, setInput] = useState(null);
+  const input = useRef(null);
 
   const checkIsInputAlreadyExist = (value) => {
     setBlocked(true);
@@ -59,8 +59,8 @@ const AddChannelModal = ({ show, handleClose, notify }) => {
   });
 
   useEffect(() => {
-    if (input) {
-      input.focus();
+    if (input.current) {
+      input.current.focus();
     }
   });
 
@@ -79,7 +79,7 @@ const AddChannelModal = ({ show, handleClose, notify }) => {
               placeholder={t('form.channelName')}
               onChange={handleChange}
               isInvalid={touched.name && (errors.name || isAlreadyExist)}
-              ref={(c) => { setInput(c); }}
+              ref={input}
             />
             {errors.name && (
               <Form.Control.Feedback type="invalid">

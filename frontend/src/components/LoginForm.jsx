@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
@@ -18,6 +18,7 @@ const LoginForm = () => {
   const { login } = useAuth();
   const [isBlocked, setBlocked] = useState(false);
   const [isSuccessAuth, setSuccessAuth] = useState(true);
+  const input = useRef(null);
 
   const onSubmit = async (values) => {
     setBlocked(true);
@@ -48,6 +49,12 @@ const LoginForm = () => {
     onSubmit,
   });
 
+  useEffect(() => {
+    if (input.current) {
+      input.current.focus();
+    }
+  });
+
   return (
     <Row className="justify-content-center mt-3">
       <Col md={6}>
@@ -60,6 +67,7 @@ const LoginForm = () => {
               onChange={handleChange}
               onBlur={handleBlur}
               isInvalid={touched.username && (errors.username || !isSuccessAuth)}
+              ref={input}
             />
             {errors.username && (
               <Form.Control.Feedback type="invalid">
@@ -88,10 +96,13 @@ const LoginForm = () => {
               </Form.Control.Feedback>
             )}
           </Form.Group>
-          <Form.Group className="d-flex justify-content-between align-items-center">
-            <Button variant="primary" type="submit" disabled={isBlocked}>{t('label.login')}</Button>
+          <div className="d-flex align-items-center justify-content-between">
+            <Form.Group className="d-flex justify-content-between align-items-center">
+              <Button variant="primary" type="submit" disabled={isBlocked}>{t('label.login')}</Button>
+            </Form.Group>
             <Link className="link-dark" to="/signup">{t('label.register')}</Link>
-          </Form.Group>
+          </div>
+
         </Form>
       </Col>
     </Row>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
@@ -13,12 +13,12 @@ const RenameChannelModal = ({
   const { t } = useTranslation();
   const [isAlreadyExist, setAlreadyExist] = useState(false);
   const { renameChannel } = useChat();
-  const [input, setInput] = useState(null);
+  const input = useRef(null);
   const channelsNames = useSelector(getChannelsNames);
 
   useEffect(() => {
-    if (input) {
-      input.focus();
+    if (input.current) {
+      input.current.focus();
     }
   });
 
@@ -71,7 +71,7 @@ const RenameChannelModal = ({
               placeholder={t('form.channelNewName')}
               onChange={handleChange}
               isInvalid={touched.name && (errors.name || isAlreadyExist)}
-              ref={(c) => { setInput(c); }}
+              ref={input}
             />
             {errors.name && (
               <Form.Control.Feedback type="invalid">

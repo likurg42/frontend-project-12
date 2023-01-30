@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useFormik } from 'formik';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
@@ -19,6 +19,7 @@ const SignupForm = () => {
   // const { token } = user;
   const [isBlocked, setBlocked] = useState(false);
   const [isSuccessSignup, setSuccessSignup] = useState(true);
+  const input = useRef(null);
 
   const onSubmit = async (values) => {
     setBlocked(true);
@@ -51,11 +52,11 @@ const SignupForm = () => {
     onSubmit,
   });
 
-  // useEffect(() => {
-  //   if (token) {
-  //     navigate('/');
-  //   }
-  // }, [navigate, token]);
+  useEffect(() => {
+    if (input.current) {
+      input.current.focus();
+    }
+  }, []);
 
   return (
     <Row className="justify-content-center mt-3">
@@ -69,6 +70,7 @@ const SignupForm = () => {
               onChange={handleChange}
               onBlur={handleBlur}
               isInvalid={touched.username && (errors.username || !isSuccessSignup)}
+              ref={input}
             />
             {errors.username && (
               <Form.Control.Feedback type="invalid">
