@@ -65,7 +65,6 @@ const LoginForm = () => {
               type="text"
               value={values.username}
               onChange={handleChange}
-              onBlur={handleBlur}
               isInvalid={touched.username && (errors.username || !isSuccessAuth)}
               ref={input}
             />

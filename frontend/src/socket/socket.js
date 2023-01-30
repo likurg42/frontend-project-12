@@ -2,7 +2,7 @@ import { io } from 'socket.io-client';
 import store from '../slices/index.js';
 import { addMessage } from '../slices/messagesSlice.js';
 import {
-  addChannel, removeChannel, renameChannel,
+  addChannel, changeCurrentChannel, removeChannel, renameChannel,
 } from '../slices/channelsSlice.js';
 import routes from '../routes/routes.js';
 
@@ -20,6 +20,12 @@ const initSocket = () => {
 
     socket.on(routes.socket.removeChannel(), (payload) => {
       const { id } = payload;
+      const { currentChannelId } = store.getState().channels;
+
+      if (currentChannelId === id) {
+        store.dispatch(changeCurrentChannel(1));
+      }
+
       store.dispatch(removeChannel(id));
     });
 
