@@ -47,7 +47,7 @@ const LoginForm = () => {
 
   return (
     <Row className="justify-content-center mt-3">
-      <Col className="col-4">
+      <Col md={6}>
         <Form className="justify-content-center" onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="username">
             <Form.Label>{t('form.login')}</Form.Label>
