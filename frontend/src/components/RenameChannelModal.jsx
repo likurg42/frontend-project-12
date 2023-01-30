@@ -3,16 +3,16 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import useChatContext from '../contexts/chatContext.js';
 import addChannelSchema from '../schemas/channelNameSchema.js';
 import { getChannelsNames } from '../slices/channelsSlice.js';
+import useChat from '../hooks/useChat.js';
 
 const RenameChannelModal = ({
   show, handleClose, channelId, notify,
 }) => {
   const { t } = useTranslation();
   const [isAlreadyExist, setAlreadyExist] = useState(false);
-  const { renameChannel } = useChatContext();
+  const { renameChannel } = useChat();
   const [input, setInput] = useState(null);
   const channelsNames = useSelector(getChannelsNames);
 

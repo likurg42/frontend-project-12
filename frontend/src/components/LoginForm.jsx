@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   Form,
   Row,
@@ -8,17 +8,20 @@ import {
   Col,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { useAuthContext } from '../contexts/index.js';
+import useAuth from '../hooks/useAuth.js';
 import loginSchema from '../schemas/loginSchema.js';
 
 const LoginForm = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [isSuccessAuth, setSuccessAuth] = useState(true);
-  const { login } = useAuthContext();
+  const { login } = useAuth();
 
   const onSubmit = async (values) => {
     try {
       await login(values);
+      navigate(`${location.state.from.pathname ?? '/'}`);
     } catch (e) {
       if (e.response.status === 401) {
         setSuccessAuth(false);
@@ -46,7 +49,6 @@ const LoginForm = () => {
     <Row className="justify-content-center mt-3">
       <Col className="col-4">
         <Form className="justify-content-center" onSubmit={handleSubmit}>
-          <h2>Войти в чат</h2>
           <Form.Group className="mb-3" controlId="username">
             <Form.Label>{t('form.login')}</Form.Label>
             <Form.Control
@@ -75,7 +77,7 @@ const LoginForm = () => {
               onChange={handleChange}
               onBlur={handleBlur}
               required
-              isInvalid={touched.password && !!errors.password}
+              isInvalid={touched.password && errors.password}
             />
             {errors.password && (
               <Form.Control.Feedback type="invalid">

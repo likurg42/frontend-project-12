@@ -1,9 +1,11 @@
 import React from 'react';
 import { LoginForm } from '../components/index.js';
-import withAuth from '../hoc/withAuth.jsx';
 
 const LoginPage = () => (
-  <LoginForm />
+  <>
+    <h1>Войти</h1>
+    <LoginForm />
+  </>
 );
 
-export default withAuth(LoginPage, '/');
+export default LoginPage;

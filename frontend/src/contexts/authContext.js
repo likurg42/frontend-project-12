@@ -1,5 +1,5 @@
 import React, {
-  useContext, useState, useMemo, useCallback,
+  useState, useMemo, useCallback,
 } from 'react';
 import axios from 'axios';
 import routes from '../routes/routes.js';
@@ -13,16 +13,15 @@ const getUserFromLocalStorage = () => {
 const updateUserInLocalStorage = (user) => {
   const { token, username } = user;
   if (token && username) {
-    localStorage.setItem('userToken', token);
+    localStorage.setItem('token', token);
     localStorage.setItem('username', username);
   } else {
-    localStorage.removeItem('userToken');
+    localStorage.removeItem('token');
     localStorage.removeItem('username');
   }
 };
 
-export const AuthContext = React.createContext({});
-const useAuthContext = () => useContext(AuthContext);
+const AuthContext = React.createContext({});
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(getUserFromLocalStorage());
@@ -40,14 +39,14 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = useCallback(async (values) => {
-    const res = await axios.post(routes.api.login, values);
+    const res = await axios.post(routes.api.login(), values);
     const { token: loginToken, username: loginUsername } = res.data;
     saveUser(loginToken, loginUsername);
   }, [saveUser]);
 
   const signup = useCallback(async (values) => {
     const { username, password } = values;
-    const res = await axios.post(routes.api.signup, { username, password });
+    const res = await axios.post(routes.api.signup(), { username, password });
     const { token: loginToken, username: loginUsername } = res.data;
     saveUser(loginToken, loginUsername);
   }, [saveUser]);
@@ -68,4 +67,4 @@ export const AuthProvider = ({ children }) => {
   return <AuthContext.Provider value={providerValue}>{children}</AuthContext.Provider>;
 };
 
-export default useAuthContext;
+export default AuthContext;

@@ -4,10 +4,10 @@ import {
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import useAuthContext from '../contexts/authContext.js';
+import useAuth from '../hooks/useAuth.js';
 
 const Header = () => {
-  const { logout, user } = useAuthContext();
+  const { logout, user } = useAuth();
   const { token } = user;
   const { t } = useTranslation();
 

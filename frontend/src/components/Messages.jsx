@@ -5,14 +5,15 @@ import { v4 as generateId } from 'uuid';
 import { useTranslation } from 'react-i18next';
 import filter from 'leo-profanity';
 import { getChannelMessages } from '../slices/messagesSlice.js';
-import { useAuthContext, useChatContext } from '../contexts/index.js';
+import useAuth from '../hooks/useAuth.js';
+import useChat from '../hooks/useChat.js';
 
 const Messages = ({ currentChannel }) => {
   const { t } = useTranslation();
-  const { user } = useAuthContext();
+  const { user } = useAuth();
   const [isBlocked, setBlocked] = useState(false);
   const [message, setMessage] = useState('');
-  const { sendMessage } = useChatContext();
+  const { sendMessage } = useChat();
   const { name, id } = currentChannel;
   const messages = useSelector(getChannelMessages(id));
   const bottomRef = useRef();
@@ -33,7 +34,9 @@ const Messages = ({ currentChannel }) => {
 
   useEffect(
     () => () => {
-      bottomRef.current.scrollIntoView({ behaviour: 'smooth' });
+      if (bottomRef.current) {
+        bottomRef.current.scrollIntoView({ behaviour: 'smooth' });
+      }
     },
     [messages],
   );

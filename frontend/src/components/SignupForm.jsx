@@ -8,13 +8,13 @@ import {
   Col,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { useAuthContext } from '../contexts/index.js';
 import signupSchema from '../schemas/signupSchema.js';
+import useAuth from '../hooks/useAuth.js';
 
 const SignupForm = () => {
   const { t } = useTranslation();
   const [isSuccessSignup, setSuccessSignup] = useState(true);
-  const { user, signup } = useAuthContext();
+  const { user, signup } = useAuth();
   const { token } = user;
   const navigate = useNavigate();
 

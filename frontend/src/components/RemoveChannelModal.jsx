@@ -1,13 +1,13 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import useChatContext from '../contexts/chatContext.js';
+import useChat from '../hooks/useChat.js';
 
 const RemoveChannelModal = ({
   show, handleClose, channelId, notify,
 }) => {
   const { t } = useTranslation();
-  const { removeChannel } = useChatContext();
+  const { removeChannel } = useChat();
 
   const handleDelete = () => {
     removeChannel(channelId, () => {

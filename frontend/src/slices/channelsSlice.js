@@ -6,7 +6,7 @@ import routes from '../routes/routes.js';
 export const fetchChatData = createAsyncThunk(
   'channel/fetchChatData',
   async (headers) => {
-    const response = await axios.get(routes.api.data, { headers });
+    const response = await axios.get(routes.api.data(), { headers });
     const { data } = response;
     return data;
   },

@@ -5,16 +5,15 @@ import {
 } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
-import { useAuthContext } from '../contexts/index.js';
 import {
   fetchChatData, getChannels, getCurrentChannel, getLoadingStatus,
 } from '../slices/channelsSlice.js';
 import { Channels, Messages } from '../components/index.js';
-import withAuth from '../hoc/withAuth.jsx';
+import useAuth from '../hooks/useAuth.js';
 
 const ChatPage = () => {
   const { t } = useTranslation();
-  const { getHeaders } = useAuthContext();
+  const { getHeaders } = useAuth();
   const channels = useSelector(getChannels);
   const currentChannel = useSelector(getCurrentChannel);
   const loadingStatus = useSelector(getLoadingStatus);
@@ -51,4 +50,4 @@ const ChatPage = () => {
   );
 };
 
-export default withAuth(ChatPage, '/login');
+export default ChatPage;
