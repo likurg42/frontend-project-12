@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,12 +8,14 @@ import { getCurrentChannel, changeCurrentChannel } from '../slices/channelsSlice
 const RemoveChannelModal = ({
   show, handleClose, channelId, notify,
 }) => {
+  const [isBlocked, setBlocked] = useState(false);
   const { t } = useTranslation();
   const { removeChannel } = useChat();
   const dispatch = useDispatch();
   const currentChannel = useSelector(getCurrentChannel);
 
   const handleDelete = () => {
+    setBlocked(true);
     removeChannel(channelId, () => {
       const { id } = currentChannel;
       handleClose();
@@ -21,6 +23,7 @@ const RemoveChannelModal = ({
         dispatch(changeCurrentChannel(1));
       }
       notify();
+      setBlocked(false);
     });
   };
 
@@ -34,7 +37,7 @@ const RemoveChannelModal = ({
         <Button variant="secondary" onClick={handleClose}>
           {t('modal.cancel')}
         </Button>
-        <Button variant="danger" onClick={handleDelete}>
+        <Button variant="danger" onClick={handleDelete} disabled={isBlocked}>
           {t('modal.delete')}
         </Button>
       </Modal.Footer>

@@ -16,7 +16,6 @@ const SignupForm = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { signup } = useAuth();
-  // const { token } = user;
   const [isBlocked, setBlocked] = useState(false);
   const [isSuccessSignup, setSuccessSignup] = useState(true);
   const input = useRef(null);
@@ -104,7 +103,6 @@ const SignupForm = () => {
               type="password"
               value={values.passwordConfirmation}
               onChange={handleChange}
-              onBlur={handleBlur}
               isInvalid={touched.passwordConfirmation && !!errors.passwordConfirmation}
             />
             {errors.passwordConfirmation && (

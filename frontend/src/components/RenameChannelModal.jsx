@@ -10,6 +10,7 @@ import useChat from '../hooks/useChat.js';
 const RenameChannelModal = ({
   show, handleClose, channelId, notify,
 }) => {
+  const [isBlocked, setBlocked] = useState(false);
   const { t } = useTranslation();
   const [isAlreadyExist, setAlreadyExist] = useState(false);
   const { renameChannel } = useChat();
@@ -33,6 +34,7 @@ const RenameChannelModal = ({
   };
 
   const onSubmit = (values, { resetForm }) => {
+    isBlocked(true);
     if (!checkIsInputAlreadyExist(values.name)) {
       renameChannel(values.name, channelId, () => {
         handleClose();
@@ -40,6 +42,7 @@ const RenameChannelModal = ({
         resetForm();
       });
     }
+    setBlocked(false);
   };
 
   const {
@@ -88,7 +91,7 @@ const RenameChannelModal = ({
             <Button variant="secondary" onClick={handleClose}>
               {t('modal.cancel')}
             </Button>
-            <Button type="submit" variant="primary">
+            <Button type="submit" variant="primary" disabled={isBlocked}>
               {t('modal.rename')}
             </Button>
           </div>

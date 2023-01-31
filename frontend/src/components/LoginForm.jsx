@@ -35,7 +35,6 @@ const LoginForm = () => {
 
   const {
     values,
-    handleBlur,
     handleChange,
     handleSubmit,
     errors,
@@ -85,7 +84,6 @@ const LoginForm = () => {
               type="password"
               value={values.password}
               onChange={handleChange}
-              onBlur={handleBlur}
               required
               isInvalid={touched.password && errors.password}
             />
