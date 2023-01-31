@@ -3,7 +3,7 @@ import { Modal, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import useChat from '../hooks/useChat.js';
-import { getCurrentChannel, changeCurrentChannel } from '../slices/channelsSlice.js';
+import { getCurrentChannel, changeCurrentChannel, removeChannel as removeChannelStore } from '../slices/channelsSlice.js';
 
 const RemoveChannelModal = ({
   show, handleClose, channelId, notify,
@@ -19,6 +19,7 @@ const RemoveChannelModal = ({
     removeChannel(channelId, () => {
       const { id } = currentChannel;
       handleClose();
+      dispatch(removeChannelStore(channelId));
       if (id === channelId) {
         dispatch(changeCurrentChannel(1));
       }

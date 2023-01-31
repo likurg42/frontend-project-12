@@ -1,21 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import addChannelSchema from '../schemas/channelNameSchema.js';
-import { getChannelsNames } from '../slices/channelsSlice.js';
+import { getChannelsNames, renameChannel as renameChannelStore } from '../slices/channelsSlice.js';
 import useChat from '../hooks/useChat.js';
 
 const RenameChannelModal = ({
   show, handleClose, channelId, notify,
 }) => {
-  const [isBlocked, setBlocked] = useState(false);
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const [isAlreadyExist, setAlreadyExist] = useState(false);
   const { renameChannel } = useChat();
   const input = useRef(null);
   const channelsNames = useSelector(getChannelsNames);
+  const [isBlocked, setBlocked] = useState(false);
 
   useEffect(() => {
     if (input.current) {
@@ -34,15 +35,16 @@ const RenameChannelModal = ({
   };
 
   const onSubmit = (values, { resetForm }) => {
-    setBlocked(true);
     if (!checkIsInputAlreadyExist(values.name)) {
+      setBlocked(true);
       renameChannel(values.name, channelId, () => {
-        handleClose();
-        notify();
+        dispatch(renameChannelStore({ id: channelId, changes: { name: values.name } }));
+        setBlocked(false);
         resetForm();
+        notify();
+        handleClose();
       });
     }
-    setBlocked(false);
   };
 
   const {

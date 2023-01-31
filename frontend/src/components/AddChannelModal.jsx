@@ -80,6 +80,7 @@ const AddChannelModal = ({ show, handleClose, notify }) => {
               onChange={handleChange}
               isInvalid={touched.name && (errors.name || isAlreadyExist)}
               ref={input}
+              disabled={isBlocked}
               autoComplete="off"
             />
             {errors.name && (
