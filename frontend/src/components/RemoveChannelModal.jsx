@@ -35,7 +35,7 @@ const RemoveChannelModal = ({
       </Modal.Header>
       <Modal.Body>{t('modal.deleteChannelConfirmation')}</Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
+        <Button variant="secondary" onClick={handleClose} disabled={isBlocked}>
           {t('modal.cancel')}
         </Button>
         <Button variant="danger" onClick={handleDelete} disabled={isBlocked}>

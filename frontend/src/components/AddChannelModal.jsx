@@ -99,7 +99,7 @@ const AddChannelModal = ({ show, handleClose, notify }) => {
             )}
           </Form.Group>
           <div className="d-flex justify-content-end gap-2">
-            <Button variant="secondary" onClick={handleClose}>
+            <Button variant="secondary" onClick={handleClose} disabled={isBlocked}>
               {t('modal.cancel')}
             </Button>
             <Button type="submit" variant="primary" disabled={isBlocked}>

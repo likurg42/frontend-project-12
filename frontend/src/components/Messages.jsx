@@ -17,7 +17,8 @@ const Messages = ({ currentChannel }) => {
   const { sendMessage } = useChat();
   const { name, id } = currentChannel;
   const messages = useSelector(getChannelMessages(id));
-  const bottomRef = useRef();
+  const bottomRef = useRef(null);
+  const input = useRef(null);
 
   filter.clearList();
   filter.add(filter.getDictionary('en'));
@@ -29,15 +30,17 @@ const Messages = ({ currentChannel }) => {
     const filteredMessage = filter.clean(message);
     sendMessage(filteredMessage, id, user.username, () => {
       setMessage('');
+      input.current.focus();
       setBlocked(false);
     });
   };
 
   useEffect(
-    () => () => {
-      if (bottomRef.current) {
+    () => {
+      input.current.focus();
+      return () => {
         bottomRef.current.scrollIntoView({ behaviour: 'smooth', block: 'nearest', inline: 'start' });
-      }
+      };
     },
     [messages],
   );
@@ -73,6 +76,7 @@ const Messages = ({ currentChannel }) => {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 aria-label={t('messages.messageInput')}
+                ref={input}
                 disabled={isBlocked}
               />
               <Button
