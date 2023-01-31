@@ -29,6 +29,7 @@ const SignupForm = () => {
     } catch (e) {
       if (e.response.status === 409) {
         setSuccessSignup(false);
+        input.current.select();
       }
     }
     setBlocked(false);

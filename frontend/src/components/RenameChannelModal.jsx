@@ -27,6 +27,7 @@ const RenameChannelModal = ({
   const checkIsInputAlreadyExist = (value) => {
     if (channelsNames.includes(value)) {
       setAlreadyExist(true);
+      input.current.select();
       return true;
     }
 

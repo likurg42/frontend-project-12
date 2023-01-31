@@ -73,6 +73,7 @@ const Messages = ({ currentChannel }) => {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 aria-label={t('messages.messageInput')}
+                disabled={isBlocked}
               />
               <Button
                 type="submit"

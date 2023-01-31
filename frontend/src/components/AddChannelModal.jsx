@@ -21,6 +21,7 @@ const AddChannelModal = ({ show, handleClose, notify }) => {
     if (channelsNames.includes(value)) {
       setAlreadyExist(true);
       setBlocked(false);
+      input.current.select();
       return true;
     }
 

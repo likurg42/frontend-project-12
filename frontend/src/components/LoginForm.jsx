@@ -28,6 +28,7 @@ const LoginForm = () => {
     } catch (e) {
       if (e.response.status === 401) {
         setSuccessAuth(false);
+        input.current.select();
       }
     }
     setBlocked(false);
