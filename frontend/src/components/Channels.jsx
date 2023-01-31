@@ -49,7 +49,7 @@ const Channels = ({ channels, currentChannel }) => {
   };
 
   return (
-    <>
+    <div className="">
       <div className="d-flex justify-content-between mb-2 ps-4 pe-2 ">
         <span>{t('channels.channels')}</span>
         <Button active="false" variant="link" className="p-0 text-primary btn-group-vertical" onClick={handleModal(true, 'add')}>
@@ -88,7 +88,7 @@ const Channels = ({ channels, currentChannel }) => {
         channelId={modals.channelId}
         notify={notify(t('toastMessage.channelRenamed'))}
       />
-    </>
+    </div>
   );
 };
 

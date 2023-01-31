@@ -42,7 +42,7 @@ const ChatPage = () => {
     <Row className="h-100 bg-white flex-nowrap flex-md-row">
       <Col
         sm={3}
-        className="col-4 border-end pt-5 px-0 bg-light overflow-hidden"
+        className="col-4 border-end pt-5 px-0 bg-light"
       >
         {channels.length > 0 && <Channels channels={channels} currentChannel={currentChannel} />}
       </Col>

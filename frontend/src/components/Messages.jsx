@@ -36,7 +36,7 @@ const Messages = ({ currentChannel }) => {
   useEffect(
     () => () => {
       if (bottomRef.current) {
-        bottomRef.current.scrollIntoView({ behaviour: 'smooth' });
+        bottomRef.current.scrollIntoView({ behaviour: 'smooth', block: 'nearest', inline: 'start' });
       }
     },
     [messages],
