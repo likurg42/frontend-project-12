@@ -32,7 +32,7 @@ const ChannelItem = ({
           >
             <span className="visually-hidden">{t('channels.channelManagment')}</span>
           </Dropdown.Toggle>
-          <Dropdown.Menu>
+          <Dropdown.Menu flip="true" align="start" style={{ zIndex: 9999 }}>
             <Dropdown.Item onClick={handleModal(true, 'remove', id)}>
               {t('channels.remove')}
             </Dropdown.Item>

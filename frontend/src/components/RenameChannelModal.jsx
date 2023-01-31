@@ -75,6 +75,7 @@ const RenameChannelModal = ({
               onChange={handleChange}
               isInvalid={touched.name && (errors.name || isAlreadyExist)}
               ref={input}
+              autocomplete="off"
             />
             {errors.name && (
               <Form.Control.Feedback type="invalid">

@@ -43,7 +43,7 @@ const ChatPage = () => {
       <Col
         md={3}
         className="col-4 border-end pt-5 px-0 bg-light "
-        style={{ overflowY: 'auto', overflowX: 'hidden' }}
+      // style={{ overflowY: 'auto', overflowX: 'auto' }}
       >
         {channels.length > 0 && <Channels channels={channels} currentChannel={currentChannel} />}
       </Col>
