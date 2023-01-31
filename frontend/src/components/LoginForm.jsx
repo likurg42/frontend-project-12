@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useFormik } from 'formik';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Form,
   Row,
@@ -14,7 +14,6 @@ import loginSchema from '../schemas/loginSchema.js';
 const LoginForm = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const location = useLocation();
   const { login } = useAuth();
   const [isBlocked, setBlocked] = useState(false);
   const [isSuccessAuth, setSuccessAuth] = useState(true);
@@ -24,7 +23,7 @@ const LoginForm = () => {
     setBlocked(true);
     try {
       await login(values);
-      navigate(location.state?.from ? location.state.from.pathname : '/');
+      navigate('/');
     } catch (e) {
       if (e.response.status === 401) {
         setSuccessAuth(false);

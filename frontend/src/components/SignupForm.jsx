@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useFormik } from 'formik';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   Form,
   Row,
@@ -13,7 +13,6 @@ import useAuth from '../hooks/useAuth.js';
 
 const SignupForm = () => {
   const { t } = useTranslation();
-  const location = useLocation();
   const navigate = useNavigate();
   const { signup } = useAuth();
   const [isBlocked, setBlocked] = useState(false);
@@ -25,7 +24,7 @@ const SignupForm = () => {
     try {
       const { username, password } = values;
       await signup({ username, password });
-      navigate(location.state?.from ? location.state.from.pathname : '/');
+      navigate('/');
     } catch (e) {
       if (e.response.status === 409) {
         setSuccessSignup(false);
