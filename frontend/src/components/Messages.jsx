@@ -55,7 +55,7 @@ const Messages = ({ currentChannel }) => {
           {t('messages.messages', { count: messages.length })}
         </span>
       </div>
-      <div className="message-box overflow-auto mx-5">
+      <div className="message-box overflow-auto px-5">
         {messages.length > 0 && messages.map(({ body, username }) => (
           <div key={generateId()} className="text-break">
             <b>{`${username}: `}</b>
