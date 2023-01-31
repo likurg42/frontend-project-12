@@ -39,15 +39,14 @@ const ChatPage = () => {
   }
 
   return (
-    <Row className="h-100 bg-white flex-nowrap">
+    <Row className="h-100 bg-white flex-nowrap flex-md-row">
       <Col
-        md={3}
-        className="col-4 border-end pt-5 px-0 bg-light "
-      // style={{ overflowY: 'auto', overflowX: 'auto' }}
+        sm={3}
+        className="col-4 border-end pt-5 px-0 bg-light overflow-hidden"
       >
         {channels.length > 0 && <Channels channels={channels} currentChannel={currentChannel} />}
       </Col>
-      <Col md={9} className="col-8 p-0 h-100 ">
+      <Col sm={9} className="col-8 p-0 h-100 ">
         {channels.length > 0 && <Messages currentChannel={currentChannel} />}
       </Col>
     </Row>
