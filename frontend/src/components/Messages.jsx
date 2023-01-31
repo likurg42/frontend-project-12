@@ -38,9 +38,7 @@ const Messages = ({ currentChannel }) => {
   useEffect(
     () => {
       input.current.focus();
-      return () => {
-        bottomRef.current.scrollIntoView({ behaviour: 'smooth', block: 'nearest', inline: 'start' });
-      };
+      bottomRef.current.scrollIntoView({ behaviour: 'smooth', block: 'nearest', inline: 'start' });
     },
     [messages],
   );
