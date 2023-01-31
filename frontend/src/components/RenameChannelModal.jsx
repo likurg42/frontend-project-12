@@ -34,7 +34,7 @@ const RenameChannelModal = ({
   };
 
   const onSubmit = (values, { resetForm }) => {
-    isBlocked(true);
+    setBlocked(true);
     if (!checkIsInputAlreadyExist(values.name)) {
       renameChannel(values.name, channelId, () => {
         handleClose();
