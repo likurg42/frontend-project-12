@@ -52,9 +52,9 @@ export const getChannels = (state) => selectors.selectAll(state);
 export const getChannelsNames = (state) => getChannels(state).map(({ name }) => name);
 export const getCurrentChannel = (state) => getChannels(state)
   .find(({ id }) => id === state.channels.currentChannelId);
-export const getLastChannel = (state) => getChannels(state).at(-1);
 export const getLoadingError = (state) => state.channels.loadingError;
 export const getLoadingStatus = (state) => state.channels.loadingStatus;
+export const getChannnel = (id) => (state) => selectors.selectById(state, id);
 
 export const {
   changeCurrentChannel, addChannel, removeChannel, renameChannel,

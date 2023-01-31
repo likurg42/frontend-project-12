@@ -60,10 +60,13 @@ const AddChannelModal = ({ show, handleClose, notify }) => {
   });
 
   useEffect(() => {
+    values.name = '';
     if (input.current) {
       input.current.focus();
+      input.current.select();
     }
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [show]);
 
   return (
     <Modal size="lg" centered show={show} onHide={handleClose}>

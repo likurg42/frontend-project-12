@@ -71,11 +71,13 @@ const Channels = ({ channels, currentChannel }) => {
 
         ))}
       </Nav>
-      <AddChannelModal
-        show={modals.openModals.add}
-        handleClose={handleModal(false, 'add')}
-        notify={notify(t('toastMessage.channelAdded'))}
-      />
+      {modals.openModals.add && (
+        <AddChannelModal
+          show={modals.openModals.add}
+          handleClose={handleModal(false, 'add')}
+          notify={notify(t('toastMessage.channelAdded'))}
+        />
+      )}
       <RemoveChannelModal
         show={modals.openModals.remove}
         handleClose={handleModal(false, 'remove')}

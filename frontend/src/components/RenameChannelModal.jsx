@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import addChannelSchema from '../schemas/channelNameSchema.js';
-import { getChannelsNames, renameChannel as renameChannelStore } from '../slices/channelsSlice.js';
+import { getChannelsNames, renameChannel as renameChannelStore, getChannnel } from '../slices/channelsSlice.js';
 import useChat from '../hooks/useChat.js';
 
 const RenameChannelModal = ({
@@ -16,13 +16,8 @@ const RenameChannelModal = ({
   const { renameChannel } = useChat();
   const input = useRef(null);
   const channelsNames = useSelector(getChannelsNames);
+  const channel = useSelector(getChannnel(channelId));
   const [isBlocked, setBlocked] = useState(false);
-
-  useEffect(() => {
-    if (input.current) {
-      input.current.focus();
-    }
-  });
 
   const checkIsInputAlreadyExist = (value) => {
     if (channelsNames.includes(value)) {
@@ -61,6 +56,15 @@ const RenameChannelModal = ({
     validationSchema: addChannelSchema,
     onSubmit,
   }, []);
+
+  useEffect(() => {
+    if (input.current && show) {
+      input.current.value = channel.name;
+      input.current.focus();
+      input.current.select();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [show]);
 
   return (
     <Modal size="lg" centered show={show} onHide={handleClose}>
