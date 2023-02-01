@@ -1,16 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Form, Button, InputGroup } from 'react-bootstrap';
 import { ArrowRight } from 'react-bootstrap-icons';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { v4 as generateId } from 'uuid';
 import { useTranslation } from 'react-i18next';
 import filter from 'leo-profanity';
-import { getChannelMessages, addMessage } from '../slices/messagesSlice.js';
+import { getChannelMessages } from '../slices/messagesSlice.js';
 import useAuth from '../hooks/useAuth.js';
 import useChat from '../hooks/useChat.js';
 
 const Messages = ({ currentChannel }) => {
-  const dispatch = useDispatch();
   const { t } = useTranslation();
   const { user } = useAuth();
   const [isBlocked, setBlocked] = useState(false);
@@ -31,12 +30,6 @@ const Messages = ({ currentChannel }) => {
     const filteredMessage = filter.clean(message);
     sendMessage(filteredMessage, id, user.username, () => {
       setMessage('');
-      dispatch(addMessage({
-        id: messages.at(-1).id + 1,
-        body: filteredMessage,
-        channelId: id,
-        username: user.username,
-      }));
       input.current.focus();
       setBlocked(false);
     });
