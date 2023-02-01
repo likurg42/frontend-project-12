@@ -1,22 +1,24 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Form, Button, InputGroup } from 'react-bootstrap';
 import { ArrowRight } from 'react-bootstrap-icons';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { v4 as generateId } from 'uuid';
 import { useTranslation } from 'react-i18next';
 import filter from 'leo-profanity';
-import { getChannelMessages } from '../slices/messagesSlice.js';
+import { getChannelMessages, addMessage, getMessages } from '../slices/messagesSlice.js';
 import useAuth from '../hooks/useAuth.js';
 import useChat from '../hooks/useChat.js';
 
 const Messages = ({ currentChannel }) => {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const { user } = useAuth();
   const [isBlocked, setBlocked] = useState(false);
   const [message, setMessage] = useState('');
   const { sendMessage } = useChat();
   const { name, id } = currentChannel;
-  const messages = useSelector(getChannelMessages(id));
+  const channelMessages = useSelector(getChannelMessages(id));
+  const messages = useSelector(getMessages);
   const bottomRef = useRef(null);
   const input = useRef(null);
 
@@ -29,7 +31,14 @@ const Messages = ({ currentChannel }) => {
     setBlocked(true);
     const filteredMessage = filter.clean(message);
     sendMessage(filteredMessage, id, user.username, () => {
+      const messageId = messages.at(-1)?.id ? messages.at(-1).id + 1 : 3;
       setMessage('');
+      dispatch(addMessage({
+        id: messageId,
+        body: filteredMessage,
+        channelId: id,
+        username: user.username,
+      }));
       input.current.focus();
       setBlocked(false);
     });
@@ -40,7 +49,7 @@ const Messages = ({ currentChannel }) => {
       input.current.focus();
       bottomRef.current.scrollIntoView({ behaviour: 'smooth', block: 'nearest', inline: 'start' });
     },
-    [messages],
+    [channelMessages],
   );
 
   return (
@@ -53,11 +62,11 @@ const Messages = ({ currentChannel }) => {
           </b>
         </p>
         <span className="text-muted">
-          {t('messages.messages', { count: messages.length })}
+          {t('messages.messages', { count: channelMessages.length })}
         </span>
       </div>
       <div className="message-box overflow-auto px-5">
-        {messages.length > 0 && messages.map(({ body, username }) => (
+        {channelMessages.length > 0 && channelMessages.map(({ body, username }) => (
           <div key={generateId()} className="text-break">
             <b>{`${username}: `}</b>
             {body}
