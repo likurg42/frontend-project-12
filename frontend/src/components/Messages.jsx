@@ -31,7 +31,7 @@ const Messages = ({ currentChannel }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setBlocked(true);
-    const filteredMessage = filter.clean(message);
+    const filteredMessage = filter.clean(message.trim());
     sendMessage(filteredMessage, id, user.username, () => {
       const messageId = messages.length + channels.length + 1;
       setMessage('');
