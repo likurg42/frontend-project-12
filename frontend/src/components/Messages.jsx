@@ -6,6 +6,7 @@ import { v4 as generateId } from 'uuid';
 import { useTranslation } from 'react-i18next';
 import filter from 'leo-profanity';
 import { getChannelMessages, addMessage, getMessages } from '../slices/messagesSlice.js';
+import { getChannels } from '../slices/channelsSlice.js';
 import useAuth from '../hooks/useAuth.js';
 import useChat from '../hooks/useChat.js';
 
@@ -19,6 +20,7 @@ const Messages = ({ currentChannel }) => {
   const { name, id } = currentChannel;
   const channelMessages = useSelector(getChannelMessages(id));
   const messages = useSelector(getMessages);
+  const channels = useSelector(getChannels);
   const bottomRef = useRef(null);
   const input = useRef(null);
 
@@ -31,7 +33,7 @@ const Messages = ({ currentChannel }) => {
     setBlocked(true);
     const filteredMessage = filter.clean(message);
     sendMessage(filteredMessage, id, user.username, () => {
-      const messageId = messages.at(-1)?.id ? messages.at(-1).id + 1 : 3;
+      const messageId = messages.length + channels.length + 1;
       setMessage('');
       dispatch(addMessage({
         id: messageId,
