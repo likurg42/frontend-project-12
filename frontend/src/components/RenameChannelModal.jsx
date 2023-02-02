@@ -32,16 +32,14 @@ const RenameChannelModal = ({
 
   const onSubmit = async (values, { resetForm }) => {
     if (!checkIsInputAlreadyExist(values.name)) {
+      setBlocked(true);
       try {
-        await renameChannel(values.name, channelId, () => {
-          setBlocked(true);
-          dispatch(renameChannelStore({ id: channelId, changes: { name: values.name } }));
-          resetForm();
-          notifySuccess();
-          handleClose();
-        });
+        await renameChannel(values.name, channelId);
+        dispatch(renameChannelStore({ id: channelId, changes: { name: values.name } }));
+        resetForm();
+        notifySuccess();
+        handleClose();
       } catch (err) {
-        console.error(err);
         notifyError();
       } finally {
         setBlocked(false);

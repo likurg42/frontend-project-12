@@ -18,16 +18,14 @@ const RemoveChannelModal = ({
   const handleDelete = async () => {
     setBlocked(true);
     try {
-      await removeChannel(channelId, () => {
-        handleClose();
-        dispatch(removeChannelStore(channelId));
-        if (id === channelId) {
-          dispatch(changeCurrentChannel(1));
-        }
-        notifySuccess();
-      });
+      await removeChannel(channelId);
+      handleClose();
+      dispatch(removeChannelStore(channelId));
+      if (id === channelId) {
+        dispatch(changeCurrentChannel(1));
+      }
+      notifySuccess();
     } catch (err) {
-      console.error(err);
       notifyError();
     } finally {
       setBlocked(false);

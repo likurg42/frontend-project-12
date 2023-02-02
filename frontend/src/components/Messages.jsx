@@ -39,15 +39,13 @@ const Messages = ({ currentChannel }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setBlocked(true);
     const filteredMessage = filter.clean(message.trim());
+    setBlocked(true);
     try {
-      await sendMessage(filteredMessage, id, user.username, () => {
-        setMessage('');
-        input.current.focus();
-      });
+      await sendMessage(filteredMessage, id, user.username);
+      setMessage('');
+      input.current.focus();
     } catch (err) {
-      console.error(err);
       notifyError(t('error.connection'));
     } finally {
       setBlocked(false);

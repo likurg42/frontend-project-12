@@ -7,47 +7,51 @@ import routes from '../routes/routes.js';
 const ChatContext = React.createContext({});
 
 export const ChatProvider = ({ socket, children }) => {
-  const sendMessage = useCallback((body, channelId, username, cb) => new Promise(
+  const sendMessage = useCallback((body, channelId, username) => new Promise(
     (resolve, reject) => {
       socket
         .timeout(5000)
-        .emit(routes.socket.newMessage(), { body, channelId, username }, (err, res) => {
-          if (err) reject(err);
-          resolve(cb(res));
-        });
+        .emit(
+          routes.socket.newMessage(),
+          { body, channelId, username },
+          (err, res) => (err ? reject(err) : resolve(res)),
+        );
     },
   ), [socket]);
 
-  const createChannel = useCallback((name, cb) => new Promise(
+  const createChannel = useCallback((name) => new Promise(
     (resolve, reject) => {
       socket
         .timeout(5000)
-        .emit(routes.socket.newChannel(), { name }, (err, res) => {
-          if (err) reject(err);
-          resolve(cb(res));
-        });
+        .emit(
+          routes.socket.newChannel(),
+          { name },
+          (err, res) => (err ? reject(err) : resolve(res)),
+        );
     },
   ), [socket]);
 
-  const removeChannel = useCallback((id, cb) => new Promise(
+  const removeChannel = useCallback((id) => new Promise(
     (resolve, reject) => {
       socket
         .timeout(5000)
-        .emit(routes.socket.removeChannel(), { id }, (err, res) => {
-          if (err) reject(err);
-          resolve(cb(res));
-        });
+        .emit(
+          routes.socket.removeChannel(),
+          { id },
+          (err) => (err ? reject(err) : resolve()),
+        );
     },
   ), [socket]);
 
-  const renameChannel = useCallback((name, id, cb) => new Promise(
+  const renameChannel = useCallback((name, id) => new Promise(
     (resolve, reject) => {
       socket
         .timeout(5000)
-        .emit(routes.socket.renameChannel(), { name, id }, (err, res) => {
-          if (err) reject(err);
-          resolve(cb(res));
-        });
+        .emit(
+          routes.socket.renameChannel(),
+          { name, id },
+          (err, res) => (err ? reject(err) : resolve(res)),
+        );
     },
   ), [socket]);
 

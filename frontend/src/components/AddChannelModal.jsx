@@ -36,16 +36,14 @@ const AddChannelModal = ({
     if (!checkIsInputAlreadyExist(values.name)) {
       setBlocked(true);
       try {
-        await createChannel(values.name, (res) => {
-          const { id } = res.data;
-          dispatch(addChannel(res.data));
-          dispatch(changeCurrentChannel(id));
-          handleClose();
-          notifySuccess();
-          resetForm();
-        });
+        const res = await createChannel(values.name);
+        const { id } = res.data;
+        dispatch(addChannel(res.data));
+        dispatch(changeCurrentChannel(id));
+        handleClose();
+        notifySuccess();
+        resetForm();
       } catch (err) {
-        console.error(err);
         notifyError();
       } finally {
         setBlocked(false);
