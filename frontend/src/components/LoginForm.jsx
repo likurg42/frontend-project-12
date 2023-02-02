@@ -9,7 +9,7 @@ import {
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import useAuth from '../hooks/useAuth.js';
-import loginSchema from '../schemas/loginSchema.js';
+import getLoginSchema from '../schemas/loginSchema.js';
 
 const LoginForm = () => {
   const { t } = useTranslation();
@@ -44,7 +44,7 @@ const LoginForm = () => {
       username: '',
       password: '',
     },
-    validationSchema: loginSchema,
+    validationSchema: getLoginSchema(),
     onSubmit,
   });
 

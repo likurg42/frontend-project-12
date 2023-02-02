@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import useChat from '../hooks/useChat.js';
-import addChannelSchema from '../schemas/channelNameSchema.js';
+import getChannelSchema from '../schemas/channelNameSchema.js';
 import { getChannelsNames, changeCurrentChannel, addChannel } from '../slices/channelsSlice.js';
 
 const AddChannelModal = ({
@@ -63,7 +63,7 @@ const AddChannelModal = ({
     initialValues: {
       name: '',
     },
-    validationSchema: addChannelSchema,
+    validationSchema: getChannelSchema(),
     onSubmit,
   });
 

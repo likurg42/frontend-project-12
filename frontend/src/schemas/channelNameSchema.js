@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-const addChannelSchema = yup.object().shape({
+const getChannelSchema = () => yup.object().shape({
   name: yup
     .string()
     .trim()
@@ -9,4 +9,4 @@ const addChannelSchema = yup.object().shape({
     .required('channelNameRequired'),
 });
 
-export default addChannelSchema;
+export default getChannelSchema;

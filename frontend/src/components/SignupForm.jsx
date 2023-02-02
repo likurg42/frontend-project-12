@@ -8,7 +8,7 @@ import {
   Col,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import signupSchema from '../schemas/signupSchema.js';
+import getSignupSchema from '../schemas/signupSchema.js';
 import useAuth from '../hooks/useAuth.js';
 
 const SignupForm = () => {
@@ -47,7 +47,7 @@ const SignupForm = () => {
       password: '',
       passwordConfirmation: '',
     },
-    validationSchema: signupSchema,
+    validationSchema: getSignupSchema(),
     onSubmit,
   });
 

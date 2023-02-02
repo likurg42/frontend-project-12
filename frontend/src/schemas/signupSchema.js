@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-const signupSchema = yup.object({
+const getSignupSchema = () => yup.object({
   username: yup
     .string()
     .trim()
@@ -12,4 +12,4 @@ const signupSchema = yup.object({
     .oneOf([yup.ref('password')], 'passwordsMustMatch'),
 });
 
-export default signupSchema;
+export default getSignupSchema;
