@@ -7,7 +7,9 @@ import useChat from '../hooks/useChat.js';
 import addChannelSchema from '../schemas/channelNameSchema.js';
 import { getChannelsNames, changeCurrentChannel, addChannel } from '../slices/channelsSlice.js';
 
-const AddChannelModal = ({ show, handleClose, notify }) => {
+const AddChannelModal = ({
+  show, handleClose, notifySuccess, notifyError,
+}) => {
   const { t } = useTranslation();
   const { createChannel } = useChat();
   const dispatch = useDispatch();
@@ -30,18 +32,24 @@ const AddChannelModal = ({ show, handleClose, notify }) => {
     return false;
   };
 
-  const onSubmit = (values, { resetForm }) => {
+  const onSubmit = async (values, { resetForm }) => {
     if (!checkIsInputAlreadyExist(values.name)) {
       setBlocked(true);
-      createChannel(values.name, (res) => {
-        const { id } = res.data;
-        dispatch(addChannel(res.data));
-        dispatch(changeCurrentChannel(id));
-        handleClose();
-        notify();
-        resetForm();
+      try {
+        await createChannel(values.name, (res) => {
+          const { id } = res.data;
+          dispatch(addChannel(res.data));
+          dispatch(changeCurrentChannel(id));
+          handleClose();
+          notifySuccess();
+          resetForm();
+        });
+      } catch (err) {
+        console.error(err);
+        notifyError();
+      } finally {
         setBlocked(false);
-      });
+      }
     }
   };
 

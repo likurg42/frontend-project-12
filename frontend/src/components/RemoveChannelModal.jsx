@@ -6,26 +6,32 @@ import useChat from '../hooks/useChat.js';
 import { getCurrentChannel, changeCurrentChannel, removeChannel as removeChannelStore } from '../slices/channelsSlice.js';
 
 const RemoveChannelModal = ({
-  show, handleClose, channelId, notify,
+  show, handleClose, channelId, notifySuccess, notifyError,
 }) => {
   const [isBlocked, setBlocked] = useState(false);
   const { t } = useTranslation();
   const { removeChannel } = useChat();
   const dispatch = useDispatch();
   const currentChannel = useSelector(getCurrentChannel);
+  const { id } = currentChannel;
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     setBlocked(true);
-    removeChannel(channelId, () => {
-      const { id } = currentChannel;
-      handleClose();
-      dispatch(removeChannelStore(channelId));
-      if (id === channelId) {
-        dispatch(changeCurrentChannel(1));
-      }
-      notify();
+    try {
+      await removeChannel(channelId, () => {
+        handleClose();
+        dispatch(removeChannelStore(channelId));
+        if (id === channelId) {
+          dispatch(changeCurrentChannel(1));
+        }
+        notifySuccess();
+      });
+    } catch (err) {
+      console.error(err);
+      notifyError();
+    } finally {
       setBlocked(false);
-    });
+    }
   };
 
   return (

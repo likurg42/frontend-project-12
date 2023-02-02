@@ -24,7 +24,18 @@ const Channels = ({ channels, currentChannel }) => {
     channelId: null,
   });
 
-  const notify = (text) => () => toast.success(text, {
+  const notifySuccess = (text) => () => toast.success(text, {
+    position: 'top-right',
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: 'light',
+  });
+
+  const notifyError = (text) => () => toast.error(text, {
     position: 'top-right',
     autoClose: 5000,
     hideProgressBar: false,
@@ -75,20 +86,24 @@ const Channels = ({ channels, currentChannel }) => {
         <AddChannelModal
           show={modals.openModals.add}
           handleClose={handleModal(false, 'add')}
-          notify={notify(t('toastMessage.channelAdded'))}
+          notifySuccess={notifySuccess(t('toastMessage.channelAdded'))}
+          notifyError={notifyError(t('error.connection'))}
+
         />
       )}
       <RemoveChannelModal
         show={modals.openModals.remove}
         handleClose={handleModal(false, 'remove')}
         channelId={modals.channelId}
-        notify={notify(t('toastMessage.channelRemoved'))}
+        notifySuccess={notifySuccess(t('toastMessage.channelRemoved'))}
+        notifyError={notifyError(t('error.connection'))}
       />
       <RenameChannelModal
         show={modals.openModals.rename}
         handleClose={handleModal(false, 'rename')}
         channelId={modals.channelId}
-        notify={notify(t('toastMessage.channelRenamed'))}
+        notifySuccess={notifySuccess(t('toastMessage.channelRenamed'))}
+        notifyError={notifyError(t('error.connection'))}
       />
     </div>
   );

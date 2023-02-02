@@ -8,7 +8,7 @@ import { getChannelsNames, renameChannel as renameChannelStore, getChannnel } fr
 import useChat from '../hooks/useChat.js';
 
 const RenameChannelModal = ({
-  show, handleClose, channelId, notify,
+  show, handleClose, channelId, notifySuccess, notifyError,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -30,16 +30,22 @@ const RenameChannelModal = ({
     return false;
   };
 
-  const onSubmit = (values, { resetForm }) => {
+  const onSubmit = async (values, { resetForm }) => {
     if (!checkIsInputAlreadyExist(values.name)) {
-      setBlocked(true);
-      renameChannel(values.name, channelId, () => {
-        dispatch(renameChannelStore({ id: channelId, changes: { name: values.name } }));
+      try {
+        await renameChannel(values.name, channelId, () => {
+          setBlocked(true);
+          dispatch(renameChannelStore({ id: channelId, changes: { name: values.name } }));
+          resetForm();
+          notifySuccess();
+          handleClose();
+        });
+      } catch (err) {
+        console.error(err);
+        notifyError();
+      } finally {
         setBlocked(false);
-        resetForm();
-        notify();
-        handleClose();
-      });
+      }
     }
   };
 

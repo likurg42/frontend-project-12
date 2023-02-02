@@ -7,21 +7,49 @@ import routes from '../routes/routes.js';
 const ChatContext = React.createContext({});
 
 export const ChatProvider = ({ socket, children }) => {
-  const sendMessage = useCallback((body, channelId, username, cb) => {
-    socket.emit(routes.socket.newMessage(), { body, channelId, username }, cb);
-  }, [socket]);
+  const sendMessage = useCallback((body, channelId, username, cb) => new Promise(
+    (resolve, reject) => {
+      socket
+        .timeout(5000)
+        .emit(routes.socket.newMessage(), { body, channelId, username }, (err, res) => {
+          if (err) reject(err);
+          resolve(cb(res));
+        });
+    },
+  ), [socket]);
 
-  const createChannel = useCallback((name, cb) => {
-    socket.emit(routes.socket.newChannel(), { name }, cb);
-  }, [socket]);
+  const createChannel = useCallback((name, cb) => new Promise(
+    (resolve, reject) => {
+      socket
+        .timeout(5000)
+        .emit(routes.socket.newChannel(), { name }, (err, res) => {
+          if (err) reject(err);
+          resolve(cb(res));
+        });
+    },
+  ), [socket]);
 
-  const removeChannel = useCallback((id, cb) => {
-    socket.emit(routes.socket.removeChannel(), { id }, cb);
-  }, [socket]);
+  const removeChannel = useCallback((id, cb) => new Promise(
+    (resolve, reject) => {
+      socket
+        .timeout(5000)
+        .emit(routes.socket.removeChannel(), { id }, (err, res) => {
+          if (err) reject(err);
+          resolve(cb(res));
+        });
+    },
+  ), [socket]);
 
-  const renameChannel = useCallback((name, id, cb) => {
-    socket.emit(routes.socket.renameChannel(), { name, id }, cb);
-  }, [socket]);
+  const renameChannel = useCallback((name, id, cb) => new Promise(
+    (resolve, reject) => {
+      socket
+        .timeout(5000)
+        .emit(routes.socket.renameChannel(), { name, id }, (err, res) => {
+          if (err) reject(err);
+          resolve(cb(res));
+        });
+    },
+  ), [socket]);
 
   const providerValue = useMemo(
     () => ({

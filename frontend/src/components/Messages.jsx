@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { v4 as generateId } from 'uuid';
 import { useTranslation } from 'react-i18next';
 import filter from 'leo-profanity';
+import { toast } from 'react-toastify';
 import { getChannelMessages } from '../slices/messagesSlice.js';
 import useAuth from '../hooks/useAuth.js';
 import useChat from '../hooks/useChat.js';
@@ -25,15 +26,32 @@ const Messages = ({ currentChannel }) => {
   filter.add(filter.getDictionary('en'));
   filter.add(filter.getDictionary('ru'));
 
-  const handleSubmit = (e) => {
+  const notifyError = (text) => toast.error(text, {
+    position: 'top-right',
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: 'light',
+  });
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setBlocked(true);
     const filteredMessage = filter.clean(message.trim());
-    sendMessage(filteredMessage, id, user.username, () => {
-      setMessage('');
-      input.current.focus();
+    try {
+      await sendMessage(filteredMessage, id, user.username, () => {
+        setMessage('');
+        input.current.focus();
+      });
+    } catch (err) {
+      console.error(err);
+      notifyError(t('error.connection'));
+    } finally {
       setBlocked(false);
-    });
+    }
   };
 
   useEffect(
