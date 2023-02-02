@@ -8,8 +8,10 @@ import {
   Col,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import axios from 'axios';
 import getSignupSchema from '../schemas/signupSchema.js';
 import useAuth from '../hooks/useAuth.js';
+import routes from '../routes/routes.js';
 
 const SignupForm = () => {
   const { t } = useTranslation();
@@ -22,8 +24,8 @@ const SignupForm = () => {
   const onSubmit = async (values) => {
     setBlocked(true);
     try {
-      const { username, password } = values;
-      await signup({ username, password });
+      const res = await axios.post(routes.api.signup(), values);
+      signup(res.data);
       navigate('/');
     } catch (e) {
       if (e.response.status === 409) {
@@ -67,7 +69,6 @@ const SignupForm = () => {
               type="text"
               value={values.username}
               onChange={handleChange}
-              onBlur={handleBlur}
               isInvalid={touched.username && (errors.username || !isSuccessSignup)}
               ref={input}
             />

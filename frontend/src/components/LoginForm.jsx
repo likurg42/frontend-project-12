@@ -8,8 +8,10 @@ import {
   Col,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import axios from 'axios';
 import useAuth from '../hooks/useAuth.js';
 import getLoginSchema from '../schemas/loginSchema.js';
+import routes from '../routes/routes.js';
 
 const LoginForm = () => {
   const { t } = useTranslation();
@@ -22,7 +24,8 @@ const LoginForm = () => {
   const onSubmit = async (values) => {
     setBlocked(true);
     try {
-      await login(values);
+      const res = await axios.post(routes.api.login(), values);
+      login(res.data);
       navigate('/');
     } catch (e) {
       if (e.response.status === 401) {

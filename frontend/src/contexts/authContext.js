@@ -1,8 +1,6 @@
 import React, {
   useState, useMemo, useCallback,
 } from 'react';
-import axios from 'axios';
-import routes from '../routes/routes.js';
 
 const getUserFromLocalStorage = () => {
   const token = localStorage.getItem('token');
@@ -38,15 +36,13 @@ export const AuthProvider = ({ children }) => {
     updateUserInLocalStorage(newUser);
   }, []);
 
-  const login = useCallback(async (values) => {
-    const res = await axios.post(routes.api.login(), values);
-    const { token, username } = res.data;
+  const login = useCallback(async (data) => {
+    const { token, username } = data;
     saveUser(token, username);
   }, [saveUser]);
 
-  const signup = useCallback(async (values) => {
-    const res = await axios.post(routes.api.signup(), values);
-    const { token, username } = res.data;
+  const signup = useCallback(async (data) => {
+    const { token, username } = data;
     saveUser(token, username);
   }, [saveUser]);
 
