@@ -36,12 +36,12 @@ export const AuthProvider = ({ children }) => {
     updateUserInLocalStorage(newUser);
   }, []);
 
-  const login = useCallback(async (data) => {
+  const login = useCallback((data) => {
     const { token, username } = data;
     saveUser(token, username);
   }, [saveUser]);
 
-  const signup = useCallback(async (data) => {
+  const signup = useCallback((data) => {
     const { token, username } = data;
     saveUser(token, username);
   }, [saveUser]);
