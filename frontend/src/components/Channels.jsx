@@ -82,15 +82,12 @@ const Channels = ({ channels, currentChannel }) => {
 
         ))}
       </Nav>
-      {modals.openModals.add && (
-        <AddChannelModal
-          show={modals.openModals.add}
-          handleClose={handleModal(false, 'add')}
-          notifySuccess={notifySuccess(t('toastMessage.channelAdded'))}
-          notifyError={notifyError(t('error.connection'))}
-
-        />
-      )}
+      <AddChannelModal
+        show={modals.openModals.add}
+        handleClose={handleModal(false, 'add')}
+        notifySuccess={notifySuccess(t('toastMessage.channelAdded'))}
+        notifyError={notifyError(t('error.connection'))}
+      />
       <RemoveChannelModal
         show={modals.openModals.remove}
         handleClose={handleModal(false, 'remove')}
