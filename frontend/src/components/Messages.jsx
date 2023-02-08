@@ -11,11 +11,12 @@ import { getChannelMessages } from '../slices/messagesSlice.js';
 import useAuth from '../hooks/useAuth.js';
 import useChat from '../hooks/useChat.js';
 import toastsParams from '../toasts/toastsParams.js';
+import getMessagesSchema from '../schemas/messagesSchema.js';
 
 const Messages = ({ currentChannel }) => {
   const { t } = useTranslation();
   const { user } = useAuth();
-  const [isBlocked, setBlocked] = useState(false);
+  const [blocked, setBlocked] = useState(false);
   const { sendMessage } = useChat();
   const { name, id } = currentChannel;
   const channelMessages = useSelector(getChannelMessages(id));
@@ -27,10 +28,9 @@ const Messages = ({ currentChannel }) => {
 
   const onSubmit = async (values, { resetForm }) => {
     const { message } = values;
-    const filteredMessage = filter.clean(message.trim());
     setBlocked(true);
     try {
-      await sendMessage(filteredMessage, id, user.username);
+      await sendMessage(message, id, user.username);
       resetForm();
     } catch (err) {
       notifyError(t('error.connection'));
@@ -47,6 +47,7 @@ const Messages = ({ currentChannel }) => {
     initialValues: {
       message: '',
     },
+    validationSchema: getMessagesSchema(),
     onSubmit,
   });
 
@@ -75,7 +76,7 @@ const Messages = ({ currentChannel }) => {
         {channelMessages.length > 0 && channelMessages.map(({ body, username }) => (
           <div key={generateId()} className="text-break">
             <b>{`${username}: `}</b>
-            {body}
+            {filter.clean(body)}
           </div>
         ))}
         <div ref={bottomRef} />
@@ -90,13 +91,13 @@ const Messages = ({ currentChannel }) => {
                 onChange={handleChange}
                 aria-label={t('messages.messageInput')}
                 ref={input}
-                disabled={isBlocked}
+                disabled={blocked}
               />
               <Button
                 type="submit"
                 variant="outline-primary"
                 className="d-flex align-items-center btn-group-vertical"
-                disabled={isBlocked || values.message.trim() === ''}
+                disabled={blocked || values.message.trim() === ''}
               >
                 <ArrowRight />
                 <span className="visually-hidden">{t('messages.send')}</span>
