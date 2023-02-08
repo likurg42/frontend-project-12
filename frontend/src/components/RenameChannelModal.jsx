@@ -49,7 +49,7 @@ const RenameChannelModal = ({
     },
     validationSchema: getChannelSchema(channelsNames),
     onSubmit,
-  }, []);
+  });
 
   useEffect(() => {
     if (input.current && show) {
