@@ -62,7 +62,6 @@ const Channels = ({ channels, currentChannel }) => {
             <ChannelItem
               channel={channel}
               currentChannel={currentChannel}
-              t={t}
               handleChannel={handleChannel}
               handleModal={handleModal}
             />

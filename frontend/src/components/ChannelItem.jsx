@@ -1,16 +1,17 @@
 import {
   Nav, Dropdown, Button, ButtonGroup,
 } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 const ChannelItem = ({
   channel,
   currentChannel,
   handleChannel,
   handleModal,
-  t,
 }) => {
   const { id, name, removable } = channel;
   const { id: currentChannelId } = currentChannel;
+  const { t } = useTranslation();
 
   if (removable) {
     return (
