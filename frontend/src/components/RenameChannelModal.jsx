@@ -95,7 +95,7 @@ const RenameChannelModal = ({
             )}
           </Form.Group>
           <div className="d-flex justify-content-end gap-2">
-            <Button variant="secondary" onClick={handleClose} disabled={isBlocked}>
+            <Button variant="secondary" onClick={() => setDisplay(false)} disabled={isBlocked}>
               {t('modal.cancel')}
             </Button>
             <Button type="submit" variant="primary" disabled={isBlocked}>
