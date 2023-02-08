@@ -6,6 +6,7 @@ import { v4 as generateId } from 'uuid';
 import { useTranslation } from 'react-i18next';
 import filter from 'leo-profanity';
 import { toast } from 'react-toastify';
+import { useFormik } from 'formik';
 import { getChannelMessages } from '../slices/messagesSlice.js';
 import useAuth from '../hooks/useAuth.js';
 import useChat from '../hooks/useChat.js';
@@ -15,7 +16,6 @@ const Messages = ({ currentChannel }) => {
   const { t } = useTranslation();
   const { user } = useAuth();
   const [isBlocked, setBlocked] = useState(false);
-  const [message, setMessage] = useState('');
   const { sendMessage } = useChat();
   const { name, id } = currentChannel;
   const channelMessages = useSelector(getChannelMessages(id));
@@ -25,20 +25,30 @@ const Messages = ({ currentChannel }) => {
 
   const notifyError = (text) => toast.error(text, toastsParams.getDefaultParams());
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (values, { resetForm }) => {
+    const { message } = values;
     const filteredMessage = filter.clean(message.trim());
     setBlocked(true);
     try {
       await sendMessage(filteredMessage, id, user.username);
-      setMessage('');
-      input.current.focus();
+      resetForm();
     } catch (err) {
       notifyError(t('error.connection'));
     } finally {
       setBlocked(false);
     }
   };
+
+  const {
+    values,
+    handleChange,
+    handleSubmit,
+  } = useFormik({
+    initialValues: {
+      message: '',
+    },
+    onSubmit,
+  });
 
   useEffect(
     () => {
@@ -72,12 +82,12 @@ const Messages = ({ currentChannel }) => {
       </div>
       <div className="mt-auto px-5 py-3">
         <Form noValidate onSubmit={handleSubmit}>
-          <Form.Group className="d-flex gap-2">
+          <Form.Group className="d-flex gap-2" controlId="message">
             <InputGroup>
               <Form.Control
                 type="text"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
+                value={values.message}
+                onChange={handleChange}
                 aria-label={t('messages.messageInput')}
                 ref={input}
                 disabled={isBlocked}
@@ -86,7 +96,7 @@ const Messages = ({ currentChannel }) => {
                 type="submit"
                 variant="outline-primary"
                 className="d-flex align-items-center btn-group-vertical"
-                disabled={isBlocked || message.trim() === ''}
+                disabled={isBlocked || values.message.trim() === ''}
               >
                 <ArrowRight />
                 <span className="visually-hidden">{t('messages.send')}</span>
