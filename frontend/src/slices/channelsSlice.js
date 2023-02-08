@@ -4,7 +4,7 @@ import axios from 'axios';
 import routes from '../routes/routes.js';
 
 export const fetchChatData = createAsyncThunk(
-  'channel/fetchChatData',
+  'channels/fetchChatData',
   async (headers) => {
     const response = await axios.get(routes.api.data(), { headers });
     const { data } = response;
@@ -30,6 +30,10 @@ const channelsSlice = createSlice({
     },
     removeChannel: channelsAdapter.removeOne,
     renameChannel: channelsAdapter.updateOne,
+    resetLoadingStatus: (state) => {
+      state.loadingStatus = 'idle';
+      state.loadingError = null;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchChatData.pending, (state) => {
@@ -54,10 +58,10 @@ export const getCurrentChannel = (state) => getChannels(state)
   .find(({ id }) => id === state.channels.currentChannelId);
 export const getLoadingError = (state) => state.channels.loadingError;
 export const getLoadingStatus = (state) => state.channels.loadingStatus;
-export const getChannnel = (id) => (state) => selectors.selectById(state, id);
+export const getChannel = (id) => (state) => selectors.selectById(state, id);
 
 export const {
-  changeCurrentChannel, addChannel, removeChannel, renameChannel,
+  changeCurrentChannel, addChannel, removeChannel, renameChannel, resetLoadingStatus,
 } = channelsSlice.actions;
 
 export default channelsSlice.reducer;

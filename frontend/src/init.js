@@ -29,15 +29,15 @@ const init = () => {
     <React.StrictMode>
       <RollbarProvider config={rollBarConfig}>
         <ErrorBoundary>
-          <AuthProvider>
-            <ChatProvider socket={socket}>
-              <ReduxProvider store={store}>
+          <ReduxProvider store={store}>
+            <AuthProvider>
+              <ChatProvider socket={socket}>
                 <I18nextProvider i18n={i18n}>
                   <App />
                 </I18nextProvider>
-              </ReduxProvider>
-            </ChatProvider>
-          </AuthProvider>
+              </ChatProvider>
+            </AuthProvider>
+          </ReduxProvider>
         </ErrorBoundary>
       </RollbarProvider>
     </React.StrictMode>,

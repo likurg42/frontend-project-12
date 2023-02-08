@@ -5,9 +5,11 @@ import {
 } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
-import { Navigate } from 'react-router-dom';
 import {
-  fetchChatData, getChannels, getCurrentChannel, getLoadingStatus,
+  fetchChatData,
+  getChannels,
+  getCurrentChannel,
+  resetLoadingStatus,
 } from '../slices/channelsSlice.js';
 import { Channels, Messages } from '../components/index.js';
 import useAuth from '../hooks/useAuth.js';
@@ -15,22 +17,26 @@ import toastsParams from '../toasts/toastsParams.js';
 
 const ChatPage = () => {
   const { t } = useTranslation();
-  const { getHeaders } = useAuth();
+  const { getHeaders, logout } = useAuth();
   const channels = useSelector(getChannels);
   const currentChannel = useSelector(getCurrentChannel);
-  const loadingStatus = useSelector(getLoadingStatus);
   const dispatch = useDispatch();
 
   const notify = (text) => toast.error(text, toastsParams.getDefaultParams());
 
   useEffect(() => {
-    dispatch(fetchChatData(getHeaders()));
-  }, [getHeaders, dispatch]);
+    const getData = async () => {
+      try {
+        await dispatch(fetchChatData(getHeaders())).unwrap();
+      } catch (e) {
+        notify(t('error.authentication'));
+        dispatch(resetLoadingStatus());
+        logout();
+      }
+    };
 
-  if (loadingStatus === 'failed') {
-    notify(t('error.authentication'));
-    return <Navigate to="/login" />;
-  }
+    getData();
+  }, [getHeaders, dispatch, logout, t]);
 
   return (
     <Row className="h-100 bg-white flex-nowrap flex-md-row">
