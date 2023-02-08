@@ -10,6 +10,7 @@ import {
 } from '../slices/channelsSlice.js';
 import { Channels, Messages } from '../components/index.js';
 import useAuth from '../hooks/useAuth.js';
+import toastsParams from '../toasts/toastsParams.js';
 
 const ChatPage = () => {
   const { t } = useTranslation();
@@ -19,16 +20,7 @@ const ChatPage = () => {
   const loadingStatus = useSelector(getLoadingStatus);
   const dispatch = useDispatch();
 
-  const notify = (text) => toast.error(text, {
-    position: 'top-right',
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: 'light',
-  });
+  const notify = (text) => toast.error(text, toastsParams.getDefaultParams());
 
   useEffect(() => {
     dispatch(fetchChatData(getHeaders()));
@@ -44,7 +36,8 @@ const ChatPage = () => {
         sm={3}
         className="col-4 border-end pt-5 px-0 bg-light"
       >
-        {channels.length > 0 && <Channels channels={channels} currentChannel={currentChannel} />}
+        {channels.length > 0
+          && <Channels channels={channels} currentChannel={currentChannel} />}
       </Col>
       <Col sm={9} className="col-8 p-0 h-100 ">
         {channels.length > 0 && <Messages currentChannel={currentChannel} />}

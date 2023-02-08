@@ -11,6 +11,7 @@ import AddChannelModal from './AddChannelModal.jsx';
 import RemoveChannelModal from './RemoveChannelModal.jsx';
 import RenameChannelModal from './RenameChannelModal.jsx';
 import ChannelItem from './ChannelItem.jsx';
+import toastsParams from '../toasts/toastsParams.js';
 
 const Channels = ({ channels, currentChannel }) => {
   const { t } = useTranslation();
@@ -24,27 +25,9 @@ const Channels = ({ channels, currentChannel }) => {
     channelId: null,
   });
 
-  const notifySuccess = (text) => () => toast.success(text, {
-    position: 'top-right',
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: 'light',
-  });
+  const notifySuccess = (text) => () => toast.success(text, toastsParams.getDefaultParams());
 
-  const notifyError = (text) => () => toast.error(text, {
-    position: 'top-right',
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: 'light',
-  });
+  const notifyError = (text) => () => toast.error(text, toastsParams.getDefaultParams());
 
   const handleModal = (isOpen, name, channelId) => () => setModals(({
     openModals: {
@@ -63,7 +46,12 @@ const Channels = ({ channels, currentChannel }) => {
     <div className="">
       <div className="d-flex justify-content-between mb-2 ps-4 pe-2 ">
         <span>{t('channels.channels')}</span>
-        <Button active="false" variant="link" className="p-0 text-primary btn-group-vertical" onClick={handleModal(true, 'add')}>
+        <Button
+          active="false"
+          variant="link"
+          className="p-0 text-primary btn-group-vertical"
+          onClick={handleModal(true, 'add')}
+        >
           <PlusSquare size={20} />
           <span className="visually-hidden">+</span>
         </Button>

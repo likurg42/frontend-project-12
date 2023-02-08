@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import { getChannelMessages } from '../slices/messagesSlice.js';
 import useAuth from '../hooks/useAuth.js';
 import useChat from '../hooks/useChat.js';
+import toastsParams from '../toasts/toastsParams.js';
 
 const Messages = ({ currentChannel }) => {
   const { t } = useTranslation();
@@ -26,16 +27,7 @@ const Messages = ({ currentChannel }) => {
   filter.add(filter.getDictionary('en'));
   filter.add(filter.getDictionary('ru'));
 
-  const notifyError = (text) => toast.error(text, {
-    position: 'top-right',
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: 'light',
-  });
+  const notifyError = (text) => toast.error(text, toastsParams.getDefaultParams());
 
   const handleSubmit = async (e) => {
     e.preventDefault();
