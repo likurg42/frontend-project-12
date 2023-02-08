@@ -5,37 +5,49 @@ import {
 } from 'react-bootstrap';
 import { PlusSquare } from 'react-bootstrap-icons';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
 import { changeCurrentChannel } from '../slices/channelsSlice.js';
 import AddChannelModal from './AddChannelModal.jsx';
 import RemoveChannelModal from './RemoveChannelModal.jsx';
 import RenameChannelModal from './RenameChannelModal.jsx';
 import ChannelItem from './ChannelItem.jsx';
-import toastsParams from '../toasts/toastsParams.js';
+
+const renderModal = (modalParams, handleClose) => {
+  const { type, channel } = modalParams;
+  if (!type) {
+    return null;
+  }
+
+  const modals = {
+    add: (
+      <AddChannelModal
+        show
+        handleClose={handleClose}
+      />
+    ),
+    remove: (<RemoveChannelModal
+      show
+      channel={channel}
+      handleClose={handleClose}
+    />),
+    rename: (<RenameChannelModal
+      show
+      channel={channel}
+      handleClose={handleClose}
+    />),
+  };
+
+  return modals[modalParams.type];
+};
 
 const Channels = ({ channels, currentChannel }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const [modals, setModals] = useState({
-    openModals: {
-      remove: false,
-      add: false,
-      rename: false,
-    },
-    channelId: null,
+  const [modalParams, setModalParams] = useState({
+    type: null,
+    channel: null,
   });
 
-  const notifySuccess = (text) => () => toast.success(text, toastsParams.getDefaultParams());
-
-  const notifyError = (text) => () => toast.error(text, toastsParams.getDefaultParams());
-
-  const handleModal = (isOpen, name, channelId) => () => setModals(({
-    openModals: {
-      ...modals.openModals,
-      [name]: isOpen,
-    },
-    channelId,
-  }));
+  const handleClose = () => setModalParams({ type: null, channel: null });
 
   const handleChannel = (id) => (e) => {
     e.preventDefault();
@@ -43,14 +55,14 @@ const Channels = ({ channels, currentChannel }) => {
   };
 
   return (
-    <div className="">
+    <>
       <div className="d-flex justify-content-between mb-2 ps-4 pe-2 ">
         <span>{t('channels.channels')}</span>
         <Button
           active="false"
           variant="link"
           className="p-0 text-primary btn-group-vertical"
-          onClick={handleModal(true, 'add')}
+          onClick={() => setModalParams({ type: 'add' })}
         >
           <PlusSquare size={20} />
           <span className="visually-hidden">+</span>
@@ -63,33 +75,14 @@ const Channels = ({ channels, currentChannel }) => {
               channel={channel}
               currentChannel={currentChannel}
               handleChannel={handleChannel}
-              handleModal={handleModal}
+              setModalParams={setModalParams}
             />
           </React.Fragment>
 
         ))}
       </Nav>
-      <AddChannelModal
-        show={modals.openModals.add}
-        handleClose={handleModal(false, 'add')}
-        notifySuccess={notifySuccess(t('toastMessage.channelAdded'))}
-        notifyError={notifyError(t('error.connection'))}
-      />
-      <RemoveChannelModal
-        show={modals.openModals.remove}
-        handleClose={handleModal(false, 'remove')}
-        channelId={modals.channelId}
-        notifySuccess={notifySuccess(t('toastMessage.channelRemoved'))}
-        notifyError={notifyError(t('error.connection'))}
-      />
-      <RenameChannelModal
-        show={modals.openModals.rename}
-        handleClose={handleModal(false, 'rename')}
-        channelId={modals.channelId}
-        notifySuccess={notifySuccess(t('toastMessage.channelRenamed'))}
-        notifyError={notifyError(t('error.connection'))}
-      />
-    </div>
+      {renderModal(modalParams, handleClose)}
+    </>
   );
 };
 

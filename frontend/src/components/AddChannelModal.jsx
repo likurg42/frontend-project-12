@@ -3,32 +3,37 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import useChat from '../hooks/useChat.js';
 import getChannelSchema from '../schemas/channelNameSchema.js';
 import { getChannelsNames, changeCurrentChannel, addChannel } from '../slices/channelsSlice.js';
+import toastsParams from '../toasts/toastsParams.js';
 
 const AddChannelModal = ({
-  show, handleClose, notifySuccess, notifyError,
+  show, handleClose,
 }) => {
   const { t } = useTranslation();
   const { createChannel } = useChat();
   const dispatch = useDispatch();
   const channelsNames = useSelector(getChannelsNames);
   const [isBlocked, setBlocked] = useState(false);
+  const [display, setDisplay] = useState(show);
   const input = useRef(null);
 
-  const onSubmit = async (values, { resetForm }) => {
+  const notifyError = (text) => toast.error(text, toastsParams.getDefaultParams());
+  const notifySuccess = (text) => toast.success(text, toastsParams.getDefaultParams());
+
+  const onSubmit = async (values) => {
     setBlocked(true);
     try {
       const data = await createChannel(values.name);
       const { id } = data;
       dispatch(addChannel(data));
       dispatch(changeCurrentChannel(id));
-      handleClose();
-      notifySuccess();
-      resetForm();
+      setDisplay(false);
+      notifySuccess(t('toastMessage.channelAdded'));
     } catch (err) {
-      notifyError();
+      notifyError(t('errors.network'));
     } finally {
       setBlocked(false);
     }
@@ -49,16 +54,24 @@ const AddChannelModal = ({
   });
 
   useEffect(() => {
-    values.name = '';
     if (input.current) {
       input.current.focus();
       input.current.select();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [show]);
 
   return (
-    <Modal size="lg" centered show={show} onHide={handleClose}>
+    <Modal
+      size="lg"
+      centered
+      show={display}
+      onHide={() => {
+        setDisplay(false);
+      }}
+      onExited={() => {
+        handleClose();
+      }}
+    >
       <Modal.Header closeButton>
         <Modal.Title>{t('modal.addChannel')}</Modal.Title>
       </Modal.Header>
@@ -83,7 +96,7 @@ const AddChannelModal = ({
             )}
           </Form.Group>
           <div className="d-flex justify-content-end gap-2">
-            <Button variant="secondary" onClick={handleClose} disabled={isBlocked}>
+            <Button variant="secondary" onClick={() => setDisplay(false)} disabled={isBlocked}>
               {t('modal.cancel')}
             </Button>
             <Button type="submit" variant="primary" disabled={isBlocked}>

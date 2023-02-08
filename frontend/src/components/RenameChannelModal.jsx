@@ -3,35 +3,38 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import getChannelSchema from '../schemas/channelNameSchema.js';
 import {
   getChannelsNames,
   renameChannel as renameChannelStore,
-  getChannel,
 } from '../slices/channelsSlice.js';
 import useChat from '../hooks/useChat.js';
+import toastsParams from '../toasts/toastsParams.js';
 
 const RenameChannelModal = ({
-  show, handleClose, channelId, notifySuccess, notifyError,
+  show, handleClose, channel,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { renameChannel } = useChat();
   const input = useRef(null);
   const channelsNames = useSelector(getChannelsNames);
-  const channel = useSelector(getChannel(channelId));
+  const [display, setDisplay] = useState(show);
   const [isBlocked, setBlocked] = useState(false);
 
-  const onSubmit = async (values, { resetForm }) => {
+  const notifyError = (text) => toast.error(text, toastsParams.getDefaultParams());
+  const notifySuccess = (text) => toast.success(text, toastsParams.getDefaultParams());
+
+  const onSubmit = async (values) => {
     setBlocked(true);
     try {
-      await renameChannel(values.name, channelId);
-      dispatch(renameChannelStore({ id: channelId, changes: { name: values.name } }));
-      resetForm();
-      notifySuccess();
-      handleClose();
+      await renameChannel(values.name, channel.id);
+      dispatch(renameChannelStore({ id: channel.id, changes: { name: values.name } }));
+      notifySuccess(t('toastMessage.channelRenamed'));
+      setDisplay(false);
     } catch (err) {
-      notifyError();
+      notifyError(t('errors.network'));
     } finally {
       setBlocked(false);
     }
@@ -45,7 +48,7 @@ const RenameChannelModal = ({
     touched,
   } = useFormik({
     initialValues: {
-      name: channel?.name || '',
+      name: channel.name,
     },
     enableReinitialize: true,
     validationSchema: getChannelSchema(channelsNames),
@@ -57,10 +60,20 @@ const RenameChannelModal = ({
       input.current.focus();
       input.current.select();
     }
-  }, [show, values]);
+  }, [show, channel]);
 
   return (
-    <Modal size="lg" centered show={show} onHide={handleClose}>
+    <Modal
+      size="lg"
+      centered
+      show={display}
+      onHide={() => {
+        setDisplay(false);
+      }}
+      onExited={() => {
+        handleClose();
+      }}
+    >
       <Modal.Header closeButton>
         <Modal.Title>{t('modal.renameChannel')}</Modal.Title>
       </Modal.Header>

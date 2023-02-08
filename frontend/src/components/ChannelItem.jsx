@@ -7,7 +7,7 @@ const ChannelItem = ({
   channel,
   currentChannel,
   handleChannel,
-  handleModal,
+  setModalParams,
 }) => {
   const { id, name, removable } = channel;
   const { id: currentChannelId } = currentChannel;
@@ -34,10 +34,10 @@ const ChannelItem = ({
             <span className="visually-hidden">{t('channels.channelManagement')}</span>
           </Dropdown.Toggle>
           <Dropdown.Menu flip="true" align="start" style={{ zIndex: 9999 }}>
-            <Dropdown.Item onClick={handleModal(true, 'remove', id)}>
+            <Dropdown.Item onClick={() => setModalParams({ type: 'remove', channel })}>
               {t('channels.remove')}
             </Dropdown.Item>
-            <Dropdown.Item onClick={handleModal(true, 'rename', id)}>
+            <Dropdown.Item onClick={() => setModalParams({ type: 'rename', channel })}>
               {t('channels.rename')}
             </Dropdown.Item>
           </Dropdown.Menu>
