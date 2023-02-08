@@ -7,53 +7,34 @@ import routes from '../routes/routes.js';
 const ChatContext = React.createContext({});
 
 export const ChatProvider = ({ socket, children }) => {
-  const sendMessage = useCallback((body, channelId, username) => new Promise(
-    (resolve, reject) => {
-      socket
-        .timeout(5000)
-        .emit(
-          routes.socket.newMessage(),
-          { body, channelId, username },
-          (err, res) => (err ? reject(err) : resolve(res)),
-        );
-    },
-  ), [socket]);
+  const promisifyEmitEvents = useCallback((event, arg) => new Promise((resolve, reject) => {
+    socket
+      .timeout(5000)
+      .emit(event, arg, (err, res) => (res.status === 'ok' && !err ? resolve(res.data) : reject(err)));
+  }), [socket]);
 
-  const createChannel = useCallback((name) => new Promise(
-    (resolve, reject) => {
-      socket
-        .timeout(5000)
-        .emit(
-          routes.socket.newChannel(),
-          { name },
-          (err, res) => (err ? reject(err) : resolve(res)),
-        );
-    },
-  ), [socket]);
+  const sendMessage = useCallback((
+    body,
+    channelId,
+    username,
+  ) => promisifyEmitEvents(routes.socket.newMessage(), {
+    body,
+    channelId,
+    username,
+  }), [promisifyEmitEvents]);
 
-  const removeChannel = useCallback((id) => new Promise(
-    (resolve, reject) => {
-      socket
-        .timeout(5000)
-        .emit(
-          routes.socket.removeChannel(),
-          { id },
-          (err) => (err ? reject(err) : resolve()),
-        );
-    },
-  ), [socket]);
+  const createChannel = useCallback((name) => promisifyEmitEvents(routes.socket.newChannel(), {
+    name,
+  }), [promisifyEmitEvents]);
 
-  const renameChannel = useCallback((name, id) => new Promise(
-    (resolve, reject) => {
-      socket
-        .timeout(5000)
-        .emit(
-          routes.socket.renameChannel(),
-          { name, id },
-          (err, res) => (err ? reject(err) : resolve(res)),
-        );
-    },
-  ), [socket]);
+  const removeChannel = useCallback((id) => promisifyEmitEvents(routes.socket.newChannel(), {
+    id,
+  }), [promisifyEmitEvents]);
+
+  const renameChannel = useCallback((name, id) => promisifyEmitEvents(routes.socket.newChannel(), {
+    name,
+    id,
+  }), [promisifyEmitEvents]);
 
   const providerValue = useMemo(
     () => ({
