@@ -36,9 +36,9 @@ const AddChannelModal = ({
     if (!checkIsInputAlreadyExist(values.name)) {
       setBlocked(true);
       try {
-        const res = await createChannel(values.name);
-        const { id } = res.data;
-        dispatch(addChannel(res.data));
+        const data = await createChannel(values.name);
+        const { id } = data;
+        dispatch(addChannel(data));
         dispatch(changeCurrentChannel(id));
         handleClose();
         notifySuccess();

@@ -31,7 +31,7 @@ const ChannelItem = ({
             variant={currentChannelId === id ? 'secondary' : 'light'}
             id="dropdown-split-basic"
           >
-            <span className="visually-hidden">{t('channels.channelManagment')}</span>
+            <span className="visually-hidden">{t('channels.channelManagement')}</span>
           </Dropdown.Toggle>
           <Dropdown.Menu flip="true" align="start" style={{ zIndex: 9999 }}>
             <Dropdown.Item onClick={handleModal(true, 'remove', id)}>
