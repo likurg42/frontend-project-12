@@ -23,10 +23,6 @@ const Messages = ({ currentChannel }) => {
   const bottomRef = useRef(null);
   const input = useRef(null);
 
-  filter.clearList();
-  filter.add(filter.getDictionary('en'));
-  filter.add(filter.getDictionary('ru'));
-
   const notifyError = (text) => toast.error(text, toastsParams.getDefaultParams());
 
   const handleSubmit = async (e) => {
