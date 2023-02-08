@@ -18,7 +18,7 @@ const SignupForm = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
   const [isBlocked, setBlocked] = useState(false);
-  const [isSuccessSignup, setSuccessSignup] = useState(true);
+  const [signupFailure, setSignupFailure] = useState(false);
   const input = useRef(null);
 
   const onSubmit = async (values) => {
@@ -28,12 +28,13 @@ const SignupForm = () => {
       login(res.data);
       navigate('/');
     } catch (e) {
-      if (e.response.status === 409) {
-        setSuccessSignup(false);
+      if (e.AxiosError || e.response.status === 409) {
+        setSignupFailure(true);
         input.current.select();
       }
+    } finally {
+      setBlocked(false);
     }
-    setBlocked(false);
   };
 
   const {
@@ -69,7 +70,7 @@ const SignupForm = () => {
               type="text"
               value={values.username}
               onChange={handleChange}
-              isInvalid={touched.username && (errors.username || !isSuccessSignup)}
+              isInvalid={touched.username && (errors.username || signupFailure)}
               ref={input}
             />
             {errors.username && (
@@ -77,7 +78,7 @@ const SignupForm = () => {
                 {t(`form.${errors.username}`)}
               </Form.Control.Feedback>
             )}
-            {!isSuccessSignup && (
+            {signupFailure && (
               <Form.Control.Feedback type="invalid">
                 {t('form.usernameAlreadyExist')}
               </Form.Control.Feedback>

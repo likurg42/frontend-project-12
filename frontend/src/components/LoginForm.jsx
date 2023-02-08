@@ -10,7 +10,6 @@ import {
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import useAuth from '../hooks/useAuth.js';
-import getLoginSchema from '../schemas/loginSchema.js';
 import routes from '../routes/routes.js';
 
 const LoginForm = () => {
@@ -18,7 +17,7 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
   const [isBlocked, setBlocked] = useState(false);
-  const [isSuccessAuth, setSuccessAuth] = useState(true);
+  const [authFailure, setAuthFailure] = useState(false);
   const input = useRef(null);
 
   const onSubmit = async (values) => {
@@ -28,12 +27,13 @@ const LoginForm = () => {
       login(res.data);
       navigate('/');
     } catch (e) {
-      if (e.response.status === 401) {
-        setSuccessAuth(false);
+      if (e.AxiosError || e.response.status === 401) {
+        setAuthFailure(true);
         input.current.select();
       }
+    } finally {
+      setBlocked(false);
     }
-    setBlocked(false);
   };
 
   const {
@@ -47,7 +47,6 @@ const LoginForm = () => {
       username: '',
       password: '',
     },
-    validationSchema: getLoginSchema(),
     onSubmit,
   });
 
@@ -67,7 +66,7 @@ const LoginForm = () => {
               type="text"
               value={values.username}
               onChange={handleChange}
-              isInvalid={touched.username && (errors.username || !isSuccessAuth)}
+              isInvalid={touched.username && (errors.username || authFailure)}
               ref={input}
             />
             {errors.username && (
@@ -75,7 +74,7 @@ const LoginForm = () => {
                 {t(`form.${errors.username}`)}
               </Form.Control.Feedback>
             )}
-            {!isSuccessAuth && (
+            {authFailure && (
               <Form.Control.Feedback type="invalid">
                 {t('form.usernameNotExist')}
               </Form.Control.Feedback>
@@ -98,11 +97,16 @@ const LoginForm = () => {
           </Form.Group>
           <div className="d-flex align-items-center justify-content-between">
             <Form.Group className="d-flex justify-content-between align-items-center">
-              <Button variant="primary" type="submit" disabled={isBlocked}>{t('label.login')}</Button>
+              <Button
+                variant="primary"
+                type="submit"
+                disabled={isBlocked}
+              >
+                {t('label.login')}
+              </Button>
             </Form.Group>
             <Link className="link-dark" to="/signup">{t('label.register')}</Link>
           </div>
-
         </Form>
       </Col>
     </Row>
