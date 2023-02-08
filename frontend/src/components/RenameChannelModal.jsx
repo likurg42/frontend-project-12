@@ -45,20 +45,19 @@ const RenameChannelModal = ({
     touched,
   } = useFormik({
     initialValues: {
-      name: '',
+      name: channel?.name || '',
     },
+    enableReinitialize: true,
     validationSchema: getChannelSchema(channelsNames),
     onSubmit,
   });
 
   useEffect(() => {
     if (input.current && show) {
-      input.current.value = channel.name;
       input.current.focus();
       input.current.select();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [show]);
+  }, [show, values]);
 
   return (
     <Modal size="lg" centered show={show} onHide={handleClose}>
