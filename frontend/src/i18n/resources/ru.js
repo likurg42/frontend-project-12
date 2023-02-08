@@ -12,7 +12,7 @@ const ruLocales = {
     },
     channels: {
       channels: 'Каналы',
-      channelManagment: 'Управление каналом',
+      channelManagement: 'Управление каналом',
       rename: 'Переименовать',
       remove: 'Удалить',
     },
@@ -30,7 +30,7 @@ const ruLocales = {
     },
     error: {
       connection: 'Ошибка соединения',
-      authentication: 'Пользователь не найден',
+      authentication: 'Необходимо войти в чат',
     },
     form: {
       login: 'Ваш ник',
