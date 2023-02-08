@@ -15,39 +15,22 @@ const AddChannelModal = ({
   const dispatch = useDispatch();
   const channelsNames = useSelector(getChannelsNames);
   const [isBlocked, setBlocked] = useState(false);
-  const [isAlreadyExist, setAlreadyExist] = useState(false);
   const input = useRef(null);
 
-  const checkIsInputAlreadyExist = (value) => {
-    setBlocked(true);
-    if (channelsNames.includes(value)) {
-      setAlreadyExist(true);
-      setBlocked(false);
-      input.current.select();
-      return true;
-    }
-
-    setAlreadyExist(false);
-    setBlocked(false);
-    return false;
-  };
-
   const onSubmit = async (values, { resetForm }) => {
-    if (!checkIsInputAlreadyExist(values.name)) {
-      setBlocked(true);
-      try {
-        const data = await createChannel(values.name);
-        const { id } = data;
-        dispatch(addChannel(data));
-        dispatch(changeCurrentChannel(id));
-        handleClose();
-        notifySuccess();
-        resetForm();
-      } catch (err) {
-        notifyError();
-      } finally {
-        setBlocked(false);
-      }
+    setBlocked(true);
+    try {
+      const data = await createChannel(values.name);
+      const { id } = data;
+      dispatch(addChannel(data));
+      dispatch(changeCurrentChannel(id));
+      handleClose();
+      notifySuccess();
+      resetForm();
+    } catch (err) {
+      notifyError();
+    } finally {
+      setBlocked(false);
     }
   };
 
@@ -61,7 +44,7 @@ const AddChannelModal = ({
     initialValues: {
       name: '',
     },
-    validationSchema: getChannelSchema(),
+    validationSchema: getChannelSchema(channelsNames),
     onSubmit,
   });
 
@@ -88,7 +71,7 @@ const AddChannelModal = ({
               value={values.name}
               placeholder={t('form.channelName')}
               onChange={handleChange}
-              isInvalid={touched.name && (errors.name || isAlreadyExist)}
+              isInvalid={touched.name && (errors.name)}
               ref={input}
               disabled={isBlocked}
               autoComplete="off"
@@ -96,11 +79,6 @@ const AddChannelModal = ({
             {errors.name && (
               <Form.Control.Feedback type="invalid">
                 {t(`form.${errors.name}`)}
-              </Form.Control.Feedback>
-            )}
-            {isAlreadyExist && (
-              <Form.Control.Feedback type="invalid">
-                {t('form.channelNameAlreadyExist')}
               </Form.Control.Feedback>
             )}
           </Form.Group>
