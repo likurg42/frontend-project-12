@@ -9,7 +9,6 @@ import {
   fetchChatData,
   getChannels,
   getCurrentChannel,
-  resetLoadingStatus,
 } from '../slices/channelsSlice.js';
 import { Channels, Messages } from '../components/index.js';
 import useAuth from '../hooks/useAuth.js';
@@ -22,15 +21,12 @@ const ChatPage = () => {
   const currentChannel = useSelector(getCurrentChannel);
   const dispatch = useDispatch();
 
-  const notify = (text) => toast.error(text, toastsParams.getDefaultParams());
-
   useEffect(() => {
     const getData = async () => {
       try {
         await dispatch(fetchChatData(getHeaders())).unwrap();
       } catch (e) {
-        notify(t('error.authentication'));
-        dispatch(resetLoadingStatus());
+        toast.error(t('error.authentication'), toastsParams.getDefaultParams());
         logout();
       }
     };
