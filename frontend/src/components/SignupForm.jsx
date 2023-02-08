@@ -9,9 +9,11 @@ import {
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import getSignupSchema from '../schemas/signupSchema.js';
 import useAuth from '../hooks/useAuth.js';
 import routes from '../routes/routes.js';
+import toastsParams from '../toasts/toastsParams.js';
 
 const SignupForm = () => {
   const { t } = useTranslation();
@@ -20,6 +22,8 @@ const SignupForm = () => {
   const [isBlocked, setBlocked] = useState(false);
   const [signupFailure, setSignupFailure] = useState(null);
   const input = useRef(null);
+
+  const notifyError = (text) => toast.error(text, toastsParams.getDefaultParams());
 
   const onSubmit = async (values) => {
     setBlocked(true);
@@ -31,7 +35,7 @@ const SignupForm = () => {
       if (e.isAxiosError && e.response?.status === 409) {
         setSignupFailure(t('form.usernameAlreadyExist'));
       } else {
-        setSignupFailure(t('error.connection'));
+        notifyError(t('error.connection'));
       }
     } finally {
       input.current.select();
