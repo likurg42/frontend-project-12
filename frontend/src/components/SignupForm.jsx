@@ -16,7 +16,7 @@ import routes from '../routes/routes.js';
 const SignupForm = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { signup } = useAuth();
+  const { login } = useAuth();
   const [isBlocked, setBlocked] = useState(false);
   const [isSuccessSignup, setSuccessSignup] = useState(true);
   const input = useRef(null);
@@ -25,7 +25,7 @@ const SignupForm = () => {
     setBlocked(true);
     try {
       const res = await axios.post(routes.api.signup(), values);
-      signup(res.data);
+      login(res.data);
       navigate('/');
     } catch (e) {
       if (e.response.status === 409) {

@@ -2,22 +2,13 @@ import React, {
   useState, useMemo, useCallback,
 } from 'react';
 
-const getUserFromLocalStorage = () => {
-  const token = localStorage.getItem('token');
-  const username = localStorage.getItem('username');
-  return { token, username };
-};
+const generateEmptyUser = () => ({
+  username: null,
+  token: null,
+});
+const getUserFromLocalStorage = () => JSON.parse(localStorage.getItem('user')) || generateEmptyUser();
 
-const updateUserInLocalStorage = (user) => {
-  const { token, username } = user;
-  if (token && username) {
-    localStorage.setItem('token', token);
-    localStorage.setItem('username', username);
-  } else {
-    localStorage.removeItem('token');
-    localStorage.removeItem('username');
-  }
-};
+const setUserInLocalStorage = (user) => localStorage.setItem('user', JSON.stringify(user));
 
 const AuthContext = React.createContext({});
 
@@ -30,33 +21,22 @@ export const AuthProvider = ({ children }) => {
     return {};
   }, [user]);
 
-  const saveUser = useCallback((token, username) => {
-    const newUser = { token, username };
-    setUser(newUser);
-    updateUserInLocalStorage(newUser);
-  }, []);
-
-  const login = useCallback((data) => {
-    const { token, username } = data;
-    saveUser(token, username);
-  }, [saveUser]);
-
-  const signup = useCallback((data) => {
-    const { token, username } = data;
-    saveUser(token, username);
-  }, [saveUser]);
+  const login = (data) => {
+    setUser(data);
+    setUserInLocalStorage(data);
+  };
 
   const logout = () => {
-    const emptyUser = { username: null, token: null };
+    const emptyUser = generateEmptyUser();
     setUser(emptyUser);
-    updateUserInLocalStorage(emptyUser);
+    setUserInLocalStorage(emptyUser);
   };
 
   const providerValue = useMemo(
     () => ({
-      user, saveUser, getHeaders, logout, login, signup,
+      user, getHeaders, logout, login,
     }),
-    [user, saveUser, getHeaders, login, signup],
+    [user, getHeaders],
   );
 
   return <AuthContext.Provider value={providerValue}>{children}</AuthContext.Provider>;
