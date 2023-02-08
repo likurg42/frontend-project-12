@@ -22,8 +22,6 @@ const LoginForm = () => {
   const [authFailure, setAuthFailure] = useState(null);
   const input = useRef(null);
 
-  const notifyError = (text) => toast.error(text, toastsParams.getDefaultParams());
-
   const onSubmit = async (values) => {
     setBlocked(true);
     try {
@@ -34,7 +32,7 @@ const LoginForm = () => {
       if (e.isAxiosError && e.response?.status === 401) {
         setAuthFailure(t('form.usernameNotExist'));
       } else {
-        notifyError(t('error.connection'));
+        toast.error(t('error.connection'), toastsParams.getDefaultParams());
       }
     } finally {
       input.current.select();

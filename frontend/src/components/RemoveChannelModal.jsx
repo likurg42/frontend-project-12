@@ -22,9 +22,6 @@ const RemoveChannelModal = ({
   const [display, setDisplay] = useState(show);
   const { id } = currentChannel;
 
-  const notifyError = (text) => toast.error(text, toastsParams.getDefaultParams());
-  const notifySuccess = (text) => toast.success(text, toastsParams.getDefaultParams());
-
   const handleDelete = async () => {
     setBlocked(true);
     try {
@@ -34,9 +31,9 @@ const RemoveChannelModal = ({
         dispatch(changeCurrentChannel(1));
       }
       setDisplay(false);
-      notifySuccess(t('toastMessage.channelRemoved'));
+      toast.success(t('toastMessage.channelRemoved'), toastsParams.getDefaultParams());
     } catch (err) {
-      notifyError(t('errors.network'));
+      toast.error(t('errors.network'), toastsParams.getDefaultParams());
     } finally {
       setBlocked(false);
     }

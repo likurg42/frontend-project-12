@@ -23,8 +23,6 @@ const SignupForm = () => {
   const [signupFailure, setSignupFailure] = useState(null);
   const input = useRef(null);
 
-  const notifyError = (text) => toast.error(text, toastsParams.getDefaultParams());
-
   const onSubmit = async (values) => {
     setBlocked(true);
     try {
@@ -35,7 +33,7 @@ const SignupForm = () => {
       if (e.isAxiosError && e.response?.status === 409) {
         setSignupFailure(t('form.usernameAlreadyExist'));
       } else {
-        notifyError(t('error.connection'));
+        toast.error(t('error.connection'), toastsParams.getDefaultParams());
       }
     } finally {
       input.current.select();

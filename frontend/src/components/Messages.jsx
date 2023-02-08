@@ -24,8 +24,6 @@ const Messages = ({ currentChannel }) => {
   const bottomRef = useRef(null);
   const input = useRef(null);
 
-  const notifyError = (text) => toast.error(text, toastsParams.getDefaultParams());
-
   const onSubmit = async (values, { resetForm }) => {
     const { message } = values;
     setBlocked(true);
@@ -33,7 +31,7 @@ const Messages = ({ currentChannel }) => {
       await sendMessage(message, id, user.username);
       resetForm();
     } catch (err) {
-      notifyError(t('error.connection'));
+      toast.error(t('error.connection'), toastsParams.getDefaultParams());
     } finally {
       setBlocked(false);
     }

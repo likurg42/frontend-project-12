@@ -20,9 +20,6 @@ const AddChannelModal = ({
   const [display, setDisplay] = useState(show);
   const input = useRef(null);
 
-  const notifyError = (text) => toast.error(text, toastsParams.getDefaultParams());
-  const notifySuccess = (text) => toast.success(text, toastsParams.getDefaultParams());
-
   const onSubmit = async (values) => {
     setBlocked(true);
     try {
@@ -31,9 +28,9 @@ const AddChannelModal = ({
       dispatch(addChannel(data));
       dispatch(changeCurrentChannel(id));
       setDisplay(false);
-      notifySuccess(t('toastMessage.channelAdded'));
+      toast.success(t('toastMessage.channelAdded'), toastsParams.getDefaultParams());
     } catch (err) {
-      notifyError(t('errors.network'));
+      toast.error(t('errors.network'), toastsParams.getDefaultParams());
     } finally {
       setBlocked(false);
     }

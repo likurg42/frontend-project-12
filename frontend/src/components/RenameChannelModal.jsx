@@ -23,18 +23,15 @@ const RenameChannelModal = ({
   const [display, setDisplay] = useState(show);
   const [isBlocked, setBlocked] = useState(false);
 
-  const notifyError = (text) => toast.error(text, toastsParams.getDefaultParams());
-  const notifySuccess = (text) => toast.success(text, toastsParams.getDefaultParams());
-
   const onSubmit = async (values) => {
     setBlocked(true);
     try {
       await renameChannel(values.name, channel.id);
       dispatch(renameChannelStore({ id: channel.id, changes: { name: values.name } }));
-      notifySuccess(t('toastMessage.channelRenamed'));
+      toast.success(t('toastMessage.channelRenamed'), toastsParams.getDefaultParams());
       setDisplay(false);
     } catch (err) {
-      notifyError(t('errors.network'));
+      toast.error(t('errors.network'), toastsParams.getDefaultParams());
     } finally {
       setBlocked(false);
     }
