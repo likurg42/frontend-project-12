@@ -18,7 +18,7 @@ const SignupForm = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
   const [isBlocked, setBlocked] = useState(false);
-  const [signupFailure, setSignupFailure] = useState(false);
+  const [signupFailure, setSignupFailure] = useState(null);
   const input = useRef(null);
 
   const onSubmit = async (values) => {
@@ -28,11 +28,13 @@ const SignupForm = () => {
       login(res.data);
       navigate('/');
     } catch (e) {
-      if (e.AxiosError || e.response.status === 409) {
-        setSignupFailure(true);
-        input.current.select();
+      if (e.isAxiosError && e.response?.status === 409) {
+        setSignupFailure(t('form.usernameAlreadyExist'));
+      } else {
+        setSignupFailure(t('error.connection'));
       }
     } finally {
+      input.current.select();
       setBlocked(false);
     }
   };
@@ -70,7 +72,7 @@ const SignupForm = () => {
               type="text"
               value={values.username}
               onChange={handleChange}
-              isInvalid={touched.username && (errors.username || signupFailure)}
+              isInvalid={touched.username && (errors.username || !!signupFailure)}
               ref={input}
             />
             {errors.username && (
@@ -78,9 +80,9 @@ const SignupForm = () => {
                 {t(`form.${errors.username}`)}
               </Form.Control.Feedback>
             )}
-            {signupFailure && (
+            {!!signupFailure && (
               <Form.Control.Feedback type="invalid">
-                {t('form.usernameAlreadyExist')}
+                {signupFailure}
               </Form.Control.Feedback>
             )}
           </Form.Group>

@@ -17,7 +17,7 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
   const [isBlocked, setBlocked] = useState(false);
-  const [authFailure, setAuthFailure] = useState(false);
+  const [authFailure, setAuthFailure] = useState(null);
   const input = useRef(null);
 
   const onSubmit = async (values) => {
@@ -27,11 +27,13 @@ const LoginForm = () => {
       login(res.data);
       navigate('/');
     } catch (e) {
-      if (e.AxiosError || e.response.status === 401) {
-        setAuthFailure(true);
-        input.current.select();
+      if (e.isAxiosError && e.response?.status === 401) {
+        setAuthFailure(t('form.usernameNotExist'));
+      } else {
+        setAuthFailure(t('error.connection'));
       }
     } finally {
+      input.current.select();
       setBlocked(false);
     }
   };
@@ -66,7 +68,7 @@ const LoginForm = () => {
               type="text"
               value={values.username}
               onChange={handleChange}
-              isInvalid={touched.username && (errors.username || authFailure)}
+              isInvalid={touched.username && (errors.username || !!authFailure)}
               ref={input}
             />
             {errors.username && (
@@ -74,9 +76,9 @@ const LoginForm = () => {
                 {t(`form.${errors.username}`)}
               </Form.Control.Feedback>
             )}
-            {authFailure && (
+            {!!authFailure && (
               <Form.Control.Feedback type="invalid">
-                {t('form.usernameNotExist')}
+                {authFailure}
               </Form.Control.Feedback>
             )}
           </Form.Group>
