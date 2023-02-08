@@ -7,7 +7,7 @@ import getChannelSchema from '../schemas/channelNameSchema.js';
 import {
   getChannelsNames,
   renameChannel as renameChannelStore,
-  getChannnel,
+  getChannel,
 } from '../slices/channelsSlice.js';
 import useChat from '../hooks/useChat.js';
 
@@ -19,7 +19,7 @@ const RenameChannelModal = ({
   const { renameChannel } = useChat();
   const input = useRef(null);
   const channelsNames = useSelector(getChannelsNames);
-  const channel = useSelector(getChannnel(channelId));
+  const channel = useSelector(getChannel(channelId));
   const [isBlocked, setBlocked] = useState(false);
 
   const onSubmit = async (values, { resetForm }) => {
