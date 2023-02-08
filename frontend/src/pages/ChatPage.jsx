@@ -5,6 +5,7 @@ import {
 } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import {
   fetchChatData, getChannels, getCurrentChannel, getLoadingStatus,
 } from '../slices/channelsSlice.js';
@@ -19,6 +20,7 @@ const ChatPage = () => {
   const currentChannel = useSelector(getCurrentChannel);
   const loadingStatus = useSelector(getLoadingStatus);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const notify = (text) => toast.error(text, toastsParams.getDefaultParams());
 
@@ -27,7 +29,8 @@ const ChatPage = () => {
   }, [getHeaders, dispatch]);
 
   if (loadingStatus === 'failed') {
-    notify(t('error.connection'));
+    notify(t('error.authentication'));
+    navigate('/login');
   }
 
   return (

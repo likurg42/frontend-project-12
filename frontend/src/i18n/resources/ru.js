@@ -30,6 +30,7 @@ const ruLocales = {
     },
     error: {
       connection: 'Ошибка соединения',
+      authentication: 'Пользователь не найден',
     },
     form: {
       login: 'Ваш ник',
