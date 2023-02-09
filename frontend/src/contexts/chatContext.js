@@ -1,12 +1,23 @@
 import React, {
   useCallback,
   useMemo,
+  useState,
 } from 'react';
 import routes from '../routes/routes.js';
 
 const ChatContext = React.createContext({});
 
 export const ChatProvider = ({ socket, children }) => {
+  const [socketConnection, setSocketConnection] = useState(false);
+
+  socket.on('connect', () => {
+    setSocketConnection(true);
+  });
+
+  socket.on('disconnect', () => {
+    setSocketConnection(false);
+  });
+
   const promisifyEmitEvents = useCallback((event, arg) => new Promise((resolve, reject) => {
     socket
       .timeout(5000)
@@ -41,9 +52,9 @@ export const ChatProvider = ({ socket, children }) => {
 
   const providerValue = useMemo(
     () => ({
-      sendMessage, createChannel, removeChannel, renameChannel,
+      sendMessage, createChannel, removeChannel, renameChannel, socketConnection,
     }),
-    [sendMessage, createChannel, removeChannel, renameChannel],
+    [sendMessage, createChannel, removeChannel, renameChannel, socketConnection],
   );
 
   return <ChatContext.Provider value={providerValue}>{children}</ChatContext.Provider>;

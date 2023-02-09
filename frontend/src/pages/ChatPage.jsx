@@ -13,6 +13,7 @@ import {
 import { Channels, Messages } from '../components/index.js';
 import useAuth from '../hooks/useAuth.js';
 import toastsParams from '../toasts/toastsParams.js';
+import useChat from '../hooks/useChat.js';
 
 const ChatPage = () => {
   const { t } = useTranslation();
@@ -21,6 +22,7 @@ const ChatPage = () => {
   const currentChannel = useSelector(getCurrentChannel);
   const dispatch = useDispatch();
   const loadingStatus = useSelector(getLoadingStatus);
+  const { socketConnection } = useChat();
 
   const getData = useCallback(() => {
     dispatch(fetchChatData(getHeaders())).then((res) => {
@@ -35,7 +37,7 @@ const ChatPage = () => {
 
   useEffect(() => {
     getData();
-  }, [getData]);
+  }, [getData, socketConnection]);
 
   return loadingStatus === 'failed' ? (
     <Row className="h-100">
