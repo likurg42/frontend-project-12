@@ -12,14 +12,14 @@ import {
 import toastsParams from '../toasts/toastsParams.js';
 
 const RemoveChannelModal = ({
-  show, handleClose, channel,
+  handleClose, channel,
 }) => {
-  const [isBlocked, setBlocked] = useState(false);
+  const [blocked, setBlocked] = useState(false);
   const { t } = useTranslation();
   const { removeChannel } = useChat();
   const dispatch = useDispatch();
   const currentChannel = useSelector(getCurrentChannel);
-  const [display, setDisplay] = useState(show);
+  const [display, setDisplay] = useState(true);
   const { id } = currentChannel;
 
   const handleDelete = async () => {
@@ -34,7 +34,6 @@ const RemoveChannelModal = ({
       toast.success(t('toastMessage.channelRemoved'), toastsParams.getDefaultParams());
     } catch (err) {
       toast.error(t('error.connection'), toastsParams.getDefaultParams());
-    } finally {
       setBlocked(false);
     }
   };
@@ -56,10 +55,10 @@ const RemoveChannelModal = ({
       </Modal.Header>
       <Modal.Body>{t('modal.deleteChannelConfirmation')}</Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={() => setDisplay(false)} disabled={isBlocked}>
+        <Button variant="secondary" onClick={() => setDisplay(false)} disabled={blocked}>
           {t('modal.cancel')}
         </Button>
-        <Button variant="danger" onClick={handleDelete} disabled={isBlocked}>
+        <Button variant="danger" onClick={handleDelete} disabled={blocked}>
           {t('modal.delete')}
         </Button>
       </Modal.Footer>

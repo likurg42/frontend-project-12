@@ -18,25 +18,14 @@ const renderModal = (modalParams, handleClose) => {
   }
 
   const modals = {
-    add: (
-      <AddChannelModal
-        show
-        handleClose={handleClose}
-      />
-    ),
-    remove: (<RemoveChannelModal
-      show
-      channel={channel}
-      handleClose={handleClose}
-    />),
-    rename: (<RenameChannelModal
-      show
-      channel={channel}
-      handleClose={handleClose}
-    />),
+    add: AddChannelModal,
+    remove: RemoveChannelModal,
+    rename: RenameChannelModal,
   };
 
-  return modals[modalParams.type];
+  const Modal = modals[modalParams.type];
+
+  return <Modal channel={channel} handleClose={handleClose} />;
 };
 
 const Channels = ({ channels, currentChannel }) => {

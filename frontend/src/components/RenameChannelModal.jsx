@@ -13,15 +13,15 @@ import useChat from '../hooks/useChat.js';
 import toastsParams from '../toasts/toastsParams.js';
 
 const RenameChannelModal = ({
-  show, handleClose, channel,
+  handleClose, channel,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { renameChannel } = useChat();
   const input = useRef(null);
   const channelsNames = useSelector(getChannelsNames);
-  const [display, setDisplay] = useState(show);
-  const [isBlocked, setBlocked] = useState(false);
+  const [display, setDisplay] = useState(true);
+  const [blocked, setBlocked] = useState(false);
 
   const onSubmit = async (values) => {
     setBlocked(true);
@@ -32,7 +32,6 @@ const RenameChannelModal = ({
       setDisplay(false);
     } catch (err) {
       toast.error(t('error.connection'), toastsParams.getDefaultParams());
-    } finally {
       setBlocked(false);
     }
   };
@@ -53,11 +52,11 @@ const RenameChannelModal = ({
   });
 
   useEffect(() => {
-    if (input.current && show) {
+    if (input.current) {
       input.current.focus();
       input.current.select();
     }
-  }, [show, channel]);
+  }, []);
 
   return (
     <Modal
@@ -86,7 +85,7 @@ const RenameChannelModal = ({
               isInvalid={touched.name && (errors.name)}
               ref={input}
               autoComplete="off"
-              disabled={isBlocked}
+              disabled={blocked}
             />
             {errors.name && (
               <Form.Control.Feedback type="invalid">
@@ -95,10 +94,10 @@ const RenameChannelModal = ({
             )}
           </Form.Group>
           <div className="d-flex justify-content-end gap-2">
-            <Button variant="secondary" onClick={() => setDisplay(false)} disabled={isBlocked}>
+            <Button variant="secondary" onClick={() => setDisplay(false)} disabled={blocked}>
               {t('modal.cancel')}
             </Button>
-            <Button type="submit" variant="primary" disabled={isBlocked}>
+            <Button type="submit" variant="primary" disabled={blocked}>
               {t('modal.rename')}
             </Button>
           </div>

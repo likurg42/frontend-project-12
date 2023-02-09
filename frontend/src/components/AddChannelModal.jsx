@@ -10,14 +10,14 @@ import { getChannelsNames, changeCurrentChannel, addChannel } from '../slices/ch
 import toastsParams from '../toasts/toastsParams.js';
 
 const AddChannelModal = ({
-  show, handleClose,
+  handleClose,
 }) => {
   const { t } = useTranslation();
   const { createChannel } = useChat();
   const dispatch = useDispatch();
   const channelsNames = useSelector(getChannelsNames);
-  const [isBlocked, setBlocked] = useState(false);
-  const [display, setDisplay] = useState(show);
+  const [blocked, setBlocked] = useState(false);
+  const [display, setDisplay] = useState(true);
   const input = useRef(null);
 
   const onSubmit = async (values) => {
@@ -31,7 +31,6 @@ const AddChannelModal = ({
       toast.success(t('toastMessage.channelAdded'), toastsParams.getDefaultParams());
     } catch (err) {
       toast.error(t('error.connection'), toastsParams.getDefaultParams());
-    } finally {
       setBlocked(false);
     }
   };
@@ -53,9 +52,8 @@ const AddChannelModal = ({
   useEffect(() => {
     if (input.current) {
       input.current.focus();
-      input.current.select();
     }
-  }, [show]);
+  }, []);
 
   return (
     <Modal
@@ -83,7 +81,7 @@ const AddChannelModal = ({
               onChange={handleChange}
               isInvalid={touched.name && (errors.name)}
               ref={input}
-              disabled={isBlocked}
+              disabled={blocked}
               autoComplete="off"
             />
             {errors.name && (
@@ -93,10 +91,10 @@ const AddChannelModal = ({
             )}
           </Form.Group>
           <div className="d-flex justify-content-end gap-2">
-            <Button variant="secondary" onClick={() => setDisplay(false)} disabled={isBlocked}>
+            <Button variant="secondary" onClick={() => setDisplay(false)} disabled={blocked}>
               {t('modal.cancel')}
             </Button>
-            <Button type="submit" variant="primary" disabled={isBlocked}>
+            <Button type="submit" variant="primary" disabled={blocked}>
               {t('modal.add')}
             </Button>
           </div>
