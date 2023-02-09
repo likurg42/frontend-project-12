@@ -10,7 +10,7 @@ export const ChatProvider = ({ socket, children }) => {
   const promisifyEmitEvents = useCallback((event, arg) => new Promise((resolve, reject) => {
     socket
       .timeout(5000)
-      .emit(event, arg, (err, res) => (res.status !== 'ok' || err ? reject(err) : resolve(res.data)));
+      .emit(event, arg, (err, res) => (res?.status === 'ok' ? resolve(res.data) : reject(err)));
   }), [socket]);
 
   const sendMessage = useCallback((

@@ -33,7 +33,7 @@ const RemoveChannelModal = ({
       setDisplay(false);
       toast.success(t('toastMessage.channelRemoved'), toastsParams.getDefaultParams());
     } catch (err) {
-      toast.error(t('errors.network'), toastsParams.getDefaultParams());
+      toast.error(t('error.connection'), toastsParams.getDefaultParams());
     } finally {
       setBlocked(false);
     }

@@ -31,7 +31,7 @@ const RenameChannelModal = ({
       toast.success(t('toastMessage.channelRenamed'), toastsParams.getDefaultParams());
       setDisplay(false);
     } catch (err) {
-      toast.error(t('errors.network'), toastsParams.getDefaultParams());
+      toast.error(t('error.connection'), toastsParams.getDefaultParams());
     } finally {
       setBlocked(false);
     }
