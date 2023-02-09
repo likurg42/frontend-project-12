@@ -5,10 +5,14 @@ import routes from '../routes/routes.js';
 
 export const fetchChatData = createAsyncThunk(
   'channels/fetchChatData',
-  async (headers) => {
-    const response = await axios.get(routes.api.data(), { headers });
-    const { data } = response;
-    return data;
+  async (headers, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(routes.api.data(), { headers });
+      const { data } = response;
+      return data;
+    } catch (e) {
+      return rejectWithValue(e.response.data);
+    }
   },
 );
 
@@ -30,10 +34,6 @@ const channelsSlice = createSlice({
     },
     removeChannel: channelsAdapter.removeOne,
     renameChannel: channelsAdapter.updateOne,
-    resetLoadingStatus: (state) => {
-      state.loadingStatus = 'idle';
-      state.loadingError = null;
-    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchChatData.pending, (state) => {
@@ -44,7 +44,8 @@ const channelsSlice = createSlice({
       channelsAdapter.setAll(state, channels);
       state.loadingStatus = 'idle';
       state.loadingError = null;
-    }).addCase(fetchChatData.rejected, (state, { error }) => {
+    }).addCase(fetchChatData.rejected, (state, payload) => {
+      const { error } = payload;
       state.loadingStatus = 'failed';
       state.loadingError = error;
     });
@@ -56,12 +57,10 @@ export const getChannels = (state) => selectors.selectAll(state);
 export const getChannelsNames = (state) => getChannels(state).map(({ name }) => name);
 export const getCurrentChannel = (state) => getChannels(state)
   .find(({ id }) => id === state.channels.currentChannelId);
-export const getLoadingError = (state) => state.channels.loadingError;
 export const getLoadingStatus = (state) => state.channels.loadingStatus;
-export const getChannel = (id) => (state) => selectors.selectById(state, id);
 
 export const {
-  changeCurrentChannel, addChannel, removeChannel, renameChannel, resetLoadingStatus,
+  changeCurrentChannel, addChannel, removeChannel, renameChannel,
 } = channelsSlice.actions;
 
 export default channelsSlice.reducer;

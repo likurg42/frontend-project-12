@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  Col, Row,
+  Col, Row, Button,
 } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import {
   fetchChatData,
   getChannels,
-  getCurrentChannel,
+  getCurrentChannel, getLoadingStatus,
 } from '../slices/channelsSlice.js';
 import { Channels, Messages } from '../components/index.js';
 import useAuth from '../hooks/useAuth.js';
@@ -20,21 +20,30 @@ const ChatPage = () => {
   const channels = useSelector(getChannels);
   const currentChannel = useSelector(getCurrentChannel);
   const dispatch = useDispatch();
+  const loadingStatus = useSelector(getLoadingStatus);
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        await dispatch(fetchChatData(getHeaders())).unwrap();
-      } catch (e) {
+  const getData = useCallback(() => {
+    dispatch(fetchChatData(getHeaders())).then((res) => {
+      if (res.error && res.payload?.statusCode === 401) {
         toast.error(t('error.authentication'), toastsParams.getDefaultParams());
         logout();
+      } else if (res.error) {
+        toast.error(t('error.connection'), toastsParams.getDefaultParams());
       }
-    };
+    });
+  }, [dispatch, getHeaders, logout, t]);
 
+  useEffect(() => {
     getData();
-  }, [getHeaders, dispatch, logout, t]);
+  }, [getData]);
 
-  return (
+  return loadingStatus === 'failed' ? (
+    <Row className="h-100">
+      <Col className="d-flex justify-content-center align-items-center">
+        <Button type="button" onClick={getData}>Обновить</Button>
+      </Col>
+    </Row>
+  ) : (
     <Row className="h-100 bg-white flex-nowrap flex-md-row">
       <Col
         sm={3}
