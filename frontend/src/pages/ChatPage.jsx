@@ -40,7 +40,7 @@ const ChatPage = () => {
   return loadingStatus === 'failed' ? (
     <Row className="h-100">
       <Col className="d-flex justify-content-center align-items-center">
-        <Button type="button" onClick={getData}>Обновить</Button>
+        <Button type="button" onClick={getData}>{t('label.reload')}</Button>
       </Col>
     </Row>
   ) : (

@@ -27,6 +27,7 @@ const ruLocales = {
       login: 'Войти',
       logout: 'Выйти',
       register: 'Регистрация',
+      reload: 'Обновить',
     },
     error: {
       connection: 'Ошибка соединения',
