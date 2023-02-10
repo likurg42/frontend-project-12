@@ -12,14 +12,16 @@ import useAuth from '../hooks/useAuth.js';
 import useChat from '../hooks/useChat.js';
 import toastsParams from '../toasts/toastsParams.js';
 import getMessagesSchema from '../schemas/messagesSchema.js';
+import { getLoadingStatus } from '../slices/channelsSlice.js';
 
-const Messages = ({ currentChannel }) => {
+const Messages = ({ currentChannel, getData }) => {
   const { t } = useTranslation();
   const { user } = useAuth();
   const [blocked, setBlocked] = useState(false);
   const { sendMessage } = useChat();
   const { name, id } = currentChannel;
   const channelMessages = useSelector(getChannelMessages(id));
+  const loadingStatus = useSelector(getLoadingStatus);
 
   const bottomRef = useRef(null);
   const input = useRef(null);
@@ -59,16 +61,21 @@ const Messages = ({ currentChannel }) => {
 
   return (
     <div className="d-flex flex-column h-100">
-      <div className="bg-light mb-4 p-3 shadow-sm small">
-        <p className="m-0">
-          <b>
-            {'# '}
-            {name}
-          </b>
-        </p>
-        <span className="text-muted">
-          {t('messages.messages', { count: channelMessages.length })}
-        </span>
+      <div className="bg-light mb-4 p-3 shadow-sm small d-flex justify-content-between">
+        <div className="">
+          <p className="m-0">
+            <b>
+              {'# '}
+              {name}
+            </b>
+          </p>
+          <span className="text-muted">
+            {t('messages.messages', { count: channelMessages.length })}
+          </span>
+        </div>
+        <div>
+          {loadingStatus === 'failed' && <Button onClick={getData}>Переподключиться</Button>}
+        </div>
       </div>
       <div className="message-box overflow-auto px-5">
         {channelMessages.length > 0 && channelMessages.map(({ body, username }) => (

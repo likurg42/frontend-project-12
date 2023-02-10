@@ -1,14 +1,14 @@
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  Col, Row, Button,
+  Col, Row,
 } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import {
   fetchChatData,
   getChannels,
-  getCurrentChannel, getLoadingStatus,
+  getCurrentChannel,
 } from '../slices/channelsSlice.js';
 import { Channels, Messages } from '../components/index.js';
 import useAuth from '../hooks/useAuth.js';
@@ -21,7 +21,6 @@ const ChatPage = () => {
   const channels = useSelector(getChannels);
   const currentChannel = useSelector(getCurrentChannel);
   const dispatch = useDispatch();
-  const loadingStatus = useSelector(getLoadingStatus);
   const { socketConnection } = useChat();
 
   const getData = useCallback(() => {
@@ -39,13 +38,7 @@ const ChatPage = () => {
     getData();
   }, [getData, socketConnection]);
 
-  return loadingStatus === 'failed' ? (
-    <Row className="h-100">
-      <Col className="d-flex justify-content-center align-items-center">
-        <Button type="button" onClick={getData}>{t('label.reload')}</Button>
-      </Col>
-    </Row>
-  ) : (
+  return (
     <Row className="h-100 bg-white flex-nowrap flex-md-row">
       <Col
         sm={3}
@@ -55,9 +48,10 @@ const ChatPage = () => {
           && <Channels channels={channels} currentChannel={currentChannel} />}
       </Col>
       <Col sm={9} className="col-8 p-0 h-100 ">
-        {channels.length > 0 && <Messages currentChannel={currentChannel} />}
+        {channels.length > 0 && <Messages currentChannel={currentChannel} getData={getData} />}
       </Col>
     </Row>
+
   );
 };
 
