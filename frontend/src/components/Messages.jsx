@@ -61,7 +61,9 @@ const Messages = ({ currentChannel, getData }) => {
 
   return (
     <div className="d-flex flex-column h-100">
-      <div className="bg-light mb-4 p-3 shadow-sm small d-flex justify-content-between">
+      <div
+        className="bg-light mb-4 p-3 shadow-sm small d-flex justify-content-between flex-wrap gap-2"
+      >
         <div className="">
           <p className="m-0">
             <b>
@@ -74,7 +76,7 @@ const Messages = ({ currentChannel, getData }) => {
           </span>
         </div>
         <div>
-          {loadingStatus === 'failed' && <Button onClick={getData}>Переподключиться</Button>}
+          {loadingStatus === 'failed' && <Button onClick={getData}>{t('label.reconnect')}</Button>}
         </div>
       </div>
       <div className="message-box overflow-auto px-5">
