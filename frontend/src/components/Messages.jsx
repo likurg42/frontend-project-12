@@ -35,11 +35,17 @@ const Messages = ({ currentChannel }) => {
     try {
       await sendMessage(message, id, user.username);
       resetForm();
+      input.current.focus();
+      bottomRef.current.scrollIntoView({ behaviour: 'smooth', block: 'nearest', inline: 'start' });
     } catch (err) {
       toast.error(t('error.connection'), toastsParams.getDefaultParams());
     } finally {
       setBlocked(false);
     }
+  };
+
+  const scrollToBottom = () => {
+    bottomRef.current.scrollIntoView({ behaviour: 'smooth', block: 'nearest', inline: 'start' });
   };
 
   const {
@@ -54,13 +60,16 @@ const Messages = ({ currentChannel }) => {
     onSubmit,
   });
 
-  useEffect(
-    () => {
-      input.current.focus();
-      bottomRef.current.scrollIntoView({ behaviour: 'smooth', block: 'nearest', inline: 'start' });
-    },
-    [channelMessages],
-  );
+  useEffect(() => {
+    input.current.focus();
+    scrollToBottom();
+  }, []);
+
+  useEffect(() => {
+    if (channelMessages.at(-1).username === user.username) {
+      scrollToBottom();
+    }
+  }, [channelMessages, user]);
 
   return (
     <div className="d-flex flex-column h-100">
