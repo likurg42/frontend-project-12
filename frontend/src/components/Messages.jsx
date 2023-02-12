@@ -63,7 +63,7 @@ const Messages = ({ currentChannel }) => {
   }, []);
 
   useEffect(() => {
-    if (channelMessages.at(-1).username === user.username) {
+    if (channelMessages.length > 0 && channelMessages.at(-1).username === user.username) {
       scrollToBottom();
     }
     input.current.focus();
