@@ -35,11 +35,11 @@ const Messages = ({ currentChannel }) => {
     try {
       await sendMessage(message, id, user.username);
       resetForm();
-      input.current.focus();
     } catch (err) {
       toast.error(t('error.connection'), toastsParams.getDefaultParams());
     } finally {
       setBlocked(false);
+      input.current.focus();
     }
   };
 
