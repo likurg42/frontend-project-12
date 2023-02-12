@@ -31,7 +31,7 @@ const ruLocales = {
     },
     error: {
       connection: 'Ошибка соединения',
-      authentication: 'Необходимо войти в чат',
+      login: 'Попробуйте войти еще раз',
     },
     form: {
       login: 'Ваш ник',

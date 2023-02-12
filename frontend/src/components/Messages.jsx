@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Form, Button, InputGroup } from 'react-bootstrap';
+import {
+  Form, Button, InputGroup, Spinner,
+} from 'react-bootstrap';
 import { ArrowRight } from 'react-bootstrap-icons';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { v4 as generateId } from 'uuid';
 import { useTranslation } from 'react-i18next';
 import filter from 'leo-profanity';
@@ -12,14 +14,15 @@ import useAuth from '../hooks/useAuth.js';
 import useChat from '../hooks/useChat.js';
 import toastsParams from '../toasts/toastsParams.js';
 import getMessagesSchema from '../schemas/messagesSchema.js';
-import { getLoadingStatus } from '../slices/channelsSlice.js';
+import { fetchChatData, getLoadingStatus } from '../slices/channelsSlice.js';
 
-const Messages = ({ currentChannel, getData }) => {
+const Messages = ({ currentChannel }) => {
   const { t } = useTranslation();
-  const { user } = useAuth();
+  const { user, getHeaders } = useAuth();
   const [blocked, setBlocked] = useState(false);
   const { sendMessage } = useChat();
   const { name, id } = currentChannel;
+  const dispatch = useDispatch();
   const channelMessages = useSelector(getChannelMessages(id));
   const loadingStatus = useSelector(getLoadingStatus);
 
@@ -76,7 +79,18 @@ const Messages = ({ currentChannel, getData }) => {
           </span>
         </div>
         <div>
-          {loadingStatus === 'failed' && <Button onClick={getData}>{t('label.reconnect')}</Button>}
+          {loadingStatus === 'failed' && (
+            <Button
+              onClick={() => dispatch(fetchChatData(getHeaders()))}
+            >
+              {t('label.reconnect')}
+            </Button>
+          )}
+          {loadingStatus === 'loading' && (
+            <Spinner animation="border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </Spinner>
+          )}
         </div>
       </div>
       <div className="message-box overflow-auto px-5">

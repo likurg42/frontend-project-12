@@ -11,7 +11,7 @@ export const fetchChatData = createAsyncThunk(
       const { data } = response;
       return data;
     } catch (e) {
-      return rejectWithValue(e.response.data);
+      return rejectWithValue({ name: e.name, statusCode: e?.response?.status });
     }
   },
 );
@@ -34,6 +34,10 @@ const channelsSlice = createSlice({
     },
     removeChannel: channelsAdapter.removeOne,
     renameChannel: channelsAdapter.updateOne,
+    resetLoadingState: (state) => {
+      state.loadingStatus = 'idle';
+      state.loadingError = null;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchChatData.pending, (state) => {
@@ -44,10 +48,9 @@ const channelsSlice = createSlice({
       channelsAdapter.setAll(state, channels);
       state.loadingStatus = 'idle';
       state.loadingError = null;
-    }).addCase(fetchChatData.rejected, (state, payload) => {
-      const { error } = payload;
+    }).addCase(fetchChatData.rejected, (state, { payload }) => {
       state.loadingStatus = 'failed';
-      state.loadingError = error;
+      state.loadingError = payload;
     });
   },
 });
@@ -58,9 +61,10 @@ export const getChannelsNames = (state) => getChannels(state).map(({ name }) => 
 export const getCurrentChannel = (state) => getChannels(state)
   .find(({ id }) => id === state.channels.currentChannelId);
 export const getLoadingStatus = (state) => state.channels.loadingStatus;
+export const getLoadingError = (state) => state.channels.loadingError;
 
 export const {
-  changeCurrentChannel, addChannel, removeChannel, renameChannel,
+  changeCurrentChannel, addChannel, removeChannel, renameChannel, resetLoadingState,
 } = channelsSlice.actions;
 
 export default channelsSlice.reducer;

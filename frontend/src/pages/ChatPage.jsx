@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Col, Row,
@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import {
   fetchChatData,
   getChannels,
-  getCurrentChannel,
+  getCurrentChannel, getLoadingError, resetLoadingState,
 } from '../slices/channelsSlice.js';
 import { Channels, Messages } from '../components/index.js';
 import useAuth from '../hooks/useAuth.js';
@@ -20,23 +20,25 @@ const ChatPage = () => {
   const { getHeaders, logout } = useAuth();
   const channels = useSelector(getChannels);
   const currentChannel = useSelector(getCurrentChannel);
+  const loadingError = useSelector(getLoadingError);
   const dispatch = useDispatch();
   const { socketConnection } = useChat();
 
-  const getData = useCallback(() => {
-    dispatch(fetchChatData(getHeaders())).then((res) => {
-      if (res.error && res.payload?.statusCode === 401) {
-        toast.error(t('error.authentication'), toastsParams.getDefaultParams());
-        logout();
-      } else if (res.error) {
-        toast.error(t('error.connection'), toastsParams.getDefaultParams());
-      }
-    });
-  }, [dispatch, getHeaders, logout, t]);
+  useEffect(() => {
+    dispatch(fetchChatData(getHeaders()));
+  }, [socketConnection, dispatch, getHeaders]);
 
   useEffect(() => {
-    getData();
-  }, [getData, socketConnection]);
+    if (loadingError) {
+      if (loadingError.statusCode === 401) {
+        toast.warn(t('error.login'), toastsParams.getDefaultParams());
+        dispatch(resetLoadingState());
+        logout();
+      } else {
+        toast.error(t('error.connection'), toastsParams.getDefaultParams());
+      }
+    }
+  }, [loadingError, logout, t, dispatch]);
 
   return (
     <Row className="h-100 bg-white flex-nowrap flex-md-row">
@@ -48,7 +50,7 @@ const ChatPage = () => {
           && <Channels channels={channels} currentChannel={currentChannel} />}
       </Col>
       <Col sm={9} className="col-8 p-0 h-100 ">
-        {channels.length > 0 && <Messages currentChannel={currentChannel} getData={getData} />}
+        {channels.length > 0 && <Messages currentChannel={currentChannel} />}
       </Col>
     </Row>
 
