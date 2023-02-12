@@ -32,13 +32,14 @@ const ChatPage = () => {
     if (loadingError) {
       if (loadingError.statusCode === 401) {
         toast.warn(t('error.login'), toastsParams.getDefaultParams());
-        dispatch(resetLoadingState());
         logout();
       } else {
         toast.error(t('error.connection'), toastsParams.getDefaultParams());
       }
     }
   }, [loadingError, logout, t, dispatch]);
+
+  useEffect(() => () => dispatch(resetLoadingState()), [dispatch]);
 
   return (
     <Row className="h-100 bg-white flex-nowrap flex-md-row">
@@ -53,7 +54,6 @@ const ChatPage = () => {
         {channels.length > 0 && <Messages currentChannel={currentChannel} />}
       </Col>
     </Row>
-
   );
 };
 
