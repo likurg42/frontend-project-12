@@ -39,7 +39,6 @@ const Messages = ({ currentChannel }) => {
       toast.error(t('error.connection'), toastsParams.getDefaultParams());
     } finally {
       setBlocked(false);
-      input.current.focus();
     }
   };
 
@@ -67,6 +66,7 @@ const Messages = ({ currentChannel }) => {
     if (channelMessages.at(-1).username === user.username) {
       scrollToBottom();
     }
+    input.current.focus();
   }, [channelMessages, user]);
 
   return (
