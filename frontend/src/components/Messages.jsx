@@ -36,7 +36,6 @@ const Messages = ({ currentChannel }) => {
       await sendMessage(message, id, user.username);
       resetForm();
       input.current.focus();
-      bottomRef.current.scrollIntoView({ behaviour: 'smooth', block: 'nearest', inline: 'start' });
     } catch (err) {
       toast.error(t('error.connection'), toastsParams.getDefaultParams());
     } finally {
@@ -61,7 +60,6 @@ const Messages = ({ currentChannel }) => {
   });
 
   useEffect(() => {
-    input.current.focus();
     scrollToBottom();
   }, []);
 
