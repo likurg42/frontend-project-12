@@ -1,5 +1,5 @@
 import { io } from 'socket.io-client';
-import store from '../slices/index.js';
+import store from '../slices';
 import { addMessage } from '../slices/messagesSlice.js';
 import {
   addChannel, changeCurrentChannel, removeChannel, renameChannel,

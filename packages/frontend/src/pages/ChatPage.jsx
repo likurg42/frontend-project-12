@@ -10,7 +10,7 @@ import {
   getChannels,
   getCurrentChannel, getLoadingError, resetLoadingState,
 } from '../slices/channelsSlice.js';
-import { Channels, Messages } from '../components/index.js';
+import { Channels, Messages } from '../components';
 import useAuth from '../hooks/useAuth.js';
 import toastsParams from '../toasts/toastsParams.js';
 import useChat from '../hooks/useChat.js';
