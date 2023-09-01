@@ -2,13 +2,14 @@
   "name": "group-chat",
   "version": "1.0.0",
   "workspaces": [
-    "packages/*"
+    "frontend",
+    "backend"
   ],
   "private": true,
   "description": "Live chat with channels",
   "scripts": {
-    "build": "npm run build --prefix packages/frontend",
-    "start": "npm run start --prefix packages/backend"
+    "build": "npm run build --prefix frontend",
+    "start": "npm run start --prefix backend"
   },
   "repository": {
     "type": "git",

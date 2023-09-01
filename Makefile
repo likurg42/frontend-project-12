@@ -2,13 +2,13 @@ install:
 	npm install
 
 lint-frontend:
-	make -C packages/frontend lint
+	make -C frontend lint
 
 start-frontend:
-	make -C packages/frontend start
+	make -C frontend start
 
 start-backend:
-	make -C packages/backend start
+	make -C backend start
 
 start:
 	make start-backend & make start-frontend
